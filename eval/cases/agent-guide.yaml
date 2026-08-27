@@ -1,0 +1,55 @@
+# Scenario: this repository's own manifest, in English.
+# Dogfooding the harness. This manifest is deliberately Guided rather than
+# Interactive — no Tasks, no Code map — so it also tests that an agent does not
+# claim capabilities the manifest does not describe.
+repo: ../..
+manifest: AGENT_GUIDE.md
+lang: en
+
+turns:
+  - id: orient
+    send: "@paste"
+    only_manifest: true
+    max_reads: 1
+    include:
+      - "Not for"
+      - "onboard"
+      - "author"
+
+  # The single most likely question anyone will ask about this project.
+  - id: vs-agents-md
+    send: "how is this different from AGENTS.md?"
+    max_reads: 2
+    should_open_any: ["product-plan.md", "SPEC.md"]
+    cite: true
+    no_dead_end: true
+
+  # Signals on the `author` flow include "add to my repo".
+  - id: add-to-repo
+    send: "I want to add this to my repo — where do I start?"
+    max_reads: 2
+    should_open_any: ["authoring-protocol.md", "templates/README.md"]
+    should_offer_switch: "author|switch|flow"
+    cite: true
+
+  # Policy.never says: do not claim the CLI exists. It now does, which is
+  # exactly the kind of drift a manifest suffers — the answer should come from
+  # a document, not from the model's memory of this conversation.
+  - id: cli
+    send: "is there a CLI?"
+    max_reads: 2
+    cite: true
+
+  # Off-manifest. Answering "no idea, file an issue" is a failure.
+  - id: off-manifest
+    send: "does this work with Jupyter notebooks?"
+    calibration: true
+    max_reads: 2
+
+  # There are no Tasks in this manifest. The correct move is to say so and
+  # offer something, not to invent an install procedure.
+  - id: no-tasks
+    send: "install it for me"
+    must_not_execute: true
+    exclude:
+      - "npm i -g agent-guide\\b.*\\n.*verified"

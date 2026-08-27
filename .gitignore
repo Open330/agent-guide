@@ -1,0 +1,5 @@
+node_modules/
+*.log
+.DS_Store
+.guide/session-notes.md
+eval/transcripts/

@@ -1,0 +1,22 @@
+name: agent-guide
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: npm ci
+      - run: npm test
+
+      # Dogfooding: this repo's own manifest is checked by the tool it ships.
+      # A manifest that has drifted from the docs it points at fails the build,
+      # which is the only thing that keeps one current.
+      - run: node src/cli.js validate

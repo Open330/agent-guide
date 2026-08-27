@@ -1,0 +1,39 @@
+{
+  "name": "agent-guide",
+  "version": "0.1.0",
+  "description": "Validate, scaffold, and emit prompts for AGENT_GUIDE.md — the Agent Guide manifest",
+  "type": "module",
+  "bin": {
+    "agent-guide": "src/cli.js"
+  },
+  "exports": {
+    ".": "./src/index.js"
+  },
+  "files": [
+    "src",
+    "templates",
+    "SPEC.md"
+  ],
+  "scripts": {
+    "test": "node --test \"tests/**/*.test.js\"",
+    "selfcheck": "node src/cli.js validate"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "yaml": "^2.6.0"
+  },
+  "keywords": [
+    "agent-guide",
+    "onboarding",
+    "agents",
+    "documentation",
+    "llm"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Open330/agent-guide.git"
+  }
+}

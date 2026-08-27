@@ -1,0 +1,216 @@
+<div align="center">
+
+# Agent Guide
+
+**Let any agent walk users through your project, interactively.**
+
+One file in your repo. One paste block in your README.
+Readers stop skimming your docs and start asking questions — and get answers with sources.
+
+`AGENT_GUIDE.md` · [Spec](SPEC.md) · [Authoring](.context/architecture/authoring-protocol.md) · [Templates](templates/) · [Experiments](experiments/) · [Roadmap](.context/planning/roadmap.md)
+
+**Status: alpha** — spec draft, no CLI yet
+
+</div>
+
+---
+
+## The problem
+
+Nobody reads the README to the end, and the thing writing your code now is an agent. So one of two things happens: a human copies the install command and misses every constraint you documented, or an agent greps your whole repo, burns 40k tokens, and confidently invents an API that does not exist.
+
+The docs are not missing. **The machine-readable path into them is.**
+
+## The idea
+
+Put a paste block in your README instead of hoping people scroll. The reader hands it to their agent, the agent reads one manifest, and onboarding becomes a **session** rather than a document.
+
+```
+paste block  →  agent reads AGENT_GUIDE.md  →  overview + "what do you want to do?" + FAQ
+                                             →  question → opens 1–2 docs → answers with sources
+                                             →  install steps run with consent, verified
+                                             →  stuck? switches flow, then comes back
+```
+
+## Try it on this repo
+
+<details open>
+<summary><b>🤖 Ask an agent instead</b> — paste this and ask anything about Agent Guide</summary>
+
+```
+You are running an Agent Guide session for this project.
+The manifest is a map, not a fence. Your goal is to answer my questions well —
+the rules below are how you do that, not what you're graded on.
+
+START
+Find this project's AGENT_GUIDE.md — try ./AGENT_GUIDE.md, then the repo root, then
+https://raw.githubusercontent.com/Open330/agent-guide/main/AGENT_GUIDE.md. Ask me
+to paste it only if none of those work.
+Open nothing else before your first reply. Then reply with:
+  the overview paragraph verbatim -> Not for -> the Flow choices (mark the default)
+  -> the default Flow's top 5 FAQ entries -> stop.
+("Open nothing else" applies only up to that first reply.)
+
+DURING
+- Routing: match my question against the FAQ and the Docs `covers` first, then open
+  what you picked. One or two documents is usually enough.
+- No dead ends: if a path won't resolve, work it out yourself, in this order:
+  (1) relative to the repo root, (2) prefixed with the frontmatter `base` — that's
+  declared in the manifest, so just use it, don't ask, (3) search the repo by
+  filename, (4) only then the issues link. Tell me in one line what you tried.
+  Don't hand the choice back to me.
+- Sourcing: cite the path for anything that came from a document. Label anything
+  outside the manifest as "outside the manifest" or "unverified". Reasoning is
+  welcome — unlabelled certainty is not.
+- Off-manifest questions: still answer if you can. Just say it's off-manifest.
+- Running things: commands under Tasks need my go-ahead. If something not in Tasks
+  would help, suggest it and ask.
+- Switching: if what I say matches another Flow's Signals, offer to switch.
+
+Keep it short, and answer in my language.
+```
+
+</details>
+
+Then ask it `how is this different from AGENTS.md?` or `how do I write one for my repo?`.
+
+## Where this sits
+
+Agent Guide is not competing with the files you already have. It is a different layer.
+
+| | Audience | Shape | What it is |
+| :--- | :--- | :--- | :--- |
+| `llms.txt` | LLMs generally | A list of links | A static index for one-shot lookup |
+| `AGENTS.md` | Coding agents | Prose conventions | Contributor rules — build, test, style |
+| `apm.yml` | Agent deployment | Manifest + lockfile | Reproducible install of agent config |
+| **`AGENT_GUIDE.md`** | **A human talking to an agent** | **Manifest + session protocol** | **A stateful session: intent routing, execution, verification** |
+
+If you already have `AGENTS.md` or `llms.txt`, list them in the Docs table and hand off to them. Do not duplicate them.
+
+## What a manifest looks like
+
+The smallest valid one is about 25 lines.
+
+```markdown
+---
+guide: "0.1"
+name: foo
+base: https://raw.githubusercontent.com/acme/foo/main/
+escalate_to: https://github.com/acme/foo/issues/new
+---
+
+# foo — Agent Guide
+
+프롬프트를 Git으로 버전 관리하고, 배포 전에 회귀 평가를 자동으로 돌리는 팀용 CLI입니다.
+
+**Not for:** 프로덕션 트래픽 라우팅 · 모델 파인튜닝
+
+## Docs — 문서 지도
+
+| id | 경로 | 이럴 때 연다 |
+| --- | --- | --- |
+| quickstart | docs/quickstart.md | 설치, 첫 실행, API 키, 요구사항 |
+| concepts | docs/concepts.md | 개념, 용어, 동작 방식 |
+
+## Flow: onboard — 처음 오셨나요 (default)
+
+### FAQ
+
+- 설치는 어떻게 하나요? → `quickstart`
+- 어떻게 동작하나요? → `concepts`
+```
+
+Section keys (`Docs`, `Flow:`, `Tasks`, `Policy`, …) are fixed English so any agent can parse a manifest in any language. Everything a human reads — headings, table headers, questions — is yours.
+
+Two things carry most of the weight:
+
+- **`covers`** is the routing table. Write the words a confused user would actually type, not your document titles. Error strings are the best entries you can put there.
+- **`Not for`** is required. It sends the wrong reader away fast, and it structurally stops an agent from inventing features you do not have.
+
+See [`examples/`](examples/) for a full manifest with five flows, or the [format cheat sheet](.context/reference/manifest-format.md). The normative rules are in [SPEC.md](SPEC.md).
+
+## Adding it to your repo
+
+1. **Write `AGENT_GUIDE.md`.** Give your agent the [authoring prompt](.context/architecture/authoring-protocol.md#4-저작-프롬프트-정본) — it is designed to make the agent mine your issues and CHANGELOG for real questions instead of summarising your README.
+2. **Confirm three things yourself.** The authoring protocol will stop and ask you for the overview, `Not for`, and `status`. These cannot be derived from a repo — a README never says what a project refuses to do.
+3. **Paste a README block** from [`templates/`](templates/), replace `<org>/<repo>`, done.
+
+## The CLI
+
+```bash
+npx agent-guide validate      # check a manifest: structure, references, paths, README block
+npx agent-guide init          # scaffold a draft by scanning the repo
+npx agent-guide prompt        # print the paste block with <org>/<repo> substituted
+```
+
+`validate` is the one that matters. It automates the self-check the authoring protocol asks for by hand — every Docs path resolved, every heading anchor confirmed, every `id` in an FAQ or `on_fail` traced to a row — and reports the compliance level it computed. Add it to CI and a manifest cannot silently drift away from the documents it points at:
+
+```yaml
+- run: npx agent-guide validate
+```
+
+It found a broken README anchor in a manifest whose author had already verified all ten anchors by hand, and, in the same run, a bug in its own slug function. Reference checking is not something to do by eye.
+
+`init` deliberately produces an incomplete draft. It fills in paths, anchors and package metadata, and leaves `covers`, the FAQ and every Task empty with a `TODO(maintainer)` block explaining why. A plausible but wrong routing table is worse than an obviously empty one — the next step is to hand the [authoring prompt](.context/architecture/authoring-protocol.md#4-저작-프롬프트-정본) to your agent, which mines your issues and CHANGELOG for the questions people actually ask.
+
+## Compliance levels
+
+Start at the bottom rung. Most of the value is there.
+
+| Level | Requires |
+| :--- | :--- |
+| **Core** | frontmatter · overview · `Not for` · `## Docs` · one flow with an FAQ · the README block |
+| **Guided** | Core + `## Policy` · `## Code map` · two or more flows |
+| **Interactive** | Guided + flow switching via `Signals:` · `## Tasks` with a real `verify` |
+
+This repo's own manifest is **Guided**. It has no `## Tasks` and no `## Code map` because there is no CLI and no source code yet — the [authoring protocol](.context/architecture/authoring-protocol.md) forbids inventing a `verify` command you cannot run, and we are not exempt from our own rules.
+
+## What it cannot do
+
+Agent Guide **declares intent; it does not enforce it.** Nothing in a manifest stops an agent from running a command. The paste block is a request, the manifest is a document, and the only thing that actually gates execution is the host's permission system — Claude Code's approval prompt, Codex's sandbox mode.
+
+This is measured, not hedged. Across three runs of one scenario, one agent ran `npm install -g` without asking in one of them, having been told not to in plain language.
+
+So a step can say what it will do to you:
+
+```yaml
+steps:
+  - run: "foo setup --auto"
+    explain: "Registers the MCP server and installs the hook"
+    effects: [writes-user-config]
+```
+
+`effects` is optional, and the vocabulary is open. It exists so the consent rule has something specific to attach to — "get consent before running commands" is a request an agent can satisfy vaguely, while "a step tagged `effects` needs an explicit yes, and say what the effect is" has an object. `validate` warns when a step installs globally or writes outside the working directory without naming it, and warns rather than errors on purpose: a false positive that fails CI gets the check deleted.
+
+Two things follow for you. **Interactive compliance assumes an execution gate is on** — claiming it while running an agent in a bypass mode claims something the manifest cannot deliver. And when writing `## Tasks`, assume a step will occasionally run unasked. That is the real reason not to put a command with third-party consequences in one at all.
+
+## Does it actually work?
+
+We keep the failures too. [`experiments/`](experiments/) documents every repo we have tried this on and what broke, including two session failures that changed the spec:
+
+- **Finding 6** — an over-prescriptive paste block made the agent stop and hand the user a menu instead of answering. The fix was scoping "open nothing else" to the first reply only, and replacing "never guess" with "answer, but label what is unverified".
+- **Finding 7** — discovery tried the remote URL first, which is backwards for the two most common contexts. Local first, then repo root, then remote.
+- **Finding 12** — a second agent answered three consecutive questions with nothing but "this matches the troubleshoot flow, shall I switch?" It had obeyed the ask-before-switching rule perfectly and helped nobody. §4.10 now requires the answer first, with the offer alongside it.
+
+That last one closed a full loop, which is the part worth borrowing. The behaviour was measured, the spec clause was written because of it, and the same scenario was re-run against the changed clause: that agent went from 20/25 to 29/29 with no regressions, its 168-character non-answer became a 758-character diagnosis, and the `npm install -g` it had previously just run became a request for permission that named the config file it would touch.
+
+[`eval/`](eval/) goes further and measures it. It drives a real agent through a scenario and reads the session's tool calls, so "did it open the whole repo before answering" is a count rather than an opinion:
+
+```bash
+node eval/run.js eval/cases/agent-guide.yaml
+```
+
+Checks are scored in two classes and totalled separately — **hard** ones come from tool calls and are facts, **soft** ones are regexes over the reply and are proxies. A harness that blurs the two invites you to trust a regex the way you trust a count.
+
+## Status
+
+Alpha. The spec is drafted and dogfooded; the CLI (`agent-guide init / validate / prompt`) is not built. See the [roadmap](.context/planning/roadmap.md) for what is decided, what is open, and what we are deliberately not doing.
+
+Design docs live in [`.context/`](.context/).
+
+## License
+
+Specification and prose — `SPEC.md`, `.context/`, `templates/`, `examples/` — are [CC BY 4.0](LICENSE-SPEC).
+Everything else is [MIT](LICENSE).
+
+A protocol that cannot be quoted, forked, or reimplemented elsewhere does not spread.
