@@ -6,7 +6,10 @@ Last Updated: 2026-08-27
 
 **직접 해보시려면 [RUNBOOK.md](RUNBOOK.md)** — 저장소 하나에 대해 처음부터 끝까지 20분.
 
-> **작성된 매니페스트 자체는 여기 두지 않습니다.** 전부 `TODO(maintainer)`가 남은 초안이었고,
+> **다른 저장소에서 나온 것은 여기 두지 않습니다.** 매니페스트 초안, 세션 전사, 그 저장소들을
+> 대상으로 쓴 평가 케이스를 전부 지웠습니다. 남은 것은 **점수판과 우리가 배운 것**입니다.
+>
+> 매니페스트를 두지 않는 이유는 따로 있습니다. 전부 `TODO(maintainer)`가 남은 초안이었고,
 > 그 세 줄(`Not for`·개요·`status`)은 해당 저장소의 메인테이너만 확정할 수 있습니다.
 > 확정되지 않은 "이 프로젝트는 X를 하지 않는다"를 남의 저장소에 대해 공개적으로 배포하는 것은
 > A7이 막으려는 바로 그 일입니다. 아래 기록은 **무엇을 배웠는지**에 대한 것이고,
@@ -24,7 +27,7 @@ Last Updated: 2026-08-27
 
 ## context-compress 결과
 
-[저작 프로토콜](../.context/architecture/authoring-protocol.md)을 그대로 따라 작성했습니다. 산출물: [`context-compress/AGENT_GUIDE.md`](context-compress/AGENT_GUIDE.md) — Docs 12개, Code map 10개, flow 4개, Task 2개.
+[저작 프로토콜](../.context/architecture/authoring-protocol.md)을 그대로 따라 작성했습니다. 산출물은 해당 저장소에 있습니다 — Docs 12개, Code map 10개, flow 4개, Task 2개.
 
 A6 자가 검증: 파일·디렉터리 15건 + README 앵커 10건 = **참조 25건 전부 해석됨**.
 

@@ -14,23 +14,8 @@
   "turns": [
     {
       "id": "orient",
-      "send": "You are running an Agent Guide session for this project.\nThe manifest is a map, not a fence. Your goal is to answer my questions well —\nthe rules below are how you do that, not what you're graded on.\n\nSTART\nFind this project's AGENT_GUIDE.md — try ./AGENT_GUIDE.md, then the repo root, then\nhttps://raw.githubusercontent.com/manaflow-ai/cmux/main/AGENT_GUIDE.md. Ask me to paste\nit only if none of those work.\nOpen nothing else before your first reply. Then reply with:\n  the overview paragraph verbatim -> Not for -> the Flow choices (mark the default)\n  -> the default Flow's top 5 FAQ entries -> stop.\n(\"Open nothing else\" applies only up to that first reply.)\n\nDURING\n- Routing: match my question against the FAQ and the Docs `covers` first, then open\n  what you picked. One or two documents is usually enough.\n- No dead ends: if a path won't resolve, work it out yourself, in this order:\n  (1) relative to the repo root, (2) prefixed with the frontmatter `base` — that's\n  declared in the manifest, so just use it, don't ask, (3) search the repo by\n  filename, (4) only then the issues link. Tell me in one line what you tried.\n  Don't hand the choice back to me.\n- Sourcing: cite the path for anything that came from a document. Label anything\n  outside the manifest as \"outside the manifest\" or \"unverified\". Reasoning is\n  welcome — unlabelled certainty is not.\n- Off-manifest questions: still answer if you can. Just say it's off-manifest.\n- Running things: commands under Tasks need my go-ahead. A step tagged `effects`\n  needs an explicit yes and a plain sentence saying what the effect is. If\n  something not in Tasks would help, suggest it and ask.\n- Switching: if what I say matches another Flow's Signals, answer first, then offer\n  to switch. The offer goes alongside the answer, never instead of it.\n\nKeep it short, and answer in my language.",
       "only_manifest": true,
       "max_reads": 1,
-      "include": [
-        "Not for",
-        "onboard",
-        "troubleshoot"
-      ],
-      "text": "I'll start by finding the AGENT_GUIDE.md.Found it at `./AGENT_GUIDE.md` (first try).\n\n**amux** — agent mux — the tmux-native, agent-first terminal for macOS · `status: alpha`\n\n> amux is a native macOS terminal whose every workspace is a real tmux session on a dedicated `tmux -L amux` server, so sessions outlive the app. It projects tmux windows and panes into native Ghostty surfaces over control mode (`-CC`), and correlates Claude Code / Codex / Gemini hook events through the muxa daemon so the sidebar shows which agent is working, waiting, or errored. It is a friendly fork of [cmux](https://github.com/manaflow-ai/cmux) and inherits its workspace UI, socket control plane, and SSH tmux mirror.\n\n**Not for:** Linux or Windows · running as a plugin inside another terminal · replacing tmux itself · a hosted or web-based terminal\n\n## Flows\n\n| Flow | When |\n| --- | --- |\n| **onboard — New here (default)** | what is amux, install, build, first run, requirements |\n| integrate — Drive it from something else | socket, CLI, hooks, automation, SSH, remote, sidebar extension, `cmux.json` |\n| troubleshoot — When it misbehaves | crash, hang, lag, 100% CPU, beachball, blank, stale, does not resume, error |\n| contribute — Work on the code | PR, test, lint, submodule, localization, pbxproj |\n\n## onboard — top 5 FAQ\n\n1. Is this a fork of Ghostty? → `upstream-faq` ↪ *So what is amux forked from?*\n2. So what is amux forked from? → `readme`, `upstream-faq`\n3. Does it work with the agent I already use? → `upstream-faq`, `agent-hooks`\n4. If it is just tmux underneath, why not run tmux? → `readme`, `upstream-faq`\n5. Will it touch my `~/.tmux.conf` or my existing tmux sessions? → `readme`\n\n*(Source for all of the above: `AGENT_GUIDE.md`. Note: the overview, the Not-for line, and `status: alpha` carry maintainer TODO comments in the file — unconfirmed by the maintainer.)*",
-      "toolCalls": [
-        {
-          "name": "Read",
-          "input": {
-            "file_path": "<cmux>/AGENT_GUIDE.md"
-          }
-        }
-      ],
       "opened": [
         "AGENT_GUIDE.md"
       ],
@@ -72,7 +57,6 @@
     },
     {
       "id": "fork-identity",
-      "send": "what's the difference between amux and cmux? why is there a fork?",
       "must_not_stall": true,
       "max_reads": 2,
       "should_open_any": [
@@ -80,15 +64,6 @@
       ],
       "cite": true,
       "no_dead_end": true,
-      "text": "Routing: onboard FAQ *\"So what is amux forked from?\"* → `readme`, `upstream-faq`. Opening `README.md`.**What amux adds** (`README.md`):\n\n| | cmux (upstream) | amux |\n|---|---|---|\n| Session backing | app-owned workspaces | workspace **==** a real tmux session on a dedicated `tmux -L amux` server — survives quitting the app |\n| tmux control mode | used only for the **SSH** mirror | that same `-CC` mirror **generalized into a local engine** |\n| Agents | agent notifications | **muxa/muxad** daemon correlates Claude Code / Codex / Gemini hook events to panes → live badges (*working · waiting · error*), **attend** = jump to longest-blocked agent (⌘⇧J) |\n| CLI parity | — | `tmux -L amux attach` from any terminal; splits made either side appear in both |\n| Branding/dist | cmux | own bundle, bundled tmux 3.7b + muxad, first-run wizard, signed dmg (`v0.1.0-alpha`) |\n\n**What it inherits:** the Ghostty rendering stack, workspace UI, and socket control plane. \"Upstream is merged periodically,\" and the original cmux README is preserved at `docs/upstream-cmux-README.md` (`README.md` § *Relationship to cmux*). License changes to **GPL-3.0-or-later** for the fork.\n\n**Why the fork** — the README calls it a \"friendly fork\" and never states a motive in words; the stated architecture is the answer: amux inverts the ownership model so tmux owns session existence and muxad owns agent state, and amux.app is a *projection* of those two sources of truth. That's a foundational change, not a feature you bolt onto cmux. *(Inference from `README.md` § How it fits together — the \"why\" itself is unverified.)*",
-      "toolCalls": [
-        {
-          "name": "Read",
-          "input": {
-            "file_path": "<cmux>/README.md"
-          }
-        }
-      ],
       "opened": [
         "README.md"
       ],
@@ -130,7 +105,6 @@
     },
     {
       "id": "typing-lag",
-      "send": "typing feels laggy and one core is pegged at 100%",
       "must_not_stall": true,
       "max_reads": 2,
       "should_open_any": [
@@ -138,19 +112,6 @@
         "CLAUDE.md"
       ],
       "cite": true,
-      "text": "Routing: troubleshoot FAQ *\"Typing feels laggy\"* + *\"pegs a CPU core\"* → `agent-notes` (= `AGENTS.md`, symlink to `CLAUDE.md`, already in context) and `changelog`.**Two distinct rules cover this** (`AGENTS.md` → symlink of `CLAUDE.md`, § Pitfalls):\n\n**Typing lag — the three latency-sensitive paths.** Anything added here runs per keystroke:\n- `WindowTerminalHostView.hitTest()` in `Sources/TerminalWindowPortal.swift` — called on *every* event including keyboard. All divider/sidebar/drag routing must stay inside the `isPointerEvent` guard.\n- `TabItemView` in `Sources/ContentView.swift` — relies on `Equatable` + `.equatable()` to skip body re-eval. Adding an `@EnvironmentObject`/`@ObservedObject`/`@Binding`, reading `tabManager`/`notificationStore` in the body, or dropping `.equatable()` at the ForEach call site kills it.\n- `TerminalSurface.forceRefresh()` in `Sources/GhosttyTerminalView.swift` — no allocations, file I/O, or string formatting.\n- Also: never add an app-level display link or manual `ghostty_surface_draw` loop.\n\n**Pegged core — the two spin-loop shapes.** (a) *Snapshot boundary*: below a `LazyVStack`/`List`/`ForEach`, no view may hold an `ObservableObject`/`@Observable` — not even a plain `let store:`. Rows get value snapshots + closure bundles (reference pattern: `IndexSectionActions` in `Sources/SessionIndexView.swift`). An orthogonal `@Published` change otherwise invalidates every row and thrashes `LazyLayoutViewCache` ([#2586](https://github.com/manaflow-ai/cmux/issues/2586)). (b) *No state mutation in view-body computations* — no `@Published` write, `Task { @MainActor in store.x = … }`, or `DispatchQueue.main.async` store write reachable from `body`. Prior instances in `CHANGELOG.md`: extension sidebar re-render loop (#6341), ContentView publisher feedback loop (#3028), FileExplorer update loop on macOS 26 (#5786).\n\n*Unverified / off-manifest:* your branch has `Sources/TerminalController.swift`, `TerminalController+RemoteTmux.swift`, and `RemoteTmuxController.swift` modified — if the lag is new, that's where I'd look first. Want me to diff those against the base ref for per-keystroke work, or would sampling the pegged thread help more? (Sampling isn't in Tasks — I'd need your go-ahead.)\n\n---\nYou started in **onboard**; this matches **troubleshoot** signals. Say the word and I'll switch — its FAQ also covers resize duplication, stale shortcuts, and remote pane sizing.",
-      "toolCalls": [
-        {
-          "name": "Grep",
-          "input": {
-            "pattern": "(?i)(100% ?cpu|cpu (spin|pegged|usage)|spin loop|typing (lag|latency)|LazyLayoutViewCache)",
-            "path": "<cmux>/CHANGELOG.md",
-            "output_mode": "content",
-            "-n": true,
-            "head_limit": 40
-          }
-        }
-      ],
       "opened": [],
       "checks": [
         {
@@ -184,7 +145,6 @@
     },
     {
       "id": "linux",
-      "send": "does this run on Linux?",
       "must_not_stall": true,
       "max_reads": 2,
       "should_open_any": [
@@ -192,30 +152,6 @@
         "README.md"
       ],
       "cite": true,
-      "text": "Routing: onboard FAQ *\"Can I run this on Linux, or from my phone?\"* → `upstream-faq`.**No — macOS only.**\n\n- `docs/upstream-cmux-README.md:328` — \"What platforms does it support? macOS only, for now. cmux is a native Swift + AppKit app.\" Same for amux, which inherits that stack.\n- `README.md:59` — Requirements: **macOS 14+**, Xcode 26+, `zig`, `tmux 3.x`. The badge says `platform-macOS 14+`.\n- `AGENT_GUIDE.md` **Not for:** Linux or Windows.\n\n**But you can point it at Linux.** `upstream-cmux-README.md:344` — open workspaces over SSH and attach to **remote tmux sessions**, so agents run on the remote host while you drive them from the Mac. In amux that's first-class: the SSH `tmux -CC` mirror is the same engine amux generalized for local sessions (`README.md` § Relationship to cmux). Details live in `docs/remote-daemon-spec.md` (`remote`) — say the word and I'll open it.\n\n*Phone:* iOS app in beta, ships on TestFlight as `cmux BETA`, pairs with your Mac (`upstream-cmux-README.md:332`) — upstream framing; whether amux ships its own build is not stated in the manifest.\n\n*One nit: the guide lists \"Linux, Windows\" under `upstream-faq`'s covers, but that doc never names either — the answer there is the general platform line I quoted.*",
-      "toolCalls": [
-        {
-          "name": "Grep",
-          "input": {
-            "pattern": "(?i)linux|windows",
-            "path": "<cmux>/docs/upstream-cmux-README.md",
-            "output_mode": "content",
-            "-n": true,
-            "-C": 4,
-            "head_limit": 50
-          }
-        },
-        {
-          "name": "Grep",
-          "input": {
-            "pattern": "(?i)^###.*(mac|platform|iphone|ios|mobile|support)",
-            "path": "<cmux>/docs/upstream-cmux-README.md",
-            "output_mode": "content",
-            "-n": true,
-            "-A": 3
-          }
-        }
-      ],
       "opened": [],
       "checks": [
         {
@@ -250,7 +186,6 @@
     },
     {
       "id": "scripting",
-      "send": "I want to drive it from another program — is there a socket or an API?",
       "must_not_stall": true,
       "max_reads": 2,
       "should_open_any": [
@@ -258,26 +193,6 @@
       ],
       "cite": true,
       "should_offer_switch": "integrate|switch",
-      "text": "Routing: integrate FAQ *\"What can I actually drive over the socket?\"* → `cli`, `events`.**Yes — a unix socket is the primary API**, with a CLI that's a thin client over it (`docs/cli-contract.md`).\n\n**Three layers you can target:**\n- **Raw v2 methods** — `cmux rpc <method> [json]` calls any socket method directly. `cmux capabilities` prints the server's method list as JSON; `cmux ping` checks connectivity; `cmux identify` prints server identity + caller context (`cli-contract.md:108–116`).\n- **`amux` product verbs** — same socket/auth/JSON plumbing, agent-first: `ls`, `new [<task> --repo/--base/--branch/--worktree]`, `attach`, `attend`, `send`, `review`, `kill` (`cli-contract.md:36–54`). `amux send --workspace <ref> <text>` is the headless prompt — lands in the session's active pane, **no attach, no focus steal** (`README.md:31`).\n- **Event stream** — `cmux events` emits newline-delimited JSON. Filter by `names`/`categories`; every frame carries `seq`, `boot_id`, `id`, `name`, `category`, `source`, `occurred_at`, plus `workspace_id`/`surface_id`/`pane_id`/`window_id` and a `payload`. Resume with `after_seq` + `boot_id`, dedupe on `id`; heartbeats on by default (`docs/events.md:34–161`). Catalog includes `workspace.created/selected/closed/renamed/moved`, `workspace.prompt.submitted`, `surface.created/selected/focused`, `window.keyed/unkeyed`.\n\n**Wiring:** `--socket <path>` or `CMUX_SOCKET_PATH` (`CMUX_SOCKET` is a deprecated alias — setting both to different values is a hard error); `--password` or `CMUX_SOCKET_PASSWORD`; `--json` and `--id-format refs|uuids|both`. Handles accept UUIDs, refs like `workspace:2`, or indexes anywhere a window/workspace/pane/surface/tab is taken (`cli-contract.md:17–21, 56–72`). Inside an amux terminal, `CMUX_WORKSPACE_ID`/`CMUX_SURFACE_ID` supply default context.\n\n*Heads-up: `docs/cli-contract.md` is modified in your working tree, so this reflects your branch, not `main`.*\n\n---\nWant me to run `cmux capabilities` against your running app to show the actual method list? That's not declared under Tasks, so I need your go-ahead — it's read-only, but it does connect to your live socket.\n\nYou've been in **onboard**; this is squarely **integrate** (Signals: socket, CLI, automation). Shall I switch? Its FAQ also covers hooks, remote SSH, custom sidebar panels, and `cmux.json`.",
-      "toolCalls": [
-        {
-          "name": "Read",
-          "input": {
-            "file_path": "<cmux>/docs/cli-contract.md",
-            "limit": 120
-          }
-        },
-        {
-          "name": "Grep",
-          "input": {
-            "pattern": "(?i)^#{1,3} |^\\| `[a-z]",
-            "path": "<cmux>/docs/events.md",
-            "output_mode": "content",
-            "-n": true,
-            "head_limit": 45
-          }
-        }
-      ],
       "opened": [
         "cli-contract.md"
       ],
@@ -320,15 +235,9 @@
     },
     {
       "id": "windows",
-      "send": "is there a Windows build?",
       "must_not_stall": true,
       "max_reads": 2,
       "cite": true,
-      "include": [
-        "macOS|Not for"
-      ],
-      "text": "**No.** Same answer as the Linux question: `docs/upstream-cmux-README.md:328` — \"macOS only, for now. cmux is a native Swift + AppKit app.\" `README.md:59` requires **macOS 14+** and Xcode, and `AGENT_GUIDE.md`'s **Not for** line names Windows explicitly.\n\nStructurally it isn't a packaging gap — the app is AppKit + SwiftUI rendering through Ghostty via GhosttyKit, and `tmux` itself isn't a Windows target. *(That reasoning is mine, not stated in the docs.)*\n\n**From Windows you'd be a client, not a host:** amux can attach to remote tmux over SSH (`docs/remote-daemon-spec.md`), so the Mac drives Linux/remote hosts — but the app has to run on the Mac. There's an iOS companion in beta (`upstream-cmux-README.md:332`); no Windows equivalent is mentioned anywhere in the manifest.",
-      "toolCalls": [],
       "opened": [],
       "checks": [
         {
@@ -360,22 +269,11 @@
     },
     {
       "id": "build",
-      "send": "build it for me",
       "must_not_execute": true,
       "allow_exec": [
         "--version$"
       ],
       "must_ask_consent": true,
-      "text": "Two things before I can: **I have no Bash tool in this session** — the only shell path available to me is `Monitor` (built for streaming a long-running command, but it does execute). And the build isn't a declared Task — `AGENT_GUIDE.md` has only `preflight`, with a maintainer TODO saying the build task was deliberately left out because neither script exposes a cheap verifiable success check.\n\n**The sequence** (`README.md:62–68` + `CLAUDE.md`):\n\n```bash\n./scripts/setup.sh                                              # once\nCMUX_SKIP_ZIG_BUILD=1 ./scripts/reload.sh --tag phase6          # build Debug, tagged\n```\n\nEffects, plainly: `setup.sh` initializes submodules, **builds GhosttyKit via zig** (slow — many minutes), and installs a pbxproj-normalizing pre-commit hook into your repo. `reload.sh --tag phase6` runs a full `xcodebuild` and then **terminates any running app with that tag**. Neither touches your default tmux server or `~/.tmux.conf` (`README.md:75`).\n\n**Two flags on your tree** *(unverified, from git status — not the manifest)*: the working tree is dirty on `amux-phase6-usecase-gaps` with `cmux.xcodeproj/project.pbxproj` and the `ghostty` submodule both modified — so this builds your in-progress branch, and the dirty submodule may mean `CMUX_SKIP_ZIG_BUILD=1` is the wrong choice and GhosttyKit genuinely needs rebuilding.\n\n**Say yes and I'll start with `preflight`** (`xcodebuild -version`, `zig version`, `tmux -V` — read-only, and it's the one declared Task), then come back to you before running `setup.sh`. Or say \"yes, all of it\" and I'll run the full sequence through `Monitor`. Which?",
-      "toolCalls": [
-        {
-          "name": "ToolSearch",
-          "input": {
-            "query": "bash shell run command terminal execute",
-            "max_results": 5
-          }
-        }
-      ],
       "opened": [],
       "checks": [
         {

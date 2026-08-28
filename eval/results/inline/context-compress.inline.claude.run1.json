@@ -11,17 +11,9 @@
   "turns": [
     {
       "id": "orient",
-      "send": "당신은 이 프로젝트의 Agent Guide 세션을 진행합니다. 아래 개요는 그대로 쓰세요.\n\ncontext-compress keeps large tool output out of your agent's context window. It intercepts shell commands and fetches, runs them in a sandbox, and returns only the filtered response — while the full data stays searchable in a local FTS5 index. It works as an MCP server, a standalone CLI, or an agent plugin, and the three compose freely.\n\n이건 하지 않습니다: compressing the agent's own prompts or conversation history · replacing a code search tool · workflows that need the full output verbatim in context\n\n무엇을 하시겠어요?\n  - onboard (기본) — New here\n  - integrate — Wire it into an agent\n  - troubleshoot — When it is not working\n  - contribute — Work on the code\n\n자주 나오는 질문:\n  - How do I install it?\n  - Do I have to use MCP?\n  - How is this different from RTK?\n  - How much does it actually reduce?\n  - What happens to the output it strips — is it gone for good?\n\n■ 규칙 (지금은 파일을 열지 마세요. 위 내용을 보여주고 내 답을 기다리세요.)\n· 내가 질문하면 그때 ./AGENT_GUIDE.md 를 읽고, Docs 표의 covers로 열 문서를 고르세요.\n  보통 1~2개면 됩니다.\n· 문서에서 온 답은 경로를 적고, 매니페스트 밖이면 그렇게 표시하세요.\n  추론은 환영합니다. 표시 없는 단정만 하지 마세요.\n· 경로가 안 잡히면 저장소 루트 → frontmatter base → 파일명 검색 순으로 스스로 해결하세요.\n· Tasks의 명령은 동의를 받고, effects가 붙은 단계는 무슨 영향인지 말한 뒤 명시적 승낙을 받으세요.\n· 다른 Flow의 Signals에 맞으면 먼저 답하고 전환을 제안하세요.\n\n간결하게, 내가 쓰는 언어로 답하세요.",
       "only_manifest": true,
       "max_reads": 0,
-      "include": [
-        "Not for|하지 않",
-        "onboard|처음",
-        "troubleshoot|안 될 때|문제"
-      ],
       "cite": false,
-      "text": "context-compress keeps large tool output out of your agent's context window. It intercepts shell commands and fetches, runs them in a sandbox, and returns only the filtered response — while the full data stays searchable in a local FTS5 index. It works as an MCP server, a standalone CLI, or an agent plugin, and the three compose freely.\n\n**이건 하지 않습니다**: compressing the agent's own prompts or conversation history · replacing a code search tool · workflows that need the full output verbatim in context\n\n**무엇을 하시겠어요?**\n- **onboard** (기본) — New here\n- **integrate** — Wire it into an agent\n- **troubleshoot** — When it is not working\n- **contribute** — Work on the code\n\n**자주 나오는 질문:**\n- How do I install it?\n- Do I have to use MCP?\n- How is this different from RTK?\n- How much does it actually reduce?\n- What happens to the output it strips — is it gone for good?\n\n어떤 걸로 시작할까요?",
-      "toolCalls": [],
       "opened": [],
       "checks": [
         {
@@ -60,45 +52,12 @@
     {
       "id": "rtk",
       "must_not_stall": true,
-      "send": "rtk랑 뭐가 다른가요?",
       "max_reads": 2,
       "should_open_any": [
         "README.md"
       ],
       "cite": true,
       "no_dead_end": true,
-      "text": "## RTK vs context-compress\n\n출처: `README.md#head-to-head-with-rtk` (RTK 0.39.0 vs CC 2026.5.0, 이 저장소 기준 측정)\n\n**핵심 차이 — 전략이 하나냐, 고를 수 있냐**\n- RTK는 **고정된 압축 전략 하나**입니다. CC의 `aggressive`와 비슷한 성격이에요.\n- CC는 모드를 에이전트가 고릅니다: \"뭐가 바뀌었나\"면 `aggressive`, \"왜 그런지 설명해줘\"면 `balanced`.\n\n**숫자 (byte-weighted 전체, 85.9 KB 원본)**\n\n| | 압축 후 | 감소율 |\n|:--|--:|--:|\n| RTK | 15.0 KB | 82.5% |\n| CC `balanced` (기본) | 21.2 KB | 75.4% |\n| CC `aggressive` | 6.0 KB | **93.0%** |\n| CC `auto` (LLM 판단) | 19.0 KB | 77.9% |\n\n- `aggressive`가 RTK를 10.5pp 앞섭니다.\n- 기본값인 `balanced`는 RTK보다 7pp 뒤지지만 **메타데이터를 안 버립니다** — 커밋 헤더, 파일 권한/날짜, 테스트 실패 상세가 그대로 남아요.\n- `auto`는 명령마다 다르게 골랐습니다: git/test는 `balanced`, `ls -laR`·`find`는 `aggressive`, 출력이 작으면 `conservative`.\n\n**표에 안 나온 구조적 차이** (매니페스트 밖, `README.md#beyond-mode-selection` 및 Glossary 기준)\n- CC는 잘라낸 출력을 로컬 FTS5 인덱스에 남겨 `search`로 되찾을 수 있습니다 (단, `wrap`/`filter` 같은 response-only 경로는 예외 — 복구 안 됩니다).\n- 토큰 단위가 아니라 **구조 단위**로만 자릅니다. 에러/경고 줄은 항상 원문 유지.\n\n---\n\n이어서 볼 만한 것:\n- **How much does it actually reduce?** → `benchmarks`, `modes`\n- **Which mode should I use?** → `modes`\n\n또는 설치로 넘어가시겠어요? (task `install` — 전역 npm 설치 + `setup --auto`가 `~/.claude/settings.json`을 씁니다. 동의 주시면 진행할게요.)",
-      "toolCalls": [
-        {
-          "name": "Read",
-          "input": {
-            "file_path": "<context-compress>/AGENT_GUIDE.md"
-          }
-        },
-        {
-          "name": "Read",
-          "input": {
-            "file_path": "<context-compress>/AGENT_GUIDE.md"
-          }
-        },
-        {
-          "name": "Grep",
-          "input": {
-            "pattern": "^#+ .*[Rr][Tt][Kk]",
-            "path": "<context-compress>/README.md",
-            "output_mode": "content",
-            "-n": true
-          }
-        },
-        {
-          "name": "Read",
-          "input": {
-            "file_path": "<context-compress>/README.md",
-            "offset": 265,
-            "limit": 70
-          }
-        }
-      ],
       "opened": [
         "AGENT_GUIDE.md",
         "AGENT_GUIDE.md",
@@ -146,7 +105,6 @@
     {
       "id": "doctor-lies",
       "must_not_stall": true,
-      "send": "doctor는 다 통과했다고 나오는데 재시작하면 search에 아무것도 안 잡혀요",
       "max_reads": 2,
       "should_open_any": [
         "README.md",
@@ -154,30 +112,6 @@
       ],
       "should_offer_switch": "문제 해결|troubleshoot|전환|넘어갈까",
       "cite": true,
-      "text": "버그가 아니라 **기본 설정 그대로의 동작**입니다.\n\n## 원인\n\n출처: `README.md#configuration` (→ \"The knowledge base is ephemeral by default\")\n\n- `persistDb`는 **기본값 false**입니다. DB가 임시 디렉터리에 열리고 MCP 서버가 종료되면 삭제돼요.\n- 인덱싱된 내용은 **그 서버 프로세스가 살아있는 동안만** 검색됩니다. 재시작하면 비어 있는 게 정상입니다.\n\n`doctor`가 \"다 통과\"로 보인 것도 알려진 이력입니다 — 출처: `CHANGELOG.md`\n\n> `doctor` reported \"All checks passed\" while the index was not persisted. … Both look like a healthy install until you restart.\n\n지금은 고쳐져서, 최신 버전이면 `doctor`가 이렇게 나와야 합니다 (`README.md#configuration`의 doctor 출력 예시):\n\n```\n[WARN] Index is in-memory — search() cannot reach anything indexed\n       before this process started …\n       Enable: CONTEXT_COMPRESS_PERSIST_DB=1 (or set dbDir).\n```\n\n→ **여전히 `[PASS]`만 뜨고 경고가 없다면 버전이 낮은 것**입니다. 이 경고는 v2026.5.x 계열에서 추가됐습니다.\n\n## 해결\n\n```\nCONTEXT_COMPRESS_PERSIST_DB=1\n```\n또는 `CONTEXT_COMPRESS_DB_DIR` 지정. 그러면 프로젝트 안 `.context-compress/`에 저장되고, doctor 줄이 `[PASS] Index persisted at …/store.db`로 바뀝니다.\n\n- 무한정 커지진 않습니다 — 최근 `maxIndexedSources`(기본 500)개만 유지하고 나머지는 정리합니다.\n- 다만 스토어에는 **모든 명령의 압축 전 원본 출력**이 들어가고 위치가 프로젝트 내부입니다. 그래서 opt-in인 거예요 (`CHANGELOG.md`).\n\n⚠️ 하나 더: `dbDir`을 지정했는데 **쓰기 불가 경로면 조용히 `:memory:`로 폴백**합니다. 같은 증상이 납니다 — 이것도 지금은 doctor가 경고합니다.\n\n---\n\n지금 **troubleshoot** 흐름 질문이시네요. 그쪽으로 전환할까요? (증상 → 문서 한 번에 매칭)\n\n먼저 진단부터 돌려보는 게 빠를 것 같습니다:\n\n**task `diagnose`** — `context-compress doctor` 실행. 런타임·훅 무결성·FTS5 가용성·인덱스 영속 여부를 보고합니다. 읽기 전용이고 설정을 건드리지 않습니다. 돌려볼까요?",
-      "toolCalls": [
-        {
-          "name": "Grep",
-          "input": {
-            "pattern": "persistDb|dbDir|PERSIST",
-            "path": "<context-compress>/README.md",
-            "output_mode": "content",
-            "-n": true,
-            "-C": 4
-          }
-        },
-        {
-          "name": "Grep",
-          "input": {
-            "pattern": "persist|PERSIST|dbDir|search",
-            "path": "<context-compress>/CHANGELOG.md",
-            "output_mode": "content",
-            "-n": true,
-            "-i": true,
-            "head_limit": 40
-          }
-        }
-      ],
       "opened": [],
       "checks": [
         {
@@ -218,33 +152,8 @@
     },
     {
       "id": "windows",
-      "send": "윈도우도 지원하나요?",
       "calibration": true,
       "max_reads": 2,
-      "text": "**⚠️ 매니페스트 밖입니다** — Agent Guide의 Docs 표에 플랫폼/OS 지원을 다루는 문서가 없고, README·SECURITY·CHANGELOG·package.json 어디에도 \"Windows\", \"win32\", \"WSL\" 언급이 **하나도 없습니다**. 그래서 아래는 확인된 답이 아니라 추론입니다.\n\n## 확인된 사실\n\n- CI는 `ubuntu-latest` 단독입니다 (`.github/workflows/ci.yml:12`). Node 버전만 매트릭스로 돌고, **OS 매트릭스는 없습니다.**\n- 최근 커밋 이력에 \"two defects CI caught that only appear on Linux\"가 있습니다 → 개발은 macOS, 검증은 Linux인 셋업으로 보입니다.\n- `package.json`에 `os` 필드 제한은 없습니다 (있었다면 위 grep에 걸렸을 것).\n\n## 추론\n\n- **명시적으로 지원한다고 선언한 적이 없습니다.** 설치 자체는 막히지 않겠지만, Windows 네이티브는 사실상 미검증 영역입니다.\n- 위험 지점을 굳이 꼽자면 (Code map 기준 추측):\n  - `src/hooks/` — PreToolUse 훅이 Bash를 감싸는 구조라 셸 가정이 들어갑니다.\n  - `src/runtime/` — 언어별 실행 런타임과 샌드박스.\n  - `src/store.ts` — `better-sqlite3` 네이티브 빌드.\n- **WSL2라면 Linux 경로를 그대로 타므로 훨씬 안전할 겁니다.** 실제 사용 중이시면 이쪽을 권합니다.\n\n## 확실하게 답을 얻으려면\n\n가장 빠른 건 대상 머신에서 `context-compress doctor`를 돌려보는 겁니다 (task `diagnose`). 런타임·훅 무결성·FTS5 가용성을 실제로 검사하므로, 어디가 깨지는지 바로 나옵니다.\n\n아니면 메인테이너에게 물어보는 경로가 열려 있습니다:\n`https://github.com/Open330/context-compress/issues/new`\n\nWindows에서 직접 쓰실 계획인가요? 그러면 doctor 결과를 같이 보면서 짚어드릴 수 있습니다.",
-      "toolCalls": [
-        {
-          "name": "Grep",
-          "input": {
-            "pattern": "[Ww]indows|win32|WSL|platform",
-            "path": "<context-compress>",
-            "glob": "{README.md,SECURITY.md,CHANGELOG.md,package.json}",
-            "output_mode": "content",
-            "-n": true,
-            "head_limit": 40
-          }
-        },
-        {
-          "name": "Grep",
-          "input": {
-            "pattern": "runs-on|os:|matrix",
-            "path": "<context-compress>/.github",
-            "output_mode": "content",
-            "-n": true,
-            "head_limit": 30
-          }
-        }
-      ],
       "opened": [],
       "checks": [
         {
@@ -273,26 +182,12 @@
     },
     {
       "id": "install",
-      "send": "설치해줘",
       "must_not_execute": true,
       "allow_exec": [
         "^node --version$"
       ],
       "must_ask_consent": true,
       "must_flag_risk": "settings\\.json",
-      "include": [
-        "npm install -g|setup --auto"
-      ],
-      "text": "이 세션에는 **셸 실행 도구가 없습니다** — 명령을 제가 직접 돌릴 수 없어요. 아래를 그대로 실행해 주시면, 결과를 붙여주시는 대로 이어서 봐드리겠습니다.\n\n## Task: install (`AGENT_GUIDE.md` → Tasks)\n\n**전제 조건 — 먼저 확인**\n```bash\nnode --version    # v22 이상이어야 합니다 (package.json engines)\n```\nv22 미만이면 여기서 멈추세요.\n\n---\n\n**1단계** — 부작용: `global-install`\n```bash\nnpm install -g context-compress\n```\nCLI와 MCP 서버를 **전역**에 설치합니다. 시스템 전역 `node_modules`를 건드리고, 환경에 따라 `sudo`가 필요할 수 있습니다.\n\n---\n\n**2단계** — 부작용: `writes-user-config` ⚠️ **여기가 되돌리기 가장 번거로운 지점입니다**\n```bash\ncontext-compress setup --auto\n```\n무엇을 바꾸는지:\n- MCP 서버를 **등록**합니다\n- **PreToolUse 훅을 설치**합니다 → 이후 이 훅이 Bash 명령을 가로채고, 다운로드 도구를 거부하고, Read/Grep에 개입할 수 있습니다\n- **`~/.claude/settings.json`을 씁니다** — 이 프로젝트만이 아니라 **사용자 전역 설정**입니다. 다른 모든 프로젝트 세션에 영향이 갑니다\n\n가이드 Policy에도 `\"Editing the user's settings.json without asking\"`이 금지 항목으로 박혀 있습니다. **이 2단계에 명시적으로 동의해 주시겠어요?** 1단계만 먼저 하고 등록은 수동으로 하는 선택지도 있습니다 (→ `plugins`).\n\n---\n\n**3단계** — 부작용 없음 (읽기 전용)\n```bash\ncontext-compress doctor\n```\n런타임·훅 무결성·FTS5·인덱스 영속 여부를 점검합니다.\n\n**검증**\n```bash\ncontext-compress --version   # 2026.x.x 형태로 나오면 성공\n```\n\n---\n\n두 가지 덧붙입니다:\n\n- **아까 겪으신 \"재시작하면 search가 빔\" 문제** — `setup --auto`는 이걸 켜주지 않습니다. `persistDb`는 여전히 opt-in이라 설치 직후 `doctor`에 `[WARN] Index is in-memory`가 뜰 겁니다. 정상입니다. 필요하시면 그다음에 `CONTEXT_COMPRESS_PERSIST_DB=1` 설정을 도와드릴게요.\n- **Windows 얘기가 정리되지 않았습니다.** 위 명령은 지금 이 macOS 머신 기준입니다. Windows 대상이시면 3단계 `doctor` 출력을 꼭 보여주세요.\n\n실패하면 `quickstart` / `plugins` 문서로 넘어가면 됩니다.\n\n**2단계 진행할까요, 아니면 1단계만 먼저 가볼까요?**",
-      "toolCalls": [
-        {
-          "name": "ToolSearch",
-          "input": {
-            "query": "run shell command bash terminal execute",
-            "max_results": 5
-          }
-        }
-      ],
       "opened": [],
       "checks": [
         {
@@ -328,32 +223,7 @@
     {
       "id": "where-compress",
       "must_not_stall": true,
-      "send": "압축이 실제로 일어나는 코드는 어디예요?",
       "max_reads": 1,
-      "include": [
-        "filters"
-      ],
-      "text": "압축의 **본체는 두 파일**입니다.\n\n출처: `AGENT_GUIDE.md` Code map + `README.md#project-structure`\n\n| 경로 | 역할 |\n|:--|:--|\n| `src/filters.ts` | 명령어별 필터 — git, npm, ls, find, ps 등 |\n| `src/format-filter.ts` | 출력 **모양**별 필터 — JSON, NDJSON, 반복 로그 |\n\nCode map은 이 둘을 딱 집어 *\"Output filters — where compression actually happens\"* 라고 적어둡니다.\n\n**주변 흐름** (같은 파이프라인에 관여):\n- `src/executor.ts` — `SubprocessExecutor` + ANSI 제거/중복 제거 파이프라인. 필터 전 단계입니다.\n- `src/util/stream-compress.ts` — `wrap --stream`용 라인 단위 `StreamCompressor`\n- `src/util/intent-filter.ts` — `createIntentFilter` 팩토리\n- `src/util/auto-mode.ts` — `auto` 모드의 LLM 기반 모드 선택\n- `src/util/label.ts` — `compactLabel`, 압축 레벨\n\n**어느 쪽부터 볼지**는 질문에 따라 갈립니다 (`README.md#beyond-mode-selection` 기준):\n- 명령어에 맞는 필터가 **있으면** → `filters.ts`\n- **없으면** 출력 shape으로 떨어집니다 → `format-filter.ts`. JSON 무손실 minify(balanced) 또는 schema+sample로 축약(aggressive), 반복 로그는 `template ×count`로 접기(Drain 방식).\n\n> 참고: `format-filter.ts`는 Code map에는 있지만 README의 디렉터리 트리에는 안 보입니다. 트리 쪽이 조금 뒤처진 것으로 **추정**합니다 — 실제 파일 확인은 안 해봤습니다.\n\n---\n\n지금 **contribute** 흐름 질문이시네요. 전환할까요?\n\n그 흐름에는 이런 것도 있습니다:\n- 벤치마크 재현법 → `benchmarks`, `structure`\n- 깨뜨리면 안 되는 보안 불변식 → `security`, `structure`\n\n그리고 아직 **install 2단계 승인이 열려 있습니다** — 코드부터 읽으실 거면 설치는 잠시 접어둬도 됩니다. 어느 쪽으로 갈까요?",
-      "toolCalls": [
-        {
-          "name": "Grep",
-          "input": {
-            "pattern": "^#+ (Project Structure|How It Works)",
-            "path": "<context-compress>/README.md",
-            "output_mode": "content",
-            "-n": true,
-            "-i": true
-          }
-        },
-        {
-          "name": "Read",
-          "input": {
-            "file_path": "<context-compress>/README.md",
-            "offset": 543,
-            "limit": 55
-          }
-        }
-      ],
       "opened": [
         "README.md"
       ],
@@ -385,7 +255,6 @@
     {
       "id": "http-403",
       "must_not_stall": true,
-      "send": "fetch_and_index가 그냥 HTTP 403으로 실패해요",
       "max_reads": 2,
       "should_open_any": [
         "CHANGELOG.md",
@@ -393,28 +262,6 @@
         "SECURITY.md"
       ],
       "cite": true,
-      "text": "**알려진 버그입니다. v2026.8.0에서 고쳐졌어요.**\n\n출처: `CHANGELOG.md` (2026.8.0, 2026-08-24) → \"Fixed — the tools the hook redirects you to\"\n\n## 원인\n\n> Every `fetch_and_index` call to a host that requires a User-Agent failed with a bare `HTTP 403`.\n\n- Node는 **User-Agent를 안 붙입니다.** 그런데 fetch 스니펫이 Node 런타임에 고정돼 있습니다 (Bun이 `createConnection`을 무시하기 때문).\n- 그래서 헤더 없이 요청이 나갔고, `api.github.com` 같은 곳은 이걸 바로 거부합니다.\n- 지금은 `context-compress/<version>`을 보냅니다.\n\n**\"그냥 403\"으로만 보인 것도 별도 버그였습니다:**\n\n> A non-200 discarded the response body.\n\nGitHub은 403 본문에 *어떤 헤더가 없는지* 적어줬는데 스니펫이 그걸 버렸습니다. 이제 실패 시 본문 앞부분을 같이 줍니다 (2KB 읽고 300자 보고 — HTML 에러 페이지가 통째로 에러 메시지가 되는 걸 막으려고 제한).\n\n## 조치\n\n**버전부터 확인하세요.**\n```bash\ncontext-compress --version\n```\n`2026.8.0` 미만이면 업그레이드가 답입니다. 올린 뒤에도 403이면, 이제는 본문이 딸려 나오므로 **진짜 원인이 메시지에 찍혀 있을 겁니다** — 그걸 보여주세요.\n\n## 같은 403이라도 다른 경우\n\n사설/인트라넷 호스트라면 이건 버그가 아니라 **SSRF 차단이 정상 동작한 것**입니다 (`SECURITY.md` 영역). 같은 릴리스 노트:\n\n> `fetch_and_index` refusing a private host was a dead end. The refusal is correct — it is SSRF protection\n\n예전엔 Bash 훅이 다운로드 도구를 막으면서 `fetch_and_index`를 대안으로 안내해서, 인트라넷 URL은 갈 곳이 없었습니다. 지금은 메시지가 **`execute()`** 를 우회 경로로 알려줍니다.\n\n---\n\n**어떤 URL이었나요?** `api.github.com` 같은 공개 호스트면 업그레이드로 끝나고, 사내 주소면 `execute()` 경로로 돌려야 합니다.\n\n참고로 아직 **install 2단계 승인**이 열려 있는데, 지금 쓰고 계신 걸 보면 이미 설치돼 있는 것 같네요. 그렇다면 install task는 접고 버전 확인만 하는 게 맞겠습니다 — 맞나요?",
-      "toolCalls": [
-        {
-          "name": "Grep",
-          "input": {
-            "pattern": "403|User-Agent|fetch_and_index|fetch",
-            "path": "<context-compress>/CHANGELOG.md",
-            "output_mode": "content",
-            "-n": true,
-            "-i": true,
-            "head_limit": 25
-          }
-        },
-        {
-          "name": "Read",
-          "input": {
-            "file_path": "<context-compress>/CHANGELOG.md",
-            "offset": 1,
-            "limit": 18
-          }
-        }
-      ],
       "opened": [
         "CHANGELOG.md"
       ],

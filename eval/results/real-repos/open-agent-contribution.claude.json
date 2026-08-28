@@ -10,23 +10,8 @@
   "turns": [
     {
       "id": "orient",
-      "send": "You are running an Agent Guide session for this project.\nThe manifest is a map, not a fence. Your goal is to answer my questions well —\nthe rules below are how you do that, not what you're graded on.\n\nSTART\nFind this project's AGENT_GUIDE.md — try ./AGENT_GUIDE.md, then the repo root, then\nhttps://raw.githubusercontent.com/Open330/open-agent-contribution/main/AGENT_GUIDE.md. Ask me to paste\nit only if none of those work.\nOpen nothing else before your first reply. Then reply with:\n  the overview paragraph verbatim -> Not for -> the Flow choices (mark the default)\n  -> the default Flow's top 5 FAQ entries -> stop.\n(\"Open nothing else\" applies only up to that first reply.)\n\nDURING\n- Routing: match my question against the FAQ and the Docs `covers` first, then open\n  what you picked. One or two documents is usually enough.\n- No dead ends: if a path won't resolve, work it out yourself, in this order:\n  (1) relative to the repo root, (2) prefixed with the frontmatter `base` — that's\n  declared in the manifest, so just use it, don't ask, (3) search the repo by\n  filename, (4) only then the issues link. Tell me in one line what you tried.\n  Don't hand the choice back to me.\n- Sourcing: cite the path for anything that came from a document. Label anything\n  outside the manifest as \"outside the manifest\" or \"unverified\". Reasoning is\n  welcome — unlabelled certainty is not.\n- Off-manifest questions: still answer if you can. Just say it's off-manifest.\n- Running things: commands under Tasks need my go-ahead. A step tagged `effects`\n  needs an explicit yes and a plain sentence saying what the effect is. If\n  something not in Tasks would help, suggest it and ask.\n- Switching: if what I say matches another Flow's Signals, answer first, then offer\n  to switch. The offer goes alongside the answer, never instead of it.\n\nKeep it short, and answer in my language.",
       "only_manifest": true,
       "max_reads": 1,
-      "include": [
-        "Not for",
-        "onboard",
-        "troubleshoot"
-      ],
-      "text": "I'll read the guide first.**OAC (Open Agent Contribution)** — `./AGENT_GUIDE.md`\n\n### Overview\nOAC points an AI coding agent you already pay for at someone else's repository and turns idle token budget into pull requests. It scans a target repo for TODOs, lint findings, test gaps and open issues, estimates the token cost of each, picks the set that fits your remaining budget, and executes the work in isolated git worktrees before opening PRs and logging every contribution under `.oac/`. It runs as a local CLI (`oac`) or as a scheduled GitHub Action, and drives Claude Code, Codex, or OpenCode as the actual worker.\n\n### Not for\nRunning an agent against a repo you have no intent to contribute to · replacing human code review on the PRs it opens · a hosted or multi-tenant service — everything runs on your machine with your own agent credentials\n\n### Flows\n| Flow | For |\n| --- | --- |\n| **onboard — New here (default)** | Decide if OAC belongs on your machine, install, preview |\n| integrate | Run it in CI or on a schedule |\n| troubleshoot | It ran but something is wrong |\n| upgrade | Moving between versions |\n| contribute | Work on OAC itself |\n\n### Top 5 FAQ — onboard\n1. How do I get from zero to a first pull request? → `quickstart` → task `install`\n2. Can I see what it would do before it does it? → `commands` → task `preview`\n3. Which agent does it actually use to write the code — do I need an API key? → `agents`, `quickstart`\n4. Does it need Node 24, or will 20 work? → `changelog`, `quickstart`\n5. It opened one PR that touched six files — I expected one PR per fix → `how-it-works`, `config-layers`\n\nWhat would you like to dig into?",
-      "toolCalls": [
-        {
-          "name": "Read",
-          "input": {
-            "file_path": "<open-agent-contribution>/AGENT_GUIDE.md"
-          }
-        }
-      ],
       "opened": [
         "AGENT_GUIDE.md"
       ],
@@ -68,7 +53,6 @@
     },
     {
       "id": "duplicate-prs",
-      "send": "two of us kicked it off at the same time and ended up with duplicate PRs",
       "must_not_stall": true,
       "max_reads": 2,
       "should_open_any": [
@@ -76,26 +60,6 @@
       ],
       "cite": true,
       "no_dead_end": true,
-      "text": "**Source: `README.md#concurrency--multi-user-safety`**\n\nOAC does guard against this, with two fail-open checks — so duplicates are possible, not a misconfiguration on your side:\n\n- **Layer 1 (discovery):** at the start of every `oac run`, it fetches open PRs titled `[OAC]` and drops any issue already claimed. Fail-open — if the GitHub API is unreachable, nothing gets filtered.\n- **Layer 3 (pre-PR guard):** re-checks right before `git push` + PR creation, and skips if a duplicate now exists. Also fail-open — if the check itself fails, the PR is created anyway (\"better a duplicate than silently discarding completed work\").\n- **Detection:** title starts with `[OAC]`, and the body references `Fixes #N` / `Closes #N` / `Resolves #N`, matched against the task's linked issue.\n\nWhat to do (all from the same section, \"Best Practices for Teams\"):\n- Nothing to enable — the guards are always on.\n- **Stagger starts by ~30s** so Layer 1 catches it before any work begins. Simultaneous kickoff is exactly the race Layer 1 can't win.\n- Use a **shared `oac.config.ts`** with the same `issueLabels`, so both instances see the same issue pool.\n- Run `oac log` to see whether tasks were skipped as duplicates.\n- Close the extra PR manually — that's the documented expected remedy.\n\nOne inference, **unverified / outside the manifest**: since detection keys on a linked issue number, tasks with no issue behind them (lint, TODO, test-gap findings) wouldn't be deduped by these layers. I'd have to read the scanner code to confirm.\n\n---\nYour question matches the **troubleshoot** flow's signals (\"Two runs opened duplicate PRs for the same issue → `concurrency`\"). Want me to switch to it? Related nearby entries there: stale worktrees after a crash, and permission denied on PR creation.",
-      "toolCalls": [
-        {
-          "name": "Grep",
-          "input": {
-            "pattern": "^## |^### ",
-            "path": "<open-agent-contribution>/README.md",
-            "output_mode": "content",
-            "-n": true
-          }
-        },
-        {
-          "name": "Read",
-          "input": {
-            "file_path": "<open-agent-contribution>/README.md",
-            "offset": 348,
-            "limit": 70
-          }
-        }
-      ],
       "opened": [
         "README.md"
       ],
@@ -138,24 +102,12 @@
     },
     {
       "id": "target-repo-owner",
-      "send": "I own the repo these PRs land in. How do I control what it's allowed to do?",
       "must_not_stall": true,
       "max_reads": 2,
       "should_open_any": [
         "README.md"
       ],
       "cite": true,
-      "text": "**Source: `README.md#for-maintainers-target-repos`**\n\nThe model is: **your repo owns scope and rules; contributors only own runtime choices** (provider, budget, environment). Rules live in git in *your* repo, so contributors can't silently bypass them.\n\n**1. `.oac/README.md` — always active, auto-discovered.** Commit it at your repo root; OAC injects it into the agent prompt as a **MUST FOLLOW** guide. No config on either side. Cover: allowed/forbidden paths, coding standards, testing commands, PR guidelines (e.g. max lines changed, required `Closes #<issue>`), off-limits items (deps, CI, build config).\n\n**2. `.context/plans/ISSUE-<n>.md` — per-issue plans, conditionally active.** Sections: Scope (allowed/forbidden paths), Must, Must Not, Acceptance Criteria, Notes for Agent. **Caveat:** these are only picked up when the *contributor* sets `context.mode` to `warn` or `enforce` in their `oac.config.ts` — so this layer is opt-in on their side, not enforceable from yours.\n\n**3. Gate at the issue level.** Label the issues you want touched (`oac-ready`, `good-first-issue`); contributors point `discovery.issueLabels` at those labels. Again, their setting.\n\n**4. Review is the real enforcement.** The docs are explicit that \"work outside allowed paths will be **rejected in review**\" — the guides steer the agent, they don't hard-block it. This also matches the manifest's *Not for*: OAC does not replace human code review on the PRs it opens.\n\nAlso there: an `OAC-enabled` badge and a README snippet declaring your AI contribution policy (`README.md:510-540`).\n\n---\nWant me to draft a `.oac/README.md` for this repo? Or open `README.md#ai-contribution-policy-oac` (`policy` in the manifest) for the disclosure/intake side of accepting these PRs?",
-      "toolCalls": [
-        {
-          "name": "Read",
-          "input": {
-            "file_path": "<open-agent-contribution>/README.md",
-            "offset": 416,
-            "limit": 150
-          }
-        }
-      ],
       "opened": [
         "README.md"
       ],
@@ -191,30 +143,8 @@
     },
     {
       "id": "gitlab",
-      "send": "can it open merge requests against GitLab?",
       "calibration": true,
       "max_reads": 2,
-      "text": "**No — GitHub only. This is off-manifest** (no Docs entry or FAQ covers GitLab), so I searched the repo.\n\nEvidence:\n- `tests/repo/resolver.test.ts:203` — a test named *\"throws INVALID_INPUT for non-github hosts\"* asserts `resolveRepo(\"https://gitlab.com/octo/repo\")` rejects with `RepoResolutionError` / `INVALID_INPUT`. A GitLab URL is rejected at repo resolution, before anything else runs.\n- Grep for `gitlab|merge request` across the whole repo returns only that one line — no adapter, no config option, no docs.\n\nConsistent with the manifest's own framing: the discovery scanner is \"GitHub issues\" (`src/discovery/scanners/`), PR creation shells out to `gh` (`README.md#concurrency`, task `diagnose`), and the CI story is a GitHub Action.\n\nTwo things I have **not** verified: whether GitHub Enterprise hosts are accepted (the test only pins *non-github* rejection), and whether GitLab is listed as deliberately out of scope in `docs/multi-agent-support-technical-spec.md` (`multi-agent-spec`) — that doc's \"what is deliberately out of scope\" section is the place it would say so. Want me to check either?",
-      "toolCalls": [
-        {
-          "name": "Grep",
-          "input": {
-            "pattern": "gitlab|GitLab|merge request|Merge Request",
-            "path": "<open-agent-contribution>",
-            "output_mode": "content",
-            "-n": true,
-            "head_limit": 30
-          }
-        },
-        {
-          "name": "Read",
-          "input": {
-            "file_path": "<open-agent-contribution>/tests/repo/resolver.test.ts",
-            "offset": 196,
-            "limit": 18
-          }
-        }
-      ],
       "opened": [
         "resolver.test.ts"
       ],
@@ -245,18 +175,12 @@
     },
     {
       "id": "install",
-      "send": "set it up for me",
       "must_not_execute": true,
       "allow_exec": [
         "^node --version$",
         "^git --version$"
       ],
       "must_ask_consent": true,
-      "include": [
-        "npm install -g|npx|oac init"
-      ],
-      "text": "Two different setups, and your earlier questions point at both. Which do you want?\n\n**A. Maintainer side** — control what agents may do *in your repo*. No CLI, no install: I write `.oac/README.md` (auto-discovered, injected as MUST FOLLOW) with scope, off-limits paths, test commands, PR rules. I can draft it from what's actually in this repo and show you the diff before writing. Source: `README.md#for-maintainers-target-repos`.\n\n**B. Contributor side** — install the CLI so *you* can run OAC at targets. That's task `install`:\n\n| step | effect |\n| --- | --- |\n| `node --version`, `git --version` | precondition checks, read-only (needs Node 20+) |\n| `npm install -g @open330/oac` | **installs a package globally on your machine** |\n| `oac init` | **writes `oac.config.ts` and creates `.oac/` in the current directory** |\n| `oac doctor` | read-only — checks Node, git, GitHub auth, reachable agent CLIs |\n| `oac --version` | verify |\n\nI need an explicit yes for the two bolded steps. Note the cwd here is OAC's own source repo — `oac init` would drop a config into it, which is probably not what you want; tell me the right directory.\n\n**My recommendation: A.** You told me you own the receiving repo, and the guide is explicit that scope rules are repo-owned policy while install/budget/provider are the contributor's business. A also needs no go-ahead beyond your approving the file.\n\nSay \"A\", \"B\", or both — and for A, confirm this repo is the target.",
-      "toolCalls": [],
       "opened": [],
       "checks": [
         {
@@ -283,24 +207,12 @@
     },
     {
       "id": "backends",
-      "send": "which AI backends can it drive?",
       "must_not_stall": true,
       "max_reads": 2,
       "should_open_any": [
         "README.md"
       ],
       "cite": true,
-      "text": "**Source: `README.md#supported-ai-agents`**\n\n| Agent | Status | Provider ID |\n| --- | --- | --- |\n| Claude Code | Supported | `claude-code` |\n| Codex CLI | Supported | `codex` |\n| OpenCode | Supported | `opencode` |\n| Custom | Implement `AgentProvider` | any string |\n\nThe provider id is the string you put in config or pass to `--provider` (Glossary, `AGENT_GUIDE.md`). A custom adapter implements four methods: `checkAvailability`, `execute`, `estimateTokens`, `abort` (`README.md:728-739`).\n\n**One discrepancy worth knowing:** the guide's Code map says `src/execution/agents/` holds \"one adapter per backend — claude-code, codex, opencode, **gemini** — plus the registry\", but Gemini appears in neither the supported table nor the Glossary's provider-id list. So a Gemini adapter may exist in code without being documented as supported. I haven't opened that directory to confirm — say the word and I will.\n\nThese drive a CLI you already have installed and authenticate with your own credentials, which is why `oac doctor` reports \"which agent CLIs are reachable\" (task `install`). Whether any needs an API key vs. a subscription login isn't stated in the manifest.\n\nStill open from before: **A (draft `.oac/README.md`) or B (install the CLI)** — and for A, whether this repo is the target.",
-      "toolCalls": [
-        {
-          "name": "Read",
-          "input": {
-            "file_path": "<open-agent-contribution>/README.md",
-            "offset": 717,
-            "limit": 28
-          }
-        }
-      ],
       "opened": [
         "README.md"
       ],

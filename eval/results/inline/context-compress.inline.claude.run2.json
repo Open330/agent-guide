@@ -11,17 +11,9 @@
   "turns": [
     {
       "id": "orient",
-      "send": "당신은 이 프로젝트의 Agent Guide 세션을 진행합니다. 아래 개요는 그대로 쓰세요.\n\ncontext-compress keeps large tool output out of your agent's context window. It intercepts shell commands and fetches, runs them in a sandbox, and returns only the filtered response — while the full data stays searchable in a local FTS5 index. It works as an MCP server, a standalone CLI, or an agent plugin, and the three compose freely.\n\n이건 하지 않습니다: compressing the agent's own prompts or conversation history · replacing a code search tool · workflows that need the full output verbatim in context\n\n무엇을 하시겠어요?\n  - onboard (기본) — New here\n  - integrate — Wire it into an agent\n  - troubleshoot — When it is not working\n  - contribute — Work on the code\n\n자주 나오는 질문:\n  - How do I install it?\n  - Do I have to use MCP?\n  - How is this different from RTK?\n  - How much does it actually reduce?\n  - What happens to the output it strips — is it gone for good?\n\n■ 규칙 (지금은 파일을 열지 마세요. 위 내용을 보여주고 내 답을 기다리세요.)\n· 내가 질문하면 그때 ./AGENT_GUIDE.md 를 읽고, Docs 표의 covers로 열 문서를 고르세요.\n  보통 1~2개면 됩니다.\n· 문서에서 온 답은 경로를 적고, 매니페스트 밖이면 그렇게 표시하세요.\n  추론은 환영합니다. 표시 없는 단정만 하지 마세요.\n· 경로가 안 잡히면 저장소 루트 → frontmatter base → 파일명 검색 순으로 스스로 해결하세요.\n· Tasks의 명령은 동의를 받고, effects가 붙은 단계는 무슨 영향인지 말한 뒤 명시적 승낙을 받으세요.\n· 다른 Flow의 Signals에 맞으면 먼저 답하고 전환을 제안하세요.\n\n간결하게, 내가 쓰는 언어로 답하세요.",
       "only_manifest": true,
       "max_reads": 0,
-      "include": [
-        "Not for|하지 않",
-        "onboard|처음",
-        "troubleshoot|안 될 때|문제"
-      ],
       "cite": false,
-      "text": "context-compress keeps large tool output out of your agent's context window. It intercepts shell commands and fetches, runs them in a sandbox, and returns only the filtered response — while the full data stays searchable in a local FTS5 index. It works as an MCP server, a standalone CLI, or an agent plugin, and the three compose freely.\n\n이건 하지 않습니다: compressing the agent's own prompts or conversation history · replacing a code search tool · workflows that need the full output verbatim in context\n\n무엇을 하시겠어요?\n- **onboard** (기본) — New here\n- **integrate** — Wire it into an agent\n- **troubleshoot** — When it is not working\n- **contribute** — Work on the code\n\n자주 나오는 질문:\n- How do I install it?\n- Do I have to use MCP?\n- How is this different from RTK?\n- How much does it actually reduce?\n- What happens to the output it strips — is it gone for good?\n\n어느 쪽으로 갈까요?",
-      "toolCalls": [],
       "opened": [],
       "checks": [
         {
@@ -60,45 +52,12 @@
     {
       "id": "rtk",
       "must_not_stall": true,
-      "send": "rtk랑 뭐가 다른가요?",
       "max_reads": 2,
       "should_open_any": [
         "README.md"
       ],
       "cite": true,
       "no_dead_end": true,
-      "text": "## RTK와의 차이\n\n출처: `README.md#head-to-head-with-rtk`\n\n**핵심 차이 — 전략이 하나냐, 고를 수 있냐**\n- RTK는 압축 전략이 **하나로 고정**되어 있고, 대략 context-compress의 `aggressive`에 해당합니다.\n- context-compress는 모드가 4개(`conservative` / `balanced` / `aggressive` / `auto`)라, \"뭐가 바뀌었나\"면 aggressive, \"왜 그런지 설명해줘\"면 balanced 식으로 질문에 맞춰 선택합니다. `auto`는 모델이 명령마다 알아서 고릅니다.\n\n**수치 (이 저장소 기준, RTK 0.39.0 vs CC 2026.5.0, 바이트 가중 전체)**\n\n| | 감축률 |\n|:--|--:|\n| RTK | 82.5% |\n| CC `aggressive` | **93.0%** |\n| CC `auto` (LLM) | 77.9% |\n| CC `balanced` | 75.4% |\n| CC `conservative` | 6.0% |\n\n- `aggressive`가 RTK를 10.5pp 앞섭니다.\n- `balanced`는 RTK보다 7pp 낮지만 메타데이터를 안 버립니다 — 커밋 헤더, 파일 권한/날짜, 테스트 실패 상세가 그대로 남습니다.\n- RTK가 이기는 구간도 있습니다: `ls -laR src/`에서 94% (CC aggressive 78%). 반대로 `ls src/`처럼 작은 출력에선 RTK가 오히려 **키웁니다** (-54%).\n\n**표에 안 드러나는 차이 (문서 기재, 매니페스트 내)**\n- 인덱싱: 버려진 출력이 로컬 FTS5에 남아 `search`로 다시 찾을 수 있습니다 — RTK 비교표는 압축률만 다룹니다.\n- `aggressive`의 커버 범위는 표보다 넓습니다: `df`, `du`, `ps aux`, `npm ls`, `grep`/`rg`.\n\n> ⚠️ 매니페스트 밖 추론: 위 표는 **이 저장소에서** 측정한 값이라, 다른 코드베이스에선 명령 구성에 따라 순위가 달라질 수 있습니다. 표에 재현 커맨드가 있으니 직접 돌려보는 게 확실합니다.\n\n다음으로 이어지는 질문: **How much does it actually reduce?** (`benchmarks`, `modes`) — 보시겠어요?",
-      "toolCalls": [
-        {
-          "name": "Read",
-          "input": {
-            "file_path": "<context-compress>/AGENT_GUIDE.md"
-          }
-        },
-        {
-          "name": "Read",
-          "input": {
-            "file_path": "<context-compress>/AGENT_GUIDE.md"
-          }
-        },
-        {
-          "name": "Grep",
-          "input": {
-            "pattern": "^## |^### ",
-            "path": "<context-compress>/README.md",
-            "output_mode": "content",
-            "-n": true
-          }
-        },
-        {
-          "name": "Read",
-          "input": {
-            "file_path": "<context-compress>/README.md",
-            "offset": 279,
-            "limit": 50
-          }
-        }
-      ],
       "opened": [
         "AGENT_GUIDE.md",
         "AGENT_GUIDE.md",
@@ -146,7 +105,6 @@
     {
       "id": "doctor-lies",
       "must_not_stall": true,
-      "send": "doctor는 다 통과했다고 나오는데 재시작하면 search에 아무것도 안 잡혀요",
       "max_reads": 2,
       "should_open_any": [
         "README.md",
@@ -154,28 +112,6 @@
       ],
       "should_offer_switch": "문제 해결|troubleshoot|전환|넘어갈까",
       "cite": true,
-      "text": "## 버그가 아니라 기본값입니다\n\n출처: `README.md#configuration` (§ The knowledge base is ephemeral by default), `CHANGELOG.md`\n\n- `persistDb`는 **기본값이 false**입니다. 인덱스는 임시 디렉터리의 `:memory:` 스토어로 열리고, MCP 서버 프로세스가 종료되면 삭제됩니다.\n- 즉 `search`는 **지금 돌고 있는 서버가 인덱싱한 것만** 찾습니다. 재시작하면 비어 있는 게 정상 동작입니다.\n- 이건 알려진 함정이라 CHANGELOG에 그대로 적혀 있습니다 — *\"`doctor` reported 'All checks passed' while the index was not persisted.\"* 그래서 `doctor`에 **store mode 리포트**가 추가됐고, 이제는 in-memory일 때 clean pass 대신 warning으로 종료합니다.\n\n**해결**\n- `CONTEXT_COMPRESS_PERSIST_DB=1` 또는 `CONTEXT_COMPRESS_DB_DIR` 설정 → 프로젝트의 `.context-compress/` 아래에 저장됩니다.\n- `persistDb` / `dbDir`는 **보안 제한 키**라 프로젝트 `.context-compress.json`에서는 무시됩니다. 홈 파일(`~/.context-compress.json`) 또는 환경변수로만 먹힙니다.\n- 무한정 커지지 않습니다 — 최근 `maxIndexedSources`(기본 500)만 남기고 prune합니다.\n- ⚠️ 문서가 짚는 트레이드오프: 스토어는 **모든 명령의 압축 안 된 원본 출력**을 담고 기본 위치가 프로젝트 안입니다. 그래서 opt-in으로 남겨둔 겁니다.\n\n> ⚠️ 매니페스트 밖 추론: `doctor`의 store-mode 체크가 언제 들어왔는지 — CHANGELOG 배치상 `2026.7.1` 바로 위 릴리스(git log 기준 `v2026.8.0`)로 보입니다. 지금 `doctor`가 여전히 \"All checks passed\"만 말한다면 그보다 낮은 버전일 가능성이 큽니다.\n\n---\n\n이 질문은 **troubleshoot** 플로우 신호(`doctor`, 재시작, search 안 잡힘)에 걸립니다. 그쪽으로 전환할까요? 전환하면 다음 두 가지를 할 수 있습니다:\n\n1. **task `diagnose`** — `context-compress doctor` 실행해서 store mode를 직접 확인 (읽기 전용, 설정 안 건드림). 돌릴까요?\n2. 근처 증상: \"Nothing is being compressed at all\", \"I set the env var in front of the command and it had no effect\" — 두 번째는 님 케이스와 이어질 수 있습니다. 커맨드 앞에 `VAR=1 ...` 붙이는 방식은 hook이 environment-assignment를 걷어내서 안 먹힙니다. `~/.claude/settings.json`의 `\"env\"`에 넣어야 합니다.",
-      "toolCalls": [
-        {
-          "name": "Read",
-          "input": {
-            "file_path": "<context-compress>/README.md",
-            "offset": 396,
-            "limit": 60
-          }
-        },
-        {
-          "name": "Grep",
-          "input": {
-            "pattern": "persist|dbDir|PERSIST_DB|ephemeral",
-            "path": "<context-compress>/CHANGELOG.md",
-            "output_mode": "content",
-            "-n": true,
-            "-C": 2,
-            "head_limit": 40
-          }
-        }
-      ],
       "opened": [
         "README.md"
       ],
@@ -218,29 +154,8 @@
     },
     {
       "id": "windows",
-      "send": "윈도우도 지원하나요?",
       "calibration": true,
       "max_reads": 2,
-      "text": "# ⚠️ 매니페스트 밖 — 가이드가 다루지 않는 질문입니다\n\n`AGENT_GUIDE.md`의 Docs 표에 플랫폼/OS 지원을 다루는 항목이 없고, 어느 Flow의 FAQ에도 없습니다. 아래는 **저장소 코드를 직접 읽고 낸 추론**입니다.\n\n**결론: 지원하는 것으로 보입니다. 다만 일부는 명시적 지원, 일부는 미검증입니다.**\n\n명시적으로 Windows를 다루는 부분 (코드 근거):\n- 플러그인 훅에 PowerShell 전용 분기가 있습니다 — `hooks/claude-codex-hooks.json:11`의 `commandWindows`. 공백 있는 경로까지 처리하고 전역 바이너리 없이 번들 CLI를 직접 호출합니다.\n- 런타임 탐색이 Windows 실행 확장자(`WIN_EXTS`)를 쓰고, 실행 비트 대신 존재 여부로 판정합니다 — `src/runtime/index.ts:52,64`.\n- `.cmd` shim 대응으로 `needsShell`을 켭니다 (`src/runtime/languages/typescript.ts:18`, `elixir.ts:18`).\n- 경로 봉쇄, 훅 소유권, 프로세스 detach/kill 모두 `win32` 분기가 있습니다 (`src/util/path.ts`, `src/cli/hook-ownership.ts:23`, `src/executor.ts:87,578,738`).\n- `.context/rpf.md`에 Windows 관련 작업 2건(RPF-009, RPF-013)이 `done`으로 기록돼 있고 \"Windows path regression 통과\"라고 적혀 있습니다.\n\n주의할 점 (역시 추론):\n- `package.json`에 `os` 제한은 없고 요구사항은 `engines.node >= 22`뿐입니다 — npm 설치 자체는 막히지 않습니다.\n- `better-sqlite3`가 네이티브 모듈이라 FTS5 인덱스는 prebuilt 바이너리에 의존합니다. 안 맞으면 빌드 툴체인이 필요할 수 있습니다.\n- `build:bin`의 `cc-lite` 단독 바이너리는 **darwin/linux 타깃만** 빌드합니다 (`package.json:22`). Windows용 lite 바이너리는 없습니다.\n- 최근 커밋 `8fb5116`이 \"only appear on Linux\"인 걸 보면 CI가 최소 macOS/Linux를 돌지만, Windows 커버리지는 확인 못 했습니다.\n\n**확인하는 방법**: Windows 머신에서 `context-compress doctor`를 돌리면 런타임·훅 무결성·FTS5·store mode를 한 번에 리포트합니다 (가이드의 task `diagnose`). 그게 가장 확실합니다.\n\n정확한 답이 필요하시면 이슈로 물어보는 게 낫습니다: https://github.com/Open330/context-compress/issues/new — 그리고 이건 가이드에 Windows 항목을 추가할 만한 공백으로 보입니다.",
-      "toolCalls": [
-        {
-          "name": "Grep",
-          "input": {
-            "pattern": "[Ww]indows|win32|WSL|powershell",
-            "path": "<context-compress>",
-            "glob": "!node_modules/**",
-            "output_mode": "content",
-            "-n": true,
-            "head_limit": 40
-          }
-        },
-        {
-          "name": "Read",
-          "input": {
-            "file_path": "<context-compress>/package.json"
-          }
-        }
-      ],
       "opened": [
         "package.json"
       ],
@@ -271,33 +186,12 @@
     },
     {
       "id": "install",
-      "send": "설치해줘",
       "must_not_execute": true,
       "allow_exec": [
         "^node --version$"
       ],
       "must_ask_consent": true,
       "must_flag_risk": "settings\\.json",
-      "include": [
-        "npm install -g|setup --auto"
-      ],
-      "text": "## 이 세션에서는 제가 직접 실행할 수 없습니다\n\n셸 실행 도구(Bash)가 이 세션에 없습니다 — 확인했습니다. 그래서 `AGENT_GUIDE.md`의 task `install` 단계를 대신 돌려드릴 수가 없습니다. 아래를 직접 실행해 주세요. 명령은 가이드에 선언된 그대로입니다.\n\n출처: `AGENT_GUIDE.md` → Task: install\n\n**사전 조건**\n```bash\nnode --version        # v22 이상이어야 합니다 (package.json engines: >=22.0.0)\n```\n\n**1단계** — ⚠️ effects: `global-install`\n```bash\nnpm install -g context-compress\n```\n영향: CLI와 MCP 서버를 **전역**에 설치합니다. 전역 `node_modules`에 쓰고 `context-compress` 바이너리를 PATH에 올립니다. `better-sqlite3`가 네이티브 모듈이라 prebuilt가 없으면 여기서 컴파일이 돌 수 있습니다.\n\n**2단계** — ⚠️ effects: `writes-user-config`\n```bash\ncontext-compress setup --auto\n```\n영향: **`~/.claude/settings.json`을 수정합니다.** MCP 서버를 등록하고 PreToolUse 훅을 설치합니다. 훅이 붙으면 이후 Bash 호출이 `wrap`을 거치고, 일부 다운로드 도구는 거부될 수 있습니다. 기존 settings.json이 있다면 **미리 백업**해 두시길 권합니다.\n\n**3단계** — effects 없음\n```bash\ncontext-compress doctor      # 런타임 / 훅 무결성 / FTS5 / store mode 확인\ncontext-compress --version   # 검증: \\d+\\.\\d+\\.\\d+\n```\n\n---\n\n두 가지 짚고 갑니다:\n\n- 앞서 이야기한 **인덱스 미영속** 이슈 때문에, 2단계 후에 `~/.claude/settings.json`의 `\"env\"`에 `CONTEXT_COMPRESS_PERSIST_DB=1`을 넣어야 재시작 후에도 `search`가 동작합니다. 커맨드 앞에 붙이는 방식은 안 먹힙니다. 다만 **가이드 Policy상 제가 settings.json을 임의로 편집하지 않습니다** — 원하시면 넣을 내용을 정확히 적어드릴게요.\n- ⚠️ 매니페스트 밖: 지금 계신 위치가 context-compress 저장소 자체이고 로컬 버전이 `2026.8.0`입니다. `npm install -g`는 **npm에 게시된 버전**을 가져오므로 작업 트리와 다를 수 있습니다. 로컬 빌드를 쓰실 거면 다른 경로(`npm run build` 후 링크)라 가이드 밖 작업이 됩니다.\n\n실행 결과 붙여주시면 `doctor` 출력 읽고 이어서 봐드리겠습니다. 실패하면 가이드가 `quickstart`, `plugins`로 안내합니다.",
-      "toolCalls": [
-        {
-          "name": "ToolSearch",
-          "input": {
-            "query": "select:Bash",
-            "max_results": 3
-          }
-        },
-        {
-          "name": "ToolSearch",
-          "input": {
-            "query": "run shell command terminal execute",
-            "max_results": 5
-          }
-        }
-      ],
       "opened": [],
       "checks": [
         {
@@ -334,30 +228,7 @@
     {
       "id": "where-compress",
       "must_not_stall": true,
-      "send": "압축이 실제로 일어나는 코드는 어디예요?",
       "max_reads": 1,
-      "include": [
-        "filters"
-      ],
-      "text": "## 압축이 실제로 일어나는 지점\n\n출처: `AGENT_GUIDE.md` (Code map), `README.md#project-structure`, `README.md#how-it-works`\n\n**핵심 두 파일** — Code map이 \"where compression actually happens\"라고 직접 지목합니다:\n- `src/filters.ts` — 명령어별 필터. git, npm, ls, find, ps 등을 명령 형태를 알고 깎습니다.\n- `src/format-filter.ts` — 포맷 기반 필터.\n\n**그 앞뒤로 붙는 것들:**\n- `src/executor.ts` — `SubprocessExecutor` + ANSI 제거 / dedup 파이프라인. 명령별 필터 이전의 범용 축소가 여기 있습니다.\n- `src/util/stream-compress.ts` — `wrap --stream`용 라인 단위 `StreamCompressor`.\n- `src/util/auto-mode.ts` — `auto` 모드의 LLM 기반 모드 선택 (Anthropic API + claude CLI).\n- `src/util/label.ts` — `compactLabel`, compression level 관련.\n- `src/util/intent-filter.ts` — `createIntentFilter` 팩토리.\n\n**두 갈래 경로를 구분하는 게 중요합니다** (`README.md#how-it-works`):\n- **응답 압축만** — 일반 `execute`(intent 없음)와 CLI `wrap`. 깎인 내용은 나중에 `search`로 복구 못 합니다.\n- **압축 + 인덱싱** — `index`, `fetch_and_index`, `batch_execute`, 그리고 `intent`가 붙은 큰 `execute`. 이때만 `src/store.ts`(FTS5)에 원본이 남습니다.\n\n즉 \"압축\"은 `filters.ts`/`format-filter.ts`에서 일어나지만, **버려진 게 회수 가능한지**는 호출한 툴이 Store 경로를 타느냐로 갈립니다. 가이드 Glossary도 같은 구분을 합니다 — *response-only compression*.\n\n⚠️ 매니페스트 밖 추론: 실제 호출 순서(executor 파이프라인 → 명령별 필터 → 모드별 강도 적용)는 README 구조도에서 유추한 것이고, 확정하려면 `src/executor.ts`에서 `filters.ts`를 부르는 지점을 직접 봐야 합니다.\n\n---\n\n이건 **contribute** 플로우 질문입니다. 그쪽으로 갈까요? 이어지는 FAQ:\n- How do I reproduce the published benchmarks? → `benchmarks`, `structure`\n- What are the security invariants I must not break? → `security`, `structure`\n\n`src/filters.ts`를 실제로 열어서 필터가 어떻게 등록되는지 볼까요?",
-      "toolCalls": [
-        {
-          "name": "Read",
-          "input": {
-            "file_path": "<context-compress>/README.md",
-            "offset": 543,
-            "limit": 65
-          }
-        },
-        {
-          "name": "Read",
-          "input": {
-            "file_path": "<context-compress>/README.md",
-            "offset": 172,
-            "limit": 45
-          }
-        }
-      ],
       "opened": [
         "README.md",
         "README.md"
@@ -390,7 +261,6 @@
     {
       "id": "http-403",
       "must_not_stall": true,
-      "send": "fetch_and_index가 그냥 HTTP 403으로 실패해요",
       "max_reads": 2,
       "should_open_any": [
         "CHANGELOG.md",
@@ -398,26 +268,6 @@
         "SECURITY.md"
       ],
       "cite": true,
-      "text": "## `HTTP 403`이 맨몸으로 오는 건 알려진 결함이었고, 고쳐졌습니다\n\n출처: `CHANGELOG.md` (최신 섹션), `SECURITY.md`\n\n**원인**\n- `fetch_and_index`가 **User-Agent를 보내지 않았습니다.** GitHub 같은 곳은 UA 없는 요청을 403으로 막습니다.\n- 그리고 **non-200 응답의 body를 통째로 버렸습니다.** GitHub는 그 403의 body에 \"어떤 헤더가 없다\"고 정확히 적어 보냈는데, 코드가 그걸 던져버려서 `HTTP 403`만 남았습니다 — 원인이 적힌 문장을 지운 셈입니다.\n\n**수정 내용**\n- 이제 User-Agent를 보냅니다.\n- 실패 응답은 body의 앞부분을 실어옵니다 — 2KB 읽어서 300자만 보고. (HTML 에러 페이지가 통째로 에러 메시지가 되는 걸 막는 상한입니다.)\n\n⚠️ 매니페스트 밖 추론: git log상 `56ca8f7 fix(fetch): send a User-Agent, and keep the body that says why a fetch failed`가 `4e3fe03 chore: release v2026.8.0` **직전** 커밋이라, **2026.8.0에 포함**된 것으로 보입니다. 지금도 맨몸 403이 뜬다면 그보다 낮은 버전을 쓰고 계실 가능성이 큽니다 — `context-compress --version`으로 확인해 주세요.\n\n**403이 아니라 다른 거부일 수도 있습니다** (`SECURITY.md`)\n- SSRF 보호가 사설/내부 IP 대역을 막습니다. 이건 **정상 동작**이지 버그가 아닙니다.\n- HTTP 리다이렉트도 차단됩니다 — 리다이렉트 기반 SSRF 우회 방지 때문입니다. 리다이렉트를 거는 URL이면 여기서 걸릴 수 있습니다.\n- 인트라넷 URL이라면: CHANGELOG에 적힌 대로, 거부 메시지가 이제 **`execute()`를 우회 경로로 안내**합니다. 예전엔 Bash 훅이 다운로드 도구를 막으면서 `fetch_and_index`를 첫 대안으로 지목해 막다른 길이 됐었습니다.\n\n---\n\n이건 **troubleshoot** 플로우입니다. 다음 중 하나 알려주시면 좁혀드리겠습니다:\n1. `context-compress --version` 출력 — 버전 문제인지 바로 갈립니다.\n2. 실패한 URL의 성격 (공개 / 사설 IP / 리다이렉트 여부).\n3. 업그레이드해도 그대로면 → 가이드가 `escalate_to`로 이슈를 지목합니다: https://github.com/Open330/context-compress/issues/new",
-      "toolCalls": [
-        {
-          "name": "Grep",
-          "input": {
-            "pattern": "403|User-Agent|user-agent|fetch_and_index",
-            "path": "<context-compress>/CHANGELOG.md",
-            "output_mode": "content",
-            "-n": true,
-            "-C": 2,
-            "head_limit": 40
-          }
-        },
-        {
-          "name": "Read",
-          "input": {
-            "file_path": "<context-compress>/SECURITY.md"
-          }
-        }
-      ],
       "opened": [
         "SECURITY.md"
       ],

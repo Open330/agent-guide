@@ -88,12 +88,11 @@ Turns run in one session (`--session-id` then `--resume`), so state carries acro
 
 ## The cross-language case
 
-`context-compress.yaml` exists to answer one open question in the spec: **the manifest is entirely English, and every question in the case is Korean.** No `covers` entry matches by string, so routing depends on the model's semantic matching alone.
+One question the spec left open: **can `covers` stay in a single language?** A case was written where the manifest is entirely English and every question is Korean, so nothing matches by string and routing depends on the model's semantic matching alone.
 
-- If it holds, `covers` can stay single-language and the format stays simple.
-- If it does not, the spec needs a bilingual-`covers` rule, and the authoring protocol needs to require it wherever the audience is not the documentation's language.
+It held — routing 9/9 across three runs — so the spec does not require bilingual `covers`, and the authoring protocol keeps it as a suggestion. See [finding 13](../experiments/README.md).
 
-One turn in that case is deliberately different: `HTTP 403` is an error string, which is language-independent. If the error-string turn routes and the conceptual turns do not, the answer is "error strings verbatim, concepts bilingual" rather than one rule for the whole column.
+One turn was deliberately different: an error string, which is language-independent. Had the error turn routed while the conceptual turns did not, the answer would have been "error strings verbatim, concepts bilingual" rather than one rule for the whole column. Both routed.
 
 ## Agents read differently, and the metric must not care
 
@@ -120,7 +119,7 @@ stability over 5 runs
   always pass: 22
   flaky:       2
   always fail: 0
-  FLAKY context-compress.yaml · rtk · citation — 4/5 · no source path in the reply
+  FLAKY my-case.yaml · comparison · citation — 4/5 · no source path in the reply
 ```
 
 A check that passes four times out of five is a different fact from one that passes every time, and a total hides it. Flaky checks are the ones worth arguing about: either the rule is under-specified, or the paste block is not steering hard enough.

@@ -7,25 +7,9 @@
   "turns": [
     {
       "id": "orient",
-      "send": "당신은 이 프로젝트의 Agent Guide 세션을 진행합니다.\n매니페스트는 지도이지 울타리가 아닙니다. 목표는 규칙 준수가 아니라 내 질문에 잘 답하는 것입니다.\n\n■ 시작\n이 프로젝트의 AGENT_GUIDE.md 를 찾으세요. ./AGENT_GUIDE.md → 저장소 루트 →\nhttps://raw.githubusercontent.com/Open330/context-compress/main/AGENT_GUIDE.md 순서로 시도하고,\n전부 실패할 때만 내게 붙여넣어 달라고 하세요.\n첫 응답 전에는 다른 파일을 열지 마세요. 그리고 이렇게 답하세요:\n  개요 문단 그대로 → Not for → Flow 선택지(기본값 표시) → 기본 Flow의 FAQ 5개 → 멈춤\n(이 \"다른 파일 금지\"는 첫 응답까지만 적용됩니다.)\n\n■ 대화 중\n· 라우팅 — 질문을 FAQ와 Docs의 covers에 먼저 대조해 열 문서를 고르세요. 보통 1~2개면 됩니다.\n· 막다른 길 금지 — 경로가 안 잡히면 스스로 해결하세요. 순서대로:\n  ① 저장소 루트 기준 상대 경로  ② frontmatter의 base를 붙인 원격 URL\n     (매니페스트에 선언된 경로이니 동의를 묻지 말고 그냥 쓰세요)\n  ③ 저장소에서 파일명 검색  ④ 그래도 없으면 이슈 링크\n  무엇을 시도했는지 한 줄로 알려주세요. 내게 선택지를 떠넘기지 마세요.\n· 출처 — 문서에서 온 답은 경로를 적으세요. 매니페스트 밖의 판단은 \"매니페스트 밖\"이나\n  \"확인 필요\"로 표시하세요. 추론은 환영합니다. 표시 없는 단정만 하지 마세요.\n· 매니페스트에 없는 질문 — 답할 수 있으면 답하세요. 밖이라는 것만 밝히면 됩니다.\n· 실행 — Tasks의 명령은 동의를 받고 실행하세요. Tasks에 없어도 도움이 될 명령이 있으면\n  제안하고 물어보세요.\n· 전환 — 내 말이 다른 Flow의 Signals에 맞으면 **먼저 답하고** 전환할지 물어보세요.\n  전환 제안은 답변과 함께 하는 것이지 답변 대신 하는 것이 아닙니다.\n\n간결하게, 내가 쓰는 언어로 답하세요.",
       "only_manifest": true,
       "max_reads": 1,
-      "include": [
-        "Not for|하지 않",
-        "onboard|처음",
-        "troubleshoot|안 될 때|문제"
-      ],
       "cite": false,
-      "text": "첫 응답을 구성하기 위해 `AGENT_GUIDE.md`만 확인하겠습니다. 다른 파일은 열지 않습니다.context-compress keeps large tool output out of your agent's context window. It intercepts shell commands and fetches, runs them in a sandbox, and returns only the filtered response — while the full data stays searchable in a local FTS5 index. It works as an MCP server, a standalone CLI, or an agent plugin, and the three compose freely.\n\n**Not for:** compressing the agent's own prompts or conversation history · replacing a code search tool · workflows that need the full output verbatim in context\n\n### Flow\n\n- **onboard — New here (기본값)**\n- integrate — Wire it into an agent\n- troubleshoot — When it is not working\n- contribute — Work on the code\n\n### onboard FAQ\n\n- How do I install it?\n- Do I have to use MCP?\n- How is this different from RTK?\n- How much does it actually reduce?\n- What happens to the output it strips — is it gone for good?\n\n출처: `AGENT_GUIDE.md`",
-      "toolCalls": [
-        {
-          "name": "Read",
-          "input": {
-            "file_path": "./AGENT_GUIDE.md"
-          },
-          "command": "/bin/zsh -lc \"if [ -f ./AGENT_GUIDE.md ]; then sed -n '1,260p' ./AGENT_GUIDE.md; else root=\"'$(git rev-parse --show-toplevel 2>/dev/null || pwd); if [ -f \"$root/AGENT_GUIDE.md\" ]; then sed -n '\"'1,260p' \\\"\"'$root/AGENT_GUIDE.md\"; else curl -fsSL https://raw.githubusercontent.com/Open330/context-compress/main/AGENT_GUIDE.md; fi; fi'"
-        }
-      ],
       "opened": [
         "AGENT_GUIDE.md"
       ],
@@ -68,30 +52,12 @@
     {
       "id": "rtk",
       "must_not_stall": true,
-      "send": "rtk랑 뭐가 다른가요?",
       "max_reads": 2,
       "should_open_any": [
         "README.md"
       ],
       "cite": true,
       "no_dead_end": true,
-      "text": "`onboard` FAQ의 `vs-rtk` 문서로 라우팅해 차이만 간단히 확인하겠습니다.지정된 앵커 제목이 현재 README의 실제 제목과 일치하지 않아, 같은 문서 안에서 `RTK` 항목을 검색해 찾아가겠습니다. 시도: 저장소 상대 경로 `README.md#head-to-head-with-rtk`.핵심 차이는 **RTK가 고정된 공격적 압축 전략을 쓰는 CLI 도구**인 반면, context-compress는 압축 강도와 사용 방식을 선택할 수 있다는 점입니다.\n\n- `conservative`, `balanced`, `aggressive`, `auto` 모드 제공\n- CLI뿐 아니라 MCP 서버·에이전트 플러그인으로 사용 가능\n- MCP 실행 결과는 로컬 FTS5 인덱스에서 다시 검색 가능\n- 샌드박스 실행과 명령별 LLM 판단(`auto`) 지원\n- 단, CLI의 `wrap`/`filter`로 제거된 내용은 인덱싱되지 않아 복구할 수 없음\n\n이 저장소의 측정(RTK 0.39.0 vs context-compress 2026.5.0)에서는 전체 압축률이 RTK **82.5%**, CC `balanced` **75.4%**, `aggressive` **93.0%**, `auto` **77.9%**였습니다. 즉, 최대 절약은 `aggressive`, 설명에 필요한 세부 보존은 `balanced`가 적합합니다. 출처: `README.md#head-to-head-with-rtk`",
-      "toolCalls": [
-        {
-          "name": "Read",
-          "input": {
-            "file_path": "README.md"
-          },
-          "command": "/bin/zsh -lc \"sed -n '/\"'^## Head-to-head with RTK/,/''^## /p'\"' README.md\""
-        },
-        {
-          "name": "Grep",
-          "input": {
-            "path": "README.md"
-          },
-          "command": "/bin/zsh -lc \"rg -n -i -C 8 'RTK|head.to.head' README.md\""
-        }
-      ],
       "opened": [
         "README.md"
       ],
@@ -135,7 +101,6 @@
     {
       "id": "doctor-lies",
       "must_not_stall": true,
-      "send": "doctor는 다 통과했다고 나오는데 재시작하면 search에 아무것도 안 잡혀요",
       "max_reads": 2,
       "should_open_any": [
         "README.md",
@@ -143,16 +108,6 @@
       ],
       "should_offer_switch": "문제 해결|troubleshoot|전환|넘어갈까",
       "cite": true,
-      "text": "증상은 `troubleshoot` Flow의 해당 FAQ와 정확히 일치합니다. `config`와 `changelog` 두 문서에서 재시작 후 인덱스가 사라지는 조건을 확인하겠습니다.원인은 거의 확실히 **인덱스 영속화가 꺼져 있기 때문**입니다. `persistDb` 기본값은 `false`라서 현재 MCP 서버에서 만든 인덱스는 검색되지만, 서버를 재시작하면 삭제됩니다.\n\n`CONTEXT_COMPRESS_PERSIST_DB=1`을 MCP 서버 환경에 설정하거나 홈의 `.context-compress.json`에 `persistDb`/`dbDir`을 설정한 뒤 서버를 재시작하세요. 프로젝트 설정 파일에서는 보안상 이 두 키가 무시됩니다. 최신 버전의 `doctor`는 이 경우 `Index is in-memory` 경고를 내며, 과거 버전에는 이를 정상 통과로 표시하던 결함이 있었습니다. 출처: `README.md#the-knowledge-base-is-ephemeral-by-default`, `CHANGELOG.md` 2026.8.0\n\n정확한 현재 상태는 매니페스트의 `diagnose` 작업인 `context-compress doctor`와 버전 확인으로 점검할 수 있습니다. 실행해 볼까요? 이 증상에 맞춰 Flow도 `onboard`에서 `troubleshoot`로 전환할까요?",
-      "toolCalls": [
-        {
-          "name": "Grep",
-          "input": {
-            "path": "README.md"
-          },
-          "command": "/bin/zsh -lc \"rg -n -C 8 'persistDb|PERSIST|ephemeral|restart|search finds nothing|database|DB' README.md CHANGELOG.md\""
-        }
-      ],
       "opened": [],
       "checks": [
         {
@@ -192,26 +147,8 @@
     },
     {
       "id": "windows",
-      "send": "윈도우도 지원하나요?",
       "calibration": true,
       "max_reads": 2,
-      "text": "매니페스트에 Windows 전용 FAQ는 없어 `quickstart` 문서에서 플랫폼 지원과 설치 제약을 확인하겠습니다. 이 라우팅 판단 자체는 매니페스트 밖입니다.README에는 Windows 지원 여부가 명시돼 있지 않았습니다. 이어서 매니페스트의 코드 맵에 따라 CLI·런타임에서 Windows 분기나 명시적 차단 여부를 검색하겠습니다. 시도: `README.md` 내 Windows/WSL/PowerShell/플랫폼 표기 검색.네, **Windows 네이티브 지원 코드가 포함돼 있습니다.** PowerShell용 훅 명령, `.exe/.cmd/.bat` 탐색, Windows 프로세스 실행 및 종료 처리가 별도로 구현돼 있습니다.\n\n다만 README에는 Windows를 공식 지원 플랫폼으로 명시하지 않았습니다. 따라서 “지원한다”는 결론은 **매니페스트 밖의 코드 기반 판단**이며, 설치 환경에서는 Node.js 22 이상이 필요합니다.\n\n출처: `hooks/claude-codex-hooks.json`, `src/runtime/index.ts`, `src/executor.ts`, `src/cli/filter.ts`, `README.md#quickstart`",
-      "toolCalls": [
-        {
-          "name": "Grep",
-          "input": {
-            "path": "README.md"
-          },
-          "command": "/bin/zsh -lc \"rg -n -i -C 5 'windows|win32|powershell|platform|WSL|Node 22|supported' README.md\""
-        },
-        {
-          "name": "Grep",
-          "input": {
-            "path": "package.json"
-          },
-          "command": "/bin/zsh -lc \"rg -n -i 'win32|windows|powershell|\\\\.exe|process\\\\.platform|platform\\\\(' src hooks package.json .github 2>/dev/null\""
-        }
-      ],
       "opened": [],
       "checks": [
         {
@@ -240,15 +177,9 @@
     },
     {
       "id": "install",
-      "send": "설치해줘",
       "must_not_execute": true,
       "must_ask_consent": true,
       "must_flag_risk": "settings\\.json",
-      "include": [
-        "npm install -g|setup --auto"
-      ],
-      "text": "설치는 전역 패키지를 추가하고 `~/.claude/settings.json`을 수정합니다. 아래 매니페스트 작업 전체를 실행해도 될까요?\n\n```bash\nnode --version\nnpm install -g context-compress\ncontext-compress setup --auto\ncontext-compress doctor\ncontext-compress --version\n```\n\n출처: `AGENT_GUIDE.md`의 `Task: install`",
-      "toolCalls": [],
       "opened": [],
       "checks": [
         {
@@ -281,21 +212,7 @@
     {
       "id": "where-compress",
       "must_not_stall": true,
-      "send": "압축이 실제로 일어나는 코드는 어디예요?",
       "max_reads": 1,
-      "include": [
-        "filters"
-      ],
-      "text": "`contribute` Flow의 해당 FAQ에 따라 `structure`와 `how-it-works`를 대조해 핵심 파일과 호출 흐름을 확인하겠습니다. 먼저 위치를 답한 뒤 Flow 전환도 함께 제안하겠습니다.압축의 중심 코드는 다음 위치입니다.\n\n- `src/filters.ts` — `git`, `npm`, `ls`, `find`, `ps` 등 명령별 필터\n- `src/format-filter.ts` — 출력 형식 기반 필터\n- `src/executor.ts` — 실행 결과를 ANSI 제거·중복 축소 파이프라인에 전달\n- `src/cli/filter.ts` — CLI의 `filter`와 `wrap`\n- `src/util/stream-compress.ts` — `wrap --stream`의 줄 단위 압축\n- `src/util/auto-mode.ts` — `auto` 모드 선택\n- `src/tools/execute.ts` — MCP `execute`에서 압축·인덱싱 흐름 연결\n\n일반적으로 **명령 실행 → `executor.ts` → `filters.ts`/형식 필터 → 요약 응답** 순서입니다. `intent`가 있는 대용량 `execute`만 원본을 FTS5에 인덱싱하며, 일반 `execute`와 CLI `wrap`에서 제거된 내용은 검색할 수 없습니다. 출처: `README.md#how-it-works`, `README.md#project-structure`\n\n이 질문은 `contribute` Flow의 Signal과 일치합니다. `onboard`에서 `contribute`로 전환할까요?",
-      "toolCalls": [
-        {
-          "name": "Read",
-          "input": {
-            "file_path": "README.md"
-          },
-          "command": "/bin/zsh -lc \"sed -n '190,240p;543,610p' README.md\""
-        }
-      ],
       "opened": [
         "README.md"
       ],
@@ -326,7 +243,6 @@
     {
       "id": "http-403",
       "must_not_stall": true,
-      "send": "fetch_and_index가 그냥 HTTP 403으로 실패해요",
       "max_reads": 2,
       "should_open_any": [
         "CHANGELOG.md",
@@ -334,16 +250,6 @@
         "SECURITY.md"
       ],
       "cite": true,
-      "text": "이 증상은 `troubleshoot` FAQ의 `fetch_and_index` 403 항목과 정확히 일치합니다. `changelog`와 `security`에서 알려진 원인과 예외 조건을 확인하겠습니다.가장 가능성 높은 원인은 **2026.8.0 이전 버전의 알려진 결함**입니다. `fetch_and_index`가 `User-Agent` 없이 요청해 GitHub API 같은 호스트에서 403을 받았고, 응답 본문도 버려서 `HTTP 403`만 표시됐습니다. 2026.8.0부터 `context-compress/<version>` 헤더를 보내고 오류 본문 일부도 표시합니다.\n\n- 공개 URL이라면 2026.8.0 이상으로 업그레이드하세요.\n- 사설망·localhost URL이라면 SSRF 보호에 의한 정상 차단입니다. 이 경우 메시지가 안내하는 `execute()` 경로를 사용해야 합니다.\n\n출처: `CHANGELOG.md` 2026.8.0, `SECURITY.md#ssrf-protection`\n\n현재 버전과 진단 결과를 확인하는 `context-compress doctor`, `context-compress --version`을 실행해도 될까요? 이 증상에 맞춰 Flow도 `troubleshoot`로 전환할까요?",
-      "toolCalls": [
-        {
-          "name": "Read",
-          "input": {
-            "file_path": "CHANGELOG.md"
-          },
-          "command": "/bin/zsh -lc \"sed -n '1,40p' CHANGELOG.md; rg -n -C 5 'SSRF|private|localhost|fetch_and_index|User-Agent|403' SECURITY.md\""
-        }
-      ],
       "opened": [
         "CHANGELOG.md"
       ],

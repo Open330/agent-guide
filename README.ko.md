@@ -50,17 +50,17 @@ npx @open330/agent-guide prompt --inline  # 내 README에 넣을 붙여넣기 �
 
 독자는 블록 하나를 자기 에이전트에 붙여넣습니다. README를 훑는 대신 대화를 합니다.
 
-> **🤖** context-compress는 큰 툴 출력이 에이전트의 컨텍스트 창에 들어가는 것을 막습니다. 셸 명령을 가로채 샌드박스에서 실행하고 필터된 응답만 돌려주며, 전체 데이터는 로컬 FTS5 인덱스에 검색 가능한 상태로 남습니다.
+> **🤖** foo는 팀이 LLM 프롬프트를 Git으로 버전 관리하고, 배포 전에 회귀 평가를 자동으로 돌리게 해주는 CLI입니다. 프롬프트 변경이 기존 케이스를 깨뜨리면 배포를 막습니다.
 >
-> **이건 하지 않습니다:** 에이전트 자신의 대화 이력 압축 · 코드 검색 도구 대체
+> **이건 하지 않습니다:** 프로덕션 트래픽 라우팅 · 모델 파인튜닝 · 프롬프트 자동 생성
 >
-> 무엇을 하시겠어요? — **onboard**(기본) · integrate · troubleshoot · contribute
+> 무엇을 하시겠어요? — **onboard**(기본) · integrate · upgrade · troubleshoot
 >
-> 자주 나오는 질문: 어떻게 설치하나요? · MCP를 꼭 써야 하나요? · RTK와 뭐가 다른가요? …
+> 자주 나오는 질문: 어떻게 설치하나요? · 다른 것과 뭐가 다른가요? · 셀프호스팅이 되나요? …
 
-> **🧑** doctor는 다 통과했다는데 재시작하면 search에 아무것도 안 잡혀요
+> **🧑** doctor는 다 통과했다는데 재시작하면 인덱스가 비어 있어요
 >
-> **🤖** 버그가 아니라 기본값입니다 — `persistDb`가 false라 인덱스가 메모리로 열리고 서버가 종료되면 사라집니다. `CONTEXT_COMPRESS_PERSIST_DB=1`을 설정하세요. `[출처: README.md#configuration, CHANGELOG.md]`
+> **🤖** 버그가 아니라 기본값입니다 — 따로 켜지 않으면 저장소가 메모리로 열려서 프로세스가 끝나면 사라집니다. `[출처: README.md#configuration, CHANGELOG.md]`
 >
 > 이건 **troubleshoot** flow에 해당합니다 — 전환할까요? 끝나면 원래 자리로 돌아옵니다.
 
@@ -212,7 +212,7 @@ CI에 넣을 것은 `validate`입니다. 저작 프로토콜이 사람에게 손
 | **Guided** | Core + `## Policy` · `## Code map` · flow 2개 이상 |
 | **Interactive** | Guided + `Signals:`로 flow 전환 · 실행 가능한 `verify`가 있는 `## Tasks` |
 
-이 저장소 자신의 매니페스트는 Interactive가 아니라 **Guided**입니다. `## Tasks`가 없는데, 규격 문서를 상대로 돌릴 수 있는 `verify` 명령이 없기 때문이고 [저작 프로토콜](.context/architecture/authoring-protocol.md)이 그걸 지어내는 것을 금지하기 때문입니다. **우리도 우리 규칙의 예외가 아닙니다.**
+이 저장소의 매니페스트는 **저장소가 규격 문서뿐이던 동안 Guided에 머물렀습니다.** 산문을 상대로 돌릴 `verify` 명령이 없었고, [저작 프로토콜](.context/architecture/authoring-protocol.md)이 그걸 지어내는 것을 금지하기 때문입니다. CLI를 배포하면서 실제로 확인할 명령이 생겼고, 지금은 **Interactive**입니다. **수준은 주장하는 게 아니라 계산되는 값이라, 저장소가 움직이자 같이 움직였습니다.**
 
 ---
 

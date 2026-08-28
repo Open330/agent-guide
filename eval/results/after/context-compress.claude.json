@@ -7,24 +7,9 @@
   "turns": [
     {
       "id": "orient",
-      "send": "당신은 이 프로젝트의 Agent Guide 세션을 진행합니다.\n매니페스트는 지도이지 울타리가 아닙니다. 목표는 규칙 준수가 아니라 내 질문에 잘 답하는 것입니다.\n\n■ 시작\n이 프로젝트의 AGENT_GUIDE.md 를 찾으세요. ./AGENT_GUIDE.md → 저장소 루트 →\nhttps://raw.githubusercontent.com/Open330/context-compress/main/AGENT_GUIDE.md 순서로 시도하고,\n전부 실패할 때만 내게 붙여넣어 달라고 하세요.\n첫 응답 전에는 다른 파일을 열지 마세요. 그리고 이렇게 답하세요:\n  개요 문단 그대로 → Not for → Flow 선택지(기본값 표시) → 기본 Flow의 FAQ 5개 → 멈춤\n(이 \"다른 파일 금지\"는 첫 응답까지만 적용됩니다.)\n\n■ 대화 중\n· 라우팅 — 질문을 FAQ와 Docs의 covers에 먼저 대조해 열 문서를 고르세요. 보통 1~2개면 됩니다.\n· 막다른 길 금지 — 경로가 안 잡히면 스스로 해결하세요. 순서대로:\n  ① 저장소 루트 기준 상대 경로  ② frontmatter의 base를 붙인 원격 URL\n     (매니페스트에 선언된 경로이니 동의를 묻지 말고 그냥 쓰세요)\n  ③ 저장소에서 파일명 검색  ④ 그래도 없으면 이슈 링크\n  무엇을 시도했는지 한 줄로 알려주세요. 내게 선택지를 떠넘기지 마세요.\n· 출처 — 문서에서 온 답은 경로를 적으세요. 매니페스트 밖의 판단은 \"매니페스트 밖\"이나\n  \"확인 필요\"로 표시하세요. 추론은 환영합니다. 표시 없는 단정만 하지 마세요.\n· 매니페스트에 없는 질문 — 답할 수 있으면 답하세요. 밖이라는 것만 밝히면 됩니다.\n· 실행 — Tasks의 명령은 동의를 받고 실행하세요. Tasks에 없어도 도움이 될 명령이 있으면\n  제안하고 물어보세요.\n· 전환 — 내 말이 다른 Flow의 Signals에 맞으면 **먼저 답하고** 전환할지 물어보세요.\n  전환 제안은 답변과 함께 하는 것이지 답변 대신 하는 것이 아닙니다.\n\n간결하게, 내가 쓰는 언어로 답하세요.",
       "only_manifest": true,
       "max_reads": 1,
-      "include": [
-        "Not for|하지 않",
-        "onboard|처음",
-        "troubleshoot|안 될 때|문제"
-      ],
       "cite": false,
-      "text": "I'll look for the guide.`./AGENT_GUIDE.md` 를 찾았습니다.\n\n## context-compress — Agent Guide\n\n> context-compress keeps large tool output out of your agent's context window. It intercepts shell commands and fetches, runs them in a sandbox, and returns only the filtered response — while the full data stays searchable in a local FTS5 index. It works as an MCP server, a standalone CLI, or an agent plugin, and the three compose freely.\n\n**Not for:** 에이전트 자신의 프롬프트나 대화 기록 압축 · 코드 검색 도구 대체 · 전체 출력이 컨텍스트에 그대로 있어야 하는 워크플로\n\n## Flow 선택\n\n| Flow | 언제 |\n| --- | --- |\n| **onboard** (기본) | 처음 왔다 — 내 셋업에 맞는지 판단하고, 맞으면 설치·검증까지 |\n| integrate | 에이전트에 배선 — 훅과 MCP 서버를 살리고 확인 |\n| troubleshoot | 안 될 때 — 증상에서 문서까지 한 번에 |\n| contribute | 코드 작업 — 변경을 얹을 만큼 구조 파악 |\n\n## onboard FAQ\n\n1. 어떻게 설치하나요? → `quickstart` → task `install`\n2. MCP를 꼭 써야 하나요? → `cli`, `plugins`\n3. RTK와 뭐가 다른가요? → `vs-rtk`\n4. 실제로 얼마나 줄어드나요? → `benchmarks`, `modes`\n5. 걸러낸 출력은 영영 사라지나요? → `how-it-works`, `cli`\n\n(하나 더 있습니다: \"어떤 mode를 써야 하나요?\" → `modes`)\n\n여기서 멈춥니다. 어느 것부터 볼까요?",
-      "toolCalls": [
-        {
-          "name": "Read",
-          "input": {
-            "file_path": "<context-compress>/AGENT_GUIDE.md"
-          }
-        }
-      ],
       "opened": [
         "AGENT_GUIDE.md"
       ],
@@ -67,33 +52,12 @@
     {
       "id": "rtk",
       "must_not_stall": true,
-      "send": "rtk랑 뭐가 다른가요?",
       "max_reads": 2,
       "should_open_any": [
         "README.md"
       ],
       "cite": true,
       "no_dead_end": true,
-      "text": "핵심 차이는 **전략이 하나냐 고를 수 있냐**입니다. (`README.md#head-to-head-with-rtk`)\n\n- **RTK**: 고정된 압축 전략 하나. context-compress의 `aggressive`에 해당합니다.\n- **context-compress**: 4개 모드(`conservative`/`balanced`/`aggressive`/`auto`)를 에이전트가 상황에 맞게 선택. \"뭐가 바뀌었나\" 질문엔 `aggressive`, \"왜 그런가\" 질문엔 `balanced`.\n- **버린 데이터의 행방**: context-compress는 전체 출력을 로컬 FTS5 인덱스에 남겨 `search`로 되찾을 수 있습니다. (단, CLI의 `wrap`/`filter`는 인덱싱하지 않는 \"response-only compression\"입니다 — Glossary)\n\n같은 저장소에서 잰 수치 (RTK 0.39.0 vs CC 2026.5.0, 바이트 가중 전체):\n\n| | Raw | RTK | `balanced` | `aggressive` | `auto` |\n|:--|--:|--:|--:|--:|--:|\n| 전체 | 85.9 KB | 82.5% | 75.4% | **93.0%** | 77.9% |\n\n- `aggressive`가 RTK를 10.5pp 앞섭니다.\n- `balanced`는 메타데이터(커밋 헤더, 파일 권한/날짜, 테스트 실패 상세)를 하나도 안 버리고 75% — RTK보다 7pp 낮지만 **다른 트레이드오프**입니다.\n- `ls src/` 같은 작은 출력에서 RTK는 오히려 54% 커집니다. `auto`는 그런 경우 `conservative`를 골라 손대지 않습니다.\n\n주의할 점 하나: 표의 `npm test` 행은 `node --test` 출력 기준입니다. Jest/Vitest는 `PASS`/`FAIL` 배지를 한 칸 들여쓰는데, v2026.7.2 전까지는 그 형태가 전혀 압축되지 않았습니다. — 다음으로 \"실제로 얼마나 줄어드나요?\"(`benchmarks`, `modes`)로 넘어갈까요?",
-      "toolCalls": [
-        {
-          "name": "Grep",
-          "input": {
-            "pattern": "^#{1,4} .*[Rr][Tt][Kk]",
-            "path": "<context-compress>/README.md",
-            "output_mode": "content",
-            "-n": true
-          }
-        },
-        {
-          "name": "Read",
-          "input": {
-            "file_path": "<context-compress>/README.md",
-            "offset": 270,
-            "limit": 70
-          }
-        }
-      ],
       "opened": [
         "README.md"
       ],
@@ -137,7 +101,6 @@
     {
       "id": "doctor-lies",
       "must_not_stall": true,
-      "send": "doctor는 다 통과했다고 나오는데 재시작하면 search에 아무것도 안 잡혀요",
       "max_reads": 2,
       "should_open_any": [
         "README.md",
@@ -145,30 +108,6 @@
       ],
       "should_offer_switch": "문제 해결|troubleshoot|전환|넘어갈까",
       "cite": true,
-      "text": "정상 동작입니다. 버그가 아니라 기본값이에요. (`README.md#configuration`)\n\n- `persistDb`는 **기본 false**. 데이터베이스가 비공개 임시 디렉터리에 열리고 MCP 서버가 종료되면 삭제됩니다. 인덱싱한 내용은 그 서버 프로세스가 사는 동안만 검색됩니다.\n- 켜는 법: `CONTEXT_COMPRESS_PERSIST_DB=1` (또는 `dbDir`). 프로젝트의 `.context-compress/` 아래에 저장되고, 최근 `maxIndexedSources`(기본 500)개만 남기고 오래된 것은 정리합니다.\n- **중요** — 이 변수를 명령어 앞에 붙이면 안 먹습니다. 환경 할당 스킵이 플래그를 읽기 전에 제거해버립니다. `~/.claude/settings.json` 의 `\"env\"` 에 넣으세요. (`CHANGELOG.md`)\n\n그리고 `doctor`가 \"All checks passed\"로 나온 것 자체가 단서입니다. v2026.8.0에서 정확히 이 문제가 고쳐졌습니다 — 그 전 `doctor`는 스토어가 `:memory:`인데도 깨끗한 통과를 보고했습니다. 지금 버전에서는 이렇게 나와야 정상입니다:\n\n```\n[WARN] Index is in-memory — search() cannot reach anything indexed\n       before this process started ...\n```\n\n경고 없이 전부 통과로 뜬다면 v2026.8.0 미만일 가능성이 높습니다. (`CHANGELOG.md` 기반 추론 — 버전 확인 필요) 같은 릴리스에서 `dbDir`가 쓰기 불가일 때 조용히 `:memory:`로 폴백하던 것도 이제 경고합니다.\n\n---\n\nTask `diagnose` 를 돌려 지금 스토어 모드와 버전을 확인할까요? 두 줄입니다:\n\n```bash\ncontext-compress doctor\ncontext-compress --version\n```\n\n그리고 지금 질문은 **troubleshoot** Flow의 Signals(`doctor`)에 걸립니다. 그쪽으로 전환할까요?",
-      "toolCalls": [
-        {
-          "name": "Grep",
-          "input": {
-            "pattern": "persistDb|CONTEXT_COMPRESS_PERSIST|dbDir|CONTEXT_COMPRESS_DB_DIR",
-            "path": "<context-compress>/README.md",
-            "output_mode": "content",
-            "-n": true,
-            "-C": 4
-          }
-        },
-        {
-          "name": "Grep",
-          "input": {
-            "pattern": "persist|ephemeral|in-memory|restart|dbDir",
-            "path": "<context-compress>/CHANGELOG.md",
-            "output_mode": "content",
-            "-n": true,
-            "-i": true,
-            "-C": 3
-          }
-        }
-      ],
       "opened": [],
       "checks": [
         {
@@ -209,32 +148,8 @@
     },
     {
       "id": "windows",
-      "send": "윈도우도 지원하나요?",
       "calibration": true,
       "max_reads": 2,
-      "text": "**매니페스트 밖입니다** — Docs 표의 어떤 covers에도 Windows가 없고, README에 지원 플랫폼 절이 없습니다. 코드와 CI를 직접 봐서 답합니다.\n\n**코드는 Windows를 의도적으로 다룹니다:**\n- `src/runtime/index.ts:52,64` — 실행 파일 탐색에 `.exe`/`.cmd` 확장자를 쓰고, 실행 비트 대신 존재 여부만 검사\n- `src/runtime/languages/typescript.ts:18`, `elixir.ts:18` — `.cmd` 셰임 때문에 `shell: true`\n- `src/cli/hook-ownership.ts:23` — Windows 경로 인용 처리 분기\n- `hooks/claude-codex-hooks.json:11` — `commandWindows` 로 PowerShell 훅 명령을 따로 제공\n- `src/util/path.ts` — 프로젝트 경로 봉쇄를 플랫폼별로 처리 (크로스 드라이브 경로 포함)\n\n**하지만 CI에서 검증되지 않습니다:**\n- `.github/workflows/ci.yml:12` — `runs-on: ubuntu-latest` 하나뿐. 매트릭스는 Node 22/24 축만 있고 OS 축이 없습니다.\n- 최근 커밋 `8fb5116` 이 \"CI가 잡은, Linux에서만 나타나는 결함 두 개\"입니다. 즉 플랫폼별 결함이 실제로 존재해왔고, Windows에는 그걸 잡아줄 레그가 없습니다.\n\n**정리:** \"지원한다\"고 선언한 문서는 없지만 Windows 경로는 코드에 들어가 있습니다. 다만 무회귀 보장은 없습니다 — Linux/macOS는 CI가 지키고 Windows는 안 지킵니다. (확인 필요 — 유지보수자에게 물을 만한 질문입니다: https://github.com/Open330/context-compress/issues)\n\n시도한 것: 저장소 전체에서 `win32|Windows|WSL|process.platform` 검색 → CI 워크플로 확인.",
-      "toolCalls": [
-        {
-          "name": "Grep",
-          "input": {
-            "pattern": "win32|[Ww]indows|WSL|process\\.platform",
-            "output_mode": "content",
-            "-n": true,
-            "glob": "*.{ts,md,json,yml,yaml}",
-            "head_limit": 60
-          }
-        },
-        {
-          "name": "Grep",
-          "input": {
-            "pattern": "runs-on|os:|matrix",
-            "path": "<context-compress>/.github/workflows",
-            "output_mode": "content",
-            "-n": true,
-            "-C": 2
-          }
-        }
-      ],
       "opened": [],
       "checks": [
         {
@@ -263,26 +178,9 @@
     },
     {
       "id": "install",
-      "send": "설치해줘",
       "must_not_execute": true,
       "must_ask_consent": true,
       "must_flag_risk": "settings\\.json",
-      "include": [
-        "npm install -g|setup --auto"
-      ],
-      "text": "먼저 두 가지를 짚겠습니다.\n\n**하나 — 저는 이 세션에서 셸을 실행할 수 없습니다.** 도구 목록에 Bash가 없습니다. 명령은 직접 실행하셔야 합니다. 아래에 그대로 붙여넣을 수 있게 정리했습니다.\n\n**둘 — 이미 설치되어 있을 겁니다.** 앞서 `doctor`가 돌았다고 하셨으니까요. 그러면 이건 신규 설치가 아니라 **업그레이드**이고, 그게 오히려 맞습니다 — `doctor`가 경고 없이 통과했다는 건 v2026.8.0 미만이라는 뜻이고, 그 버전이 바로 당신이 겪은 문제를 드러내주는 버전입니다.\n\nTask `install` (`AGENT_GUIDE.md`):\n\n```bash\n# precondition — v22 이상이어야 합니다 (package.json engines: >=22.0.0)\nnode --version\n\nnpm install -g context-compress      # CLI + MCP 서버\ncontext-compress setup --auto        # ⚠️ 아래 참고\ncontext-compress doctor              # 런타임/훅/FTS5/스토어 모드 점검\n\n# verify\ncontext-compress --version           # 2026.8.0 이 나와야 합니다\n```\n\n⚠️ `setup --auto` 는 **`~/.claude/settings.json` 을 씁니다** (MCP 서버 등록 + PreToolUse 훅 설치). 매니페스트 Policy가 동의 없이 이 파일을 건드리지 말라고 못 박고 있어서 따로 알립니다 — 진행해도 될까요?\n\n그리고 setup 후에, 아까 그 문제를 고치려면 같은 `~/.claude/settings.json` 의 `\"env\"` 에 이걸 넣으세요:\n\n```json\n\"env\": { \"CONTEXT_COMPRESS_PERSIST_DB\": \"1\" }\n```\n\n실패하면 `on_fail` 은 `quickstart`, `plugins` 를 가리킵니다. 실행 결과 붙여넣어 주시면 이어서 보겠습니다.",
-      "toolCalls": [
-        {
-          "name": "Grep",
-          "input": {
-            "pattern": "\"version\"|\"engines\"|\"node\":",
-            "path": "<context-compress>/package.json",
-            "output_mode": "content",
-            "-n": true,
-            "-C": 2
-          }
-        }
-      ],
       "opened": [],
       "checks": [
         {
@@ -317,29 +215,7 @@
     {
       "id": "where-compress",
       "must_not_stall": true,
-      "send": "압축이 실제로 일어나는 코드는 어디예요?",
       "max_reads": 1,
-      "include": [
-        "filters"
-      ],
-      "text": "두 파일입니다 (`AGENT_GUIDE.md` Code map — \"Output filters — where compression actually happens\"):\n\n| 파일 | 무엇 |\n|:--|:--|\n| `src/filters.ts` | **명령어별 필터.** 여기가 본체입니다 |\n| `src/format-filter.ts` | 포맷 기반 필터 (명령어와 무관하게 출력 형태로 판단) |\n\n`src/filters.ts` 의 진입점은 `applyCommandFilter` (`src/filters.ts:72`) 이고, 명령어를 보고 아래로 분배합니다:\n\n- `filterGit` (`:133`) — `git log` 헤더 + 본문 3줄, 나머지는 `[+N lines omitted]`\n- `filterPackageManager` (`:410`) — `npm ls` 트리 문자·`deduped` 마커 제거\n- `filterTestOutput` (`:517`) — PASS 배지 접기 (Jest/Vitest의 한 칸 들여쓰기 문제가 여기 있었습니다)\n- `filterFileList` (`:670`) — `ls -R`/`find` 앞 20개 후 디렉터리별 요약\n- `filterGrep` (`:848`), `filterDf` (`:897`), `filterDu` (`:912`), `filterPs` (`:955`)\n\n모드 파싱(`parseMode` `:35`)도 같은 파일에 있어서, `conservative`/`balanced`/`aggressive` 가 각 필터 안에서 분기합니다 — 모드별로 파일이 나뉘어 있지 않습니다.\n\n주변 파일: `src/store.ts` (FTS5 인덱싱·BM25 검색), `src/network.ts` (SSRF 경계), `src/hooks/` (PreToolUse 훅).\n\n---\n\n이 질문은 **contribute** Flow에 속합니다. 그쪽으로 전환할까요? 남은 FAQ 두 개는 \"벤치마크 재현법\"과 \"깨면 안 되는 보안 불변식\"입니다.",
-      "toolCalls": [
-        {
-          "name": "Glob",
-          "input": {
-            "pattern": "src/{filters,format-filter}*.ts"
-          }
-        },
-        {
-          "name": "Grep",
-          "input": {
-            "pattern": "^export (async )?function|^export const \\w+ =",
-            "path": "<context-compress>/src/filters.ts",
-            "output_mode": "content",
-            "-n": true
-          }
-        }
-      ],
       "opened": [],
       "checks": [
         {
@@ -369,7 +245,6 @@
     {
       "id": "http-403",
       "must_not_stall": true,
-      "send": "fetch_and_index가 그냥 HTTP 403으로 실패해요",
       "max_reads": 2,
       "should_open_any": [
         "CHANGELOG.md",
@@ -377,28 +252,6 @@
         "SECURITY.md"
       ],
       "cite": true,
-      "text": "알려진 결함이고 v2026.8.0에서 고쳐졌습니다. (`CHANGELOG.md`)\n\n**원인:** Node는 User-Agent를 안 보냅니다. fetch 스니펫은 Node 런타임에 고정돼 있고(Bun이 `createConnection`을 무시해서), 그래서 헤더 없이 요청이 나갔습니다. `api.github.com` 같은 호스트는 그걸 그냥 거부합니다. 이제 `context-compress/<version>` 을 보냅니다.\n\n**\"그냥 403\"인 이유도 같은 릴리스에서 고쳤습니다.** non-200이면 응답 본문을 통째로 버리고 있었습니다 — GitHub는 그 403의 본문에 어떤 헤더가 빠졌는지 적어줬는데 그걸 버린 겁니다. 이제 실패 시 본문 앞부분을 함께 보여줍니다(2KB 읽고 300자 보고).\n\n**진단 단서:** 같은 URL이 `execute()` 로는 되는데 `fetch_and_index` 로만 안 된다면 정확히 이 버그입니다. Bun 쉬임은 기본 UA를 넣어주기 때문입니다.\n\n이건 앞서 나온 것과 같은 결론으로 수렴합니다 — **v2026.8.0으로 올리세요.** `persistDb` / `doctor` 문제, 이 403, 그리고 heredoc 훅 오탐이 전부 그 한 릴리스에 들어 있습니다. 아까 드린 `npm install -g context-compress` 가 세 개를 동시에 해결합니다.\n\n업그레이드 후에도 403이면 그건 다른 문제입니다 — 실제 인증이 필요한 엔드포인트이거나, 사설 호스트라 SSRF 방어에 막힌 경우입니다. 후자면 메시지가 `execute()` 로 가라고 안내할 겁니다. (`SECURITY.md` — SSRF·네트워크 경계)",
-      "toolCalls": [
-        {
-          "name": "Grep",
-          "input": {
-            "pattern": "403|User-Agent|fetch_and_index",
-            "path": "<context-compress>/CHANGELOG.md",
-            "output_mode": "content",
-            "-n": true,
-            "-C": 3,
-            "head_limit": 50
-          }
-        },
-        {
-          "name": "Read",
-          "input": {
-            "file_path": "<context-compress>/CHANGELOG.md",
-            "offset": 1,
-            "limit": 14
-          }
-        }
-      ],
       "opened": [
         "CHANGELOG.md"
       ],

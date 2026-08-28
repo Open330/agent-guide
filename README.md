@@ -50,19 +50,19 @@ npx @open330/agent-guide prompt --inline  # the paste block for YOUR readme
 
 Your reader pastes one block into their agent. Instead of skimming your README, they have a conversation:
 
-> **🤖** context-compress keeps large tool output out of your agent's context window. It intercepts shell commands, runs them in a sandbox, and returns only the filtered response — the full data stays searchable in a local FTS5 index.
+> **🤖** foo lets a team version LLM prompts in Git and runs a regression evaluation before every release. If a prompt change breaks an existing case, the release is blocked.
 >
-> **Not for:** compressing the agent's own conversation history · replacing a code search tool
+> **Not for:** production traffic routing · model fine-tuning · prompt generation
 >
-> What would you like to do? — **onboard** (default) · integrate · troubleshoot · contribute
+> What would you like to do? — **onboard** (default) · integrate · upgrade · troubleshoot
 >
-> Common questions: How do I install it? · Do I have to use MCP? · How is this different from RTK? …
+> Common questions: How do I install it? · How is this different from X? · Can I self-host? …
 
-> **🧑** doctor says everything passed, but after a restart search comes up empty
+> **🧑** the doctor command says everything passed, but after a restart the index is empty
 >
-> **🤖** That is the persistence default, not a bug — `persistDb` is false, so the index opens in memory and is dropped when the server exits. Set `CONTEXT_COMPRESS_PERSIST_DB=1`. `[src: README.md#configuration, CHANGELOG.md]`
+> **🤖** That is the persistence default, not a bug — the store opens in memory unless you enable it, so it is dropped when the process exits. `[src: README.md#configuration, CHANGELOG.md]`
 >
-> This matches the **troubleshoot** flow — want me to switch? We can come back to where you were after.
+> That matches the **troubleshoot** flow — want me to switch? We can come back to where you were after.
 
 Three things there that a plain README cannot do:
 
