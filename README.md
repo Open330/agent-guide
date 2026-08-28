@@ -21,10 +21,14 @@ Ship a manifest instead, and let their agent walk them through the project.
 
 Open an agent **inside the repository you want a guide for**, and paste this:
 
+<div><img src="https://quickstart-for-agents.vercel.app/api/header.svg?theme=github-dark&title=Write+this+repository%27s+AGENT_GUIDE.md&lang=Agents" width="100%" /></div>
+
 ```
 Read https://raw.githubusercontent.com/Open330/agent-guide/main/templates/authoring-prompt.en.md
 and follow it exactly to write this repository's AGENT_GUIDE.md.
 ```
+
+<div><img src="https://quickstart-for-agents.vercel.app/api/footer.svg?theme=github-dark&text=copy+%C2%B7+paste+into+your+agent+%C2%B7+get+AGENT_GUIDE.md" width="100%" /></div>
 
 <sub>Korean: swap in <code>authoring-prompt.ko.md</code>. No network in that session? Run <code>npx @open330/agent-guide author</code> and paste what it prints — the whole prompt is self-contained.</sub>
 

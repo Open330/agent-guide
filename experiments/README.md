@@ -6,11 +6,17 @@ Last Updated: 2026-08-27
 
 **직접 해보시려면 [RUNBOOK.md](RUNBOOK.md)** — 저장소 하나에 대해 처음부터 끝까지 20분.
 
+> **작성된 매니페스트 자체는 여기 두지 않습니다.** 전부 `TODO(maintainer)`가 남은 초안이었고,
+> 그 세 줄(`Not for`·개요·`status`)은 해당 저장소의 메인테이너만 확정할 수 있습니다.
+> 확정되지 않은 "이 프로젝트는 X를 하지 않는다"를 남의 저장소에 대해 공개적으로 배포하는 것은
+> A7이 막으려는 바로 그 일입니다. 아래 기록은 **무엇을 배웠는지**에 대한 것이고,
+> 매니페스트는 각 저장소에 있습니다.
+
 | 저장소 | 형태 | 상태 |
 | :--- | :--- | :--- |
-| [context-compress](context-compress/AGENT_GUIDE.md) | npm CLI + MCP 서버 + 훅. 문서가 거의 전부 README 안에 있음 | 초안 완료, 참조 25건 검증 통과 |
-| [open-agent-contribution](open-agent-contribution/AGENT_GUIDE.md) | GitHub Action + CLI. `docs/`와 `examples/` 보유 | 완료. Docs 16 · flow 5 · Task 3, 참조 65건 전부 해석 |
-| [cmux](cmux/AGENT_GUIDE.md) | 네이티브 앱. `docs/` 40개 이상, `AGENTS.md` 기존재 | 완료. Docs 12 · flow 4 · Task 1, 경로 12건 전부 해석 |
+| context-compress | npm CLI + MCP 서버 + 훅. 문서가 거의 전부 README 안에 있음 | 초안 완료, 참조 25건 검증 통과 |
+| open-agent-contribution | GitHub Action + CLI. `docs/`와 `examples/` 보유 | 완료. Docs 16 · flow 5 · Task 3, 참조 65건 전부 해석 |
+| cmux | 네이티브 앱. `docs/` 40개 이상, `AGENTS.md` 기존재 | 완료. Docs 12 · flow 4 · Task 1, 경로 12건 전부 해석 |
 
 세 저장소 중 둘은 **저작 프로토콜만 건네받은 에이전트**가 작성했습니다. 사람의 개입 없이 형식이 성립하는지가 이 두 건의 핵심 검증 항목이었고, 성립했습니다. 대신 프로토콜의 결함 세 가지가 드러났습니다(발견 8~10).
 
