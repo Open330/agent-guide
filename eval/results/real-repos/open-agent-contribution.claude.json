@@ -23,7 +23,7 @@
         {
           "name": "Read",
           "input": {
-            "file_path": "/Users/jiun/workspace-open330/open-agent-contribution/AGENT_GUIDE.md"
+            "file_path": "<open-agent-contribution>/AGENT_GUIDE.md"
           }
         }
       ],
@@ -82,7 +82,7 @@
           "name": "Grep",
           "input": {
             "pattern": "^## |^### ",
-            "path": "/Users/jiun/workspace-open330/open-agent-contribution/README.md",
+            "path": "<open-agent-contribution>/README.md",
             "output_mode": "content",
             "-n": true
           }
@@ -90,7 +90,7 @@
         {
           "name": "Read",
           "input": {
-            "file_path": "/Users/jiun/workspace-open330/open-agent-contribution/README.md",
+            "file_path": "<open-agent-contribution>/README.md",
             "offset": 348,
             "limit": 70
           }
@@ -150,7 +150,7 @@
         {
           "name": "Read",
           "input": {
-            "file_path": "/Users/jiun/workspace-open330/open-agent-contribution/README.md",
+            "file_path": "<open-agent-contribution>/README.md",
             "offset": 416,
             "limit": 150
           }
@@ -200,7 +200,7 @@
           "name": "Grep",
           "input": {
             "pattern": "gitlab|GitLab|merge request|Merge Request",
-            "path": "/Users/jiun/workspace-open330/open-agent-contribution",
+            "path": "<open-agent-contribution>",
             "output_mode": "content",
             "-n": true,
             "head_limit": 30
@@ -209,7 +209,7 @@
         {
           "name": "Read",
           "input": {
-            "file_path": "/Users/jiun/workspace-open330/open-agent-contribution/tests/repo/resolver.test.ts",
+            "file_path": "<open-agent-contribution>/tests/repo/resolver.test.ts",
             "offset": 196,
             "limit": 18
           }
@@ -295,7 +295,7 @@
         {
           "name": "Read",
           "input": {
-            "file_path": "/Users/jiun/workspace-open330/open-agent-contribution/README.md",
+            "file_path": "<open-agent-contribution>/README.md",
             "offset": 717,
             "limit": 28
           }
@@ -336,20 +336,20 @@
     }
   ],
   "seen": [
-    "/Users/jiun/workspace-open330/open-agent-contribution/AGENT_GUIDE.md",
-    "/Users/jiun/workspace-open330/open-agent-contribution/README.md",
-    "/Users/jiun/workspace-open330/open-agent-contribution/README.md",
-    "/Users/jiun/workspace-open330/open-agent-contribution/README.md",
-    "/Users/jiun/workspace-open330/open-agent-contribution/tests/repo/resolver.test.ts",
-    "/Users/jiun/workspace-open330/open-agent-contribution",
-    "/Users/jiun/workspace-open330/open-agent-contribution/README.md",
-    "/Users/jiun/workspace-open330/open-agent-contribution/AGENT_GUIDE.md",
-    "/Users/jiun/workspace-open330/open-agent-contribution/README.md",
-    "/Users/jiun/workspace-open330/open-agent-contribution/README.md",
-    "/Users/jiun/workspace-open330/open-agent-contribution/README.md",
-    "/Users/jiun/workspace-open330/open-agent-contribution/tests/repo/resolver.test.ts",
-    "/Users/jiun/workspace-open330/open-agent-contribution",
-    "/Users/jiun/workspace-open330/open-agent-contribution/README.md"
+    "<open-agent-contribution>/AGENT_GUIDE.md",
+    "<open-agent-contribution>/README.md",
+    "<open-agent-contribution>/README.md",
+    "<open-agent-contribution>/README.md",
+    "<open-agent-contribution>/tests/repo/resolver.test.ts",
+    "<open-agent-contribution>",
+    "<open-agent-contribution>/README.md",
+    "<open-agent-contribution>/AGENT_GUIDE.md",
+    "<open-agent-contribution>/README.md",
+    "<open-agent-contribution>/README.md",
+    "<open-agent-contribution>/README.md",
+    "<open-agent-contribution>/tests/repo/resolver.test.ts",
+    "<open-agent-contribution>",
+    "<open-agent-contribution>/README.md"
   ],
   "summary": {
     "hard": {

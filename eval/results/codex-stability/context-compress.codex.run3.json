@@ -80,9 +80,9 @@
         {
           "name": "Read",
           "input": {
-            "file_path": "/Users/jiun/.agents/skills/context-manager/SKILL.md"
+            "file_path": "<operator-config>"
           },
-          "command": "/bin/zsh -lc \"sed -n '1,240p' /Users/jiun/.agents/skills/context-manager/SKILL.md\""
+          "command": "/bin/zsh -lc \"sed -n '1,240p' <operator-config>\""
         },
         {
           "name": "Grep",
@@ -157,9 +157,9 @@
         {
           "name": "Read",
           "input": {
-            "file_path": "/Users/jiun/.agents/skills/context-manager/SKILL.md"
+            "file_path": "<operator-config>"
           },
-          "command": "/bin/zsh -lc \"sed -n '1,240p' /Users/jiun/.agents/skills/context-manager/SKILL.md\nrg -n \\\"persistDb|CONTEXT_COMPRESS_PERSIST|restart|ephemeral|search finds nothing|search.*restart|doctor\\\" README.md CHANGELOG.md\""
+          "command": "/bin/zsh -lc \"sed -n '1,240p' <operator-config>\nrg -n \\\"persistDb|CONTEXT_COMPRESS_PERSIST|restart|ephemeral|search finds nothing|search.*restart|doctor\\\" README.md CHANGELOG.md\""
         },
         {
           "name": "Read",
@@ -317,7 +317,7 @@
       "include": [
         "filters"
       ],
-      "text": "`contribute` Flow의 FAQ와 정확히 일치합니다. `structure`와 `how-it-works`가 가리키는 README 구간에서 압축 경로를 확인하겠습니다.핵심 압축 코드는 다음 위치입니다.\n\n- [src/filters.ts](/Users/jiun/workspace-open330/context-compress/src/filters.ts) — `git`, `npm`, `ls`, `find`, `ps` 등 명령별 압축\n- [src/format-filter.ts](/Users/jiun/workspace-open330/context-compress/src/format-filter.ts) — JSON·로그 등 출력 형태 기반 압축\n- [src/executor.ts](/Users/jiun/workspace-open330/context-compress/src/executor.ts) — 명령 실행 후 ANSI 제거·중복 제거 파이프라인\n- [src/util/stream-compress.ts](/Users/jiun/workspace-open330/context-compress/src/util/stream-compress.ts) — `wrap --stream`의 줄 단위 압축\n\n전체 흐름은 **Hook/MCP → Executor → 필터 → 요약 응답**이며, 검색을 지원하는 호출은 필터 전 원본을 FTS5 저장소에 별도로 색인합니다.\n\n출처: `README.md#how-it-works`, `README.md#project-structure`, `AGENT_GUIDE.md` Code map\n\n이 질문은 `contribute` Flow에 해당합니다. 이후 대화를 이 Flow로 전환할까요?",
+      "text": "`contribute` Flow의 FAQ와 정확히 일치합니다. `structure`와 `how-it-works`가 가리키는 README 구간에서 압축 경로를 확인하겠습니다.핵심 압축 코드는 다음 위치입니다.\n\n- [src/filters.ts](<context-compress>/src/filters.ts) — `git`, `npm`, `ls`, `find`, `ps` 등 명령별 압축\n- [src/format-filter.ts](<context-compress>/src/format-filter.ts) — JSON·로그 등 출력 형태 기반 압축\n- [src/executor.ts](<context-compress>/src/executor.ts) — 명령 실행 후 ANSI 제거·중복 제거 파이프라인\n- [src/util/stream-compress.ts](<context-compress>/src/util/stream-compress.ts) — `wrap --stream`의 줄 단위 압축\n\n전체 흐름은 **Hook/MCP → Executor → 필터 → 요약 응답**이며, 검색을 지원하는 호출은 필터 전 원본을 FTS5 저장소에 별도로 색인합니다.\n\n출처: `README.md#how-it-works`, `README.md#project-structure`, `AGENT_GUIDE.md` Code map\n\n이 질문은 `contribute` Flow에 해당합니다. 이후 대화를 이 Flow로 전환할까요?",
       "toolCalls": [
         {
           "name": "Read",
@@ -418,10 +418,10 @@
   ],
   "seen": [
     "./AGENT_GUIDE.md",
-    "/Users/jiun/.agents/skills/context-manager/SKILL.md",
+    "<operator-config>",
     "README.md",
     "README.md",
-    "/Users/jiun/.agents/skills/context-manager/SKILL.md",
+    "<operator-config>",
     "README.md",
     "README.md",
     "README.md",
@@ -429,10 +429,10 @@
     "README.md",
     "CHANGELOG.md",
     "./AGENT_GUIDE.md",
-    "/Users/jiun/.agents/skills/context-manager/SKILL.md",
+    "<operator-config>",
     "README.md",
     "README.md",
-    "/Users/jiun/.agents/skills/context-manager/SKILL.md",
+    "<operator-config>",
     "README.md",
     "README.md",
     "README.md",

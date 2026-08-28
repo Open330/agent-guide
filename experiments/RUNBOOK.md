@@ -9,21 +9,17 @@ Budget: about 20 minutes, most of it waiting on the authoring agent.
 
 ## 0. Make the CLI available
 
-The package is not published yet, so link it from this repo once:
+Install it once:
 
 ```bash
-cd ~/workspace-open330/agent-onboard
-npm link          # effects: global-install — puts `agent-guide` on your PATH
+npm install -g @open330/agent-guide
 ```
 
-Prefer not to install globally? Use the path directly and substitute it
-everywhere below:
+Or run it without installing:
 
 ```bash
-alias ag='node ~/workspace-open330/agent-onboard/src/cli.js'
+npx @open330/agent-guide --help
 ```
-
-Undo the link later with `npm unlink -g agent-guide`.
 
 ## 1. Pick a repository
 
@@ -31,11 +27,12 @@ Pick one whose **shape differs** from what has already been covered, or the run
 tells you nothing new. Already done: a CLI with an MCP server, a GitHub Action,
 and a native app with 33 documents.
 
-| Candidate | Shape | What it would stress |
-| :--- | :--- | :--- |
-| `workspace/agent-skills` | Markdown only, no runnable binary | Core level with **no Tasks at all** — is a manifest still worth it when nothing executes? |
-| `workspace-ext/language-insight-api` | HTTP service | `integrate` as the primary flow; the reader is calling it, not installing it |
-| `workspace-open330/arxiblog` | Bun CLI, no `docs/` | Everything lives in the README. Tests whether anchor-only Docs tables hold up |
+| Shape | What it would stress |
+| :--- | :--- |
+| Markdown only, no runnable binary | Core level with **no Tasks at all** — is a manifest worth it when nothing executes? |
+| An HTTP service | `integrate` as the primary flow; the reader is calling it, not installing it |
+| A CLI with no `docs/` | Everything lives in the README. Whether anchor-only Docs tables hold up |
+
 
 The first is the most informative. Every manifest so far has had something to
 install, and the compliance ladder claims Core is where most of the value sits —
@@ -56,8 +53,12 @@ wrong routing table is worse than an obviously empty one.
 
 ## 3. Let an agent write the real thing
 
-Open an agent **in that repository** and paste the authoring prompt from
-[`.context/architecture/authoring-protocol.md` §4](../.context/architecture/authoring-protocol.md).
+Open an agent **in that repository** and paste the authoring prompt:
+
+```bash
+agent-guide author          # or --ko
+```
+
 It is built to make the agent mine your issues and CHANGELOG for questions
 people actually asked, rather than summarise your README — which is what you get
 if you just ask for "an AGENT_GUIDE.md".

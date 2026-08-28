@@ -292,7 +292,7 @@
       "include": [
         "filters"
       ],
-      "text": "`contribute` Flow의 “Where does compression actually happen?”에 해당합니다. `structure`와 `how-it-works` 기준으로 압축 진입점과 필터 구현 위치를 확인하겠습니다.핵심은 두 파일입니다.\n\n- [src/filters.ts](/Users/jiun/workspace-open330/context-compress/src/filters.ts:72) — 명령별 압축\n  - `git`, `npm`, 테스트, 빌드, `docker`, `kubectl`, `find`, `rg`, `df`, `du`, `ps` 등을 `applyCommandFilter()`에서 분기합니다.\n- [src/format-filter.ts](/Users/jiun/workspace-open330/context-compress/src/format-filter.ts:340) — 범용 구조 압축\n  - 명령별 필터가 적용되지 않았을 때 JSON, NDJSON, 로그 형식을 감지해 압축합니다.\n\nMCP 실행 경로에서는 [src/executor.ts](/Users/jiun/workspace-open330/context-compress/src/executor.ts:674)가 먼저 명령별 필터를 적용하고, 매치되지 않으면 형식 필터를 적용합니다. 즉 흐름은 대략 다음과 같습니다:\n\n`명령 출력 → ANSI 제거 → 명령별 필터 → 형식별 필터 → 크기 제한`\n\n출처: `README.md#how-it-works`, `README.md#project-structure`, 위 소스 파일  \n코드 작업 질문이므로 `contribute` Flow로 전환할까요?",
+      "text": "`contribute` Flow의 “Where does compression actually happen?”에 해당합니다. `structure`와 `how-it-works` 기준으로 압축 진입점과 필터 구현 위치를 확인하겠습니다.핵심은 두 파일입니다.\n\n- [src/filters.ts](<context-compress>/src/filters.ts:72) — 명령별 압축\n  - `git`, `npm`, 테스트, 빌드, `docker`, `kubectl`, `find`, `rg`, `df`, `du`, `ps` 등을 `applyCommandFilter()`에서 분기합니다.\n- [src/format-filter.ts](<context-compress>/src/format-filter.ts:340) — 범용 구조 압축\n  - 명령별 필터가 적용되지 않았을 때 JSON, NDJSON, 로그 형식을 감지해 압축합니다.\n\nMCP 실행 경로에서는 [src/executor.ts](<context-compress>/src/executor.ts:674)가 먼저 명령별 필터를 적용하고, 매치되지 않으면 형식 필터를 적용합니다. 즉 흐름은 대략 다음과 같습니다:\n\n`명령 출력 → ANSI 제거 → 명령별 필터 → 형식별 필터 → 크기 제한`\n\n출처: `README.md#how-it-works`, `README.md#project-structure`, 위 소스 파일  \n코드 작업 질문이므로 `contribute` Flow로 전환할까요?",
       "toolCalls": [
         {
           "name": "Read",

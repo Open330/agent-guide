@@ -80,9 +80,9 @@
         {
           "name": "Read",
           "input": {
-            "file_path": "/Users/jiun/.agents/skills/context-manager/SKILL.md"
+            "file_path": "<operator-config>"
           },
-          "command": "/bin/zsh -lc \"sed -n '1,260p' /Users/jiun/.agents/skills/context-manager/SKILL.md\""
+          "command": "/bin/zsh -lc \"sed -n '1,260p' <operator-config>\""
         },
         {
           "name": "Grep",
@@ -399,7 +399,7 @@
   ],
   "seen": [
     "AGENT_GUIDE.md",
-    "/Users/jiun/.agents/skills/context-manager/SKILL.md",
+    "<operator-config>",
     "README.md",
     "README.md",
     "README.md",
@@ -408,7 +408,7 @@
     "README.md",
     "CHANGELOG.md",
     "AGENT_GUIDE.md",
-    "/Users/jiun/.agents/skills/context-manager/SKILL.md",
+    "<operator-config>",
     "README.md",
     "README.md",
     "README.md",

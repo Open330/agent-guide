@@ -27,7 +27,7 @@
         {
           "name": "Read",
           "input": {
-            "file_path": "/Users/jiun/workspace-open330/cmux/AGENT_GUIDE.md"
+            "file_path": "<cmux>/AGENT_GUIDE.md"
           }
         }
       ],
@@ -85,7 +85,7 @@
         {
           "name": "Read",
           "input": {
-            "file_path": "/Users/jiun/workspace-open330/cmux/README.md"
+            "file_path": "<cmux>/README.md"
           }
         }
       ],
@@ -144,7 +144,7 @@
           "name": "Grep",
           "input": {
             "pattern": "(?i)(100% ?cpu|cpu (spin|pegged|usage)|spin loop|typing (lag|latency)|LazyLayoutViewCache)",
-            "path": "/Users/jiun/workspace-open330/cmux/CHANGELOG.md",
+            "path": "<cmux>/CHANGELOG.md",
             "output_mode": "content",
             "-n": true,
             "head_limit": 40
@@ -198,7 +198,7 @@
           "name": "Grep",
           "input": {
             "pattern": "(?i)linux|windows",
-            "path": "/Users/jiun/workspace-open330/cmux/docs/upstream-cmux-README.md",
+            "path": "<cmux>/docs/upstream-cmux-README.md",
             "output_mode": "content",
             "-n": true,
             "-C": 4,
@@ -209,7 +209,7 @@
           "name": "Grep",
           "input": {
             "pattern": "(?i)^###.*(mac|platform|iphone|ios|mobile|support)",
-            "path": "/Users/jiun/workspace-open330/cmux/docs/upstream-cmux-README.md",
+            "path": "<cmux>/docs/upstream-cmux-README.md",
             "output_mode": "content",
             "-n": true,
             "-A": 3
@@ -263,7 +263,7 @@
         {
           "name": "Read",
           "input": {
-            "file_path": "/Users/jiun/workspace-open330/cmux/docs/cli-contract.md",
+            "file_path": "<cmux>/docs/cli-contract.md",
             "limit": 120
           }
         },
@@ -271,7 +271,7 @@
           "name": "Grep",
           "input": {
             "pattern": "(?i)^#{1,3} |^\\| `[a-z]",
-            "path": "/Users/jiun/workspace-open330/cmux/docs/events.md",
+            "path": "<cmux>/docs/events.md",
             "output_mode": "content",
             "-n": true,
             "head_limit": 45

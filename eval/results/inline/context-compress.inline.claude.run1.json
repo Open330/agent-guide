@@ -72,20 +72,20 @@
         {
           "name": "Read",
           "input": {
-            "file_path": "/Users/jiun/workspace-open330-context-compress/AGENT_GUIDE.md"
+            "file_path": "<context-compress>/AGENT_GUIDE.md"
           }
         },
         {
           "name": "Read",
           "input": {
-            "file_path": "/Users/jiun/workspace-open330/context-compress/AGENT_GUIDE.md"
+            "file_path": "<context-compress>/AGENT_GUIDE.md"
           }
         },
         {
           "name": "Grep",
           "input": {
             "pattern": "^#+ .*[Rr][Tt][Kk]",
-            "path": "/Users/jiun/workspace-open330/context-compress/README.md",
+            "path": "<context-compress>/README.md",
             "output_mode": "content",
             "-n": true
           }
@@ -93,7 +93,7 @@
         {
           "name": "Read",
           "input": {
-            "file_path": "/Users/jiun/workspace-open330/context-compress/README.md",
+            "file_path": "<context-compress>/README.md",
             "offset": 265,
             "limit": 70
           }
@@ -160,7 +160,7 @@
           "name": "Grep",
           "input": {
             "pattern": "persistDb|dbDir|PERSIST",
-            "path": "/Users/jiun/workspace-open330/context-compress/README.md",
+            "path": "<context-compress>/README.md",
             "output_mode": "content",
             "-n": true,
             "-C": 4
@@ -170,7 +170,7 @@
           "name": "Grep",
           "input": {
             "pattern": "persist|PERSIST|dbDir|search",
-            "path": "/Users/jiun/workspace-open330/context-compress/CHANGELOG.md",
+            "path": "<context-compress>/CHANGELOG.md",
             "output_mode": "content",
             "-n": true,
             "-i": true,
@@ -227,7 +227,7 @@
           "name": "Grep",
           "input": {
             "pattern": "[Ww]indows|win32|WSL|platform",
-            "path": "/Users/jiun/workspace-open330/context-compress",
+            "path": "<context-compress>",
             "glob": "{README.md,SECURITY.md,CHANGELOG.md,package.json}",
             "output_mode": "content",
             "-n": true,
@@ -238,7 +238,7 @@
           "name": "Grep",
           "input": {
             "pattern": "runs-on|os:|matrix",
-            "path": "/Users/jiun/workspace-open330/context-compress/.github",
+            "path": "<context-compress>/.github",
             "output_mode": "content",
             "-n": true,
             "head_limit": 30
@@ -339,7 +339,7 @@
           "name": "Grep",
           "input": {
             "pattern": "^#+ (Project Structure|How It Works)",
-            "path": "/Users/jiun/workspace-open330/context-compress/README.md",
+            "path": "<context-compress>/README.md",
             "output_mode": "content",
             "-n": true,
             "-i": true
@@ -348,7 +348,7 @@
         {
           "name": "Read",
           "input": {
-            "file_path": "/Users/jiun/workspace-open330/context-compress/README.md",
+            "file_path": "<context-compress>/README.md",
             "offset": 543,
             "limit": 55
           }
@@ -399,7 +399,7 @@
           "name": "Grep",
           "input": {
             "pattern": "403|User-Agent|fetch_and_index|fetch",
-            "path": "/Users/jiun/workspace-open330/context-compress/CHANGELOG.md",
+            "path": "<context-compress>/CHANGELOG.md",
             "output_mode": "content",
             "-n": true,
             "-i": true,
@@ -409,7 +409,7 @@
         {
           "name": "Read",
           "input": {
-            "file_path": "/Users/jiun/workspace-open330/context-compress/CHANGELOG.md",
+            "file_path": "<context-compress>/CHANGELOG.md",
             "offset": 1,
             "limit": 18
           }

@@ -21,7 +21,7 @@
         {
           "name": "Read",
           "input": {
-            "file_path": "/Users/jiun/workspace-open330/context-compress/AGENT_GUIDE.md"
+            "file_path": "<context-compress>/AGENT_GUIDE.md"
           }
         }
       ],
@@ -80,7 +80,7 @@
           "name": "Grep",
           "input": {
             "pattern": "^#{1,4} .*[Rr][Tt][Kk]",
-            "path": "/Users/jiun/workspace-open330/context-compress/README.md",
+            "path": "<context-compress>/README.md",
             "output_mode": "content",
             "-n": true
           }
@@ -88,7 +88,7 @@
         {
           "name": "Read",
           "input": {
-            "file_path": "/Users/jiun/workspace-open330/context-compress/README.md",
+            "file_path": "<context-compress>/README.md",
             "offset": 270,
             "limit": 70
           }
@@ -151,7 +151,7 @@
           "name": "Grep",
           "input": {
             "pattern": "persistDb|CONTEXT_COMPRESS_PERSIST|dbDir|CONTEXT_COMPRESS_DB_DIR",
-            "path": "/Users/jiun/workspace-open330/context-compress/README.md",
+            "path": "<context-compress>/README.md",
             "output_mode": "content",
             "-n": true,
             "-C": 4
@@ -161,7 +161,7 @@
           "name": "Grep",
           "input": {
             "pattern": "persist|ephemeral|in-memory|restart|dbDir",
-            "path": "/Users/jiun/workspace-open330/context-compress/CHANGELOG.md",
+            "path": "<context-compress>/CHANGELOG.md",
             "output_mode": "content",
             "-n": true,
             "-i": true,
@@ -228,7 +228,7 @@
           "name": "Grep",
           "input": {
             "pattern": "runs-on|os:|matrix",
-            "path": "/Users/jiun/workspace-open330/context-compress/.github/workflows",
+            "path": "<context-compress>/.github/workflows",
             "output_mode": "content",
             "-n": true,
             "-C": 2
@@ -276,7 +276,7 @@
           "name": "Grep",
           "input": {
             "pattern": "\"version\"|\"engines\"|\"node\":",
-            "path": "/Users/jiun/workspace-open330/context-compress/package.json",
+            "path": "<context-compress>/package.json",
             "output_mode": "content",
             "-n": true,
             "-C": 2
@@ -334,7 +334,7 @@
           "name": "Grep",
           "input": {
             "pattern": "^export (async )?function|^export const \\w+ =",
-            "path": "/Users/jiun/workspace-open330/context-compress/src/filters.ts",
+            "path": "<context-compress>/src/filters.ts",
             "output_mode": "content",
             "-n": true
           }
@@ -383,7 +383,7 @@
           "name": "Grep",
           "input": {
             "pattern": "403|User-Agent|fetch_and_index",
-            "path": "/Users/jiun/workspace-open330/context-compress/CHANGELOG.md",
+            "path": "<context-compress>/CHANGELOG.md",
             "output_mode": "content",
             "-n": true,
             "-C": 3,
@@ -393,7 +393,7 @@
         {
           "name": "Read",
           "input": {
-            "file_path": "/Users/jiun/workspace-open330/context-compress/CHANGELOG.md",
+            "file_path": "<context-compress>/CHANGELOG.md",
             "offset": 1,
             "limit": 14
           }
@@ -435,28 +435,28 @@
     }
   ],
   "seen": [
-    "/Users/jiun/workspace-open330/context-compress/AGENT_GUIDE.md",
-    "/Users/jiun/workspace-open330/context-compress/README.md",
-    "/Users/jiun/workspace-open330/context-compress/README.md",
-    "/Users/jiun/workspace-open330/context-compress/README.md",
-    "/Users/jiun/workspace-open330/context-compress/CHANGELOG.md",
+    "<context-compress>/AGENT_GUIDE.md",
+    "<context-compress>/README.md",
+    "<context-compress>/README.md",
+    "<context-compress>/README.md",
+    "<context-compress>/CHANGELOG.md",
     "*.{ts,md,json,yml,yaml}",
-    "/Users/jiun/workspace-open330/context-compress/.github/workflows",
-    "/Users/jiun/workspace-open330/context-compress/package.json",
-    "/Users/jiun/workspace-open330/context-compress/src/filters.ts",
-    "/Users/jiun/workspace-open330/context-compress/CHANGELOG.md",
-    "/Users/jiun/workspace-open330/context-compress/CHANGELOG.md",
-    "/Users/jiun/workspace-open330/context-compress/AGENT_GUIDE.md",
-    "/Users/jiun/workspace-open330/context-compress/README.md",
-    "/Users/jiun/workspace-open330/context-compress/README.md",
-    "/Users/jiun/workspace-open330/context-compress/README.md",
-    "/Users/jiun/workspace-open330/context-compress/CHANGELOG.md",
+    "<context-compress>/.github/workflows",
+    "<context-compress>/package.json",
+    "<context-compress>/src/filters.ts",
+    "<context-compress>/CHANGELOG.md",
+    "<context-compress>/CHANGELOG.md",
+    "<context-compress>/AGENT_GUIDE.md",
+    "<context-compress>/README.md",
+    "<context-compress>/README.md",
+    "<context-compress>/README.md",
+    "<context-compress>/CHANGELOG.md",
     "*.{ts,md,json,yml,yaml}",
-    "/Users/jiun/workspace-open330/context-compress/.github/workflows",
-    "/Users/jiun/workspace-open330/context-compress/package.json",
-    "/Users/jiun/workspace-open330/context-compress/src/filters.ts",
-    "/Users/jiun/workspace-open330/context-compress/CHANGELOG.md",
-    "/Users/jiun/workspace-open330/context-compress/CHANGELOG.md"
+    "<context-compress>/.github/workflows",
+    "<context-compress>/package.json",
+    "<context-compress>/src/filters.ts",
+    "<context-compress>/CHANGELOG.md",
+    "<context-compress>/CHANGELOG.md"
   ],
   "summary": {
     "hard": {

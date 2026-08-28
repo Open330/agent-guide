@@ -13,7 +13,7 @@
 1차 시도가 `experiments/context-compress/`에서 실행돼 `README.md`가 없었습니다. 매니페스트는 **저장소 루트**에 두고 거기서 실행하는 것이 실제 배포 형태입니다. 이미 복사해뒀습니다.
 
 ```
-/Users/jiun/workspace-open330/context-compress/AGENT_GUIDE.md   (untracked, 지우면 원복)
+context-compress/AGENT_GUIDE.md   (untracked, 지우면 원복)
 ```
 
 ---
@@ -21,7 +21,7 @@
 ## 1. Claude Code
 
 ```bash
-cd /Users/jiun/workspace-open330/context-compress
+cd context-compress
 claude
 ```
 
