@@ -227,3 +227,36 @@ verify:
 `;
   assert.ok(!rulesOf(validateText(ok, { checkPaths: false }).report, "warn").includes("effects"));
 });
+
+test("`effects` must be a list of tags, not a sentence", () => {
+  const withEffects = (line) => MINIMAL.replace(
+    "- What is it for? → `quickstart`",
+    "- What is it for? → `quickstart` → task `install`"
+  ) + `
+## Tasks
+
+### Task: install — Install
+
+\`\`\`yaml
+steps:
+  - run: "npm i -g demo"
+    explain: "Installs the CLI"
+${line}
+verify:
+  run: "demo --version"
+  expect: "\\\\d"
+\`\`\`
+`;
+  // Prose in `effects` reads fine and machine-reads as nothing.
+  const prose = validateText(withEffects('    effects: "Writes a binary into your global npm prefix"'), { checkPaths: false }).report;
+  assert.ok(rulesOf(prose, "error").includes("effects"), "a sentence should be an error");
+
+  const tags = validateText(withEffects("    effects: [global-install]"), { checkPaths: false }).report;
+  assert.deepEqual(tags.errors, []);
+  assert.ok(!rulesOf(tags, "warn").includes("effects"));
+
+  // A list whose entries are still sentences is legal YAML but misses the point.
+  const wordy = validateText(withEffects('    effects: ["writes a binary into the global npm prefix"]'), { checkPaths: false }).report;
+  assert.deepEqual(wordy.errors, [], "a wordy tag is a warning, not an error");
+  assert.ok(rulesOf(wordy, "warn").includes("effects"));
+});

@@ -257,7 +257,9 @@ steps:
     effects: [writes-user-config]
 ```
 
-The vocabulary is open. `global-install`, `writes-user-config`, `network-write`, `third-party`, `destructive` and `costs-money` cover most cases; invent one when none fits. A closed enum would age badly and would tempt authors into the nearest wrong tag.
+`effects` is a **list of short tags** — a word or two each, not a sentence. The vocabulary is open: `global-install`, `writes-user-config`, `network-write`, `third-party`, `destructive` and `costs-money` cover most cases, and inventing one is expected when none fits. A closed enum would age badly and would tempt authors into the nearest wrong tag.
+
+The shape matters as much as the vocabulary. A sentence here reads fine to a human and machine-reads as nothing, which defeats the reason the field exists — the consent rule needs a token to point at. The explanation already has a home in `explain`. A validator MUST reject a non-list, and SHOULD warn on a tag that reads as prose.
 
 `effects` exists so the consent rule has something specific to attach to. "Get consent before running commands" is a request an agent can satisfy vaguely; "a step with `effects` needs an explicit yes, and say what the effect is" is a rule with an object. It also gives a validator something to check: a step whose command installs globally or writes outside the working directory and carries no `effects` is worth a warning.
 

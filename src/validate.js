@@ -208,7 +208,22 @@ export function validateText(text, { file = "AGENT_GUIDE.md", root = null, check
     }
     for (const step of Array.isArray(b.steps) ? b.steps : []) {
       const cmd = String(step.run ?? "");
-      if (step.effects?.length) continue;
+      if (step.effects !== undefined) {
+        // A sentence in `effects` reads fine and machine-reads as nothing. The
+        // field exists so the consent rule has a token to point at; prose
+        // belongs in `explain`, which is already there for it.
+        if (!Array.isArray(step.effects)) {
+          r.error("effects", `Task \`${t.id}\`: \`effects\` must be a list of short tags, not ${typeof step.effects === "string" ? "a sentence" : typeof step.effects}. Put the explanation in \`explain\`. (SPEC §4.7)`, t.line);
+        } else {
+          for (const tag of step.effects) {
+            const v = String(tag);
+            if (v.length > 40 || /\s/.test(v)) {
+              r.warn("effects", `Task \`${t.id}\`: effects tag "${v.slice(0, 40)}${v.length > 40 ? "…" : ""}" reads as prose. A tag is a word or two — \`global-install\`, \`writes-user-config\`.`, t.line);
+            }
+          }
+        }
+        continue;
+      }
       const hit = RISKY.find(([re]) => re.test(cmd));
       if (hit) {
         r.warn("effects", `Task \`${t.id}\`: \`${cmd.slice(0, 48)}\` ${hit[1]}, with no \`effects\` naming it. The consent rule has nothing to point at without one. (SPEC §4.7)`, t.line);

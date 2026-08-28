@@ -119,8 +119,8 @@ Agent Guide is a manifest format and a session protocol that lets any AI agent r
 ```yaml
 steps:
   - run: "npm install -g @open330/agent-guide"
-    explain: "One dependency (yaml); Node 20 or newer"
-    effects: "Writes an `agent-guide` binary into your global npm prefix"
+    explain: "Puts an `agent-guide` binary in your global npm prefix. One dependency (yaml); Node 20 or newer"
+    effects: [global-install]
 verify:
   run: "agent-guide --help"
   expect: "tooling for AGENT_GUIDE.md"
