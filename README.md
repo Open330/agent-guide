@@ -11,6 +11,8 @@ Ship a manifest instead, and let their agent walk them through the project.
 [![spec licence](https://img.shields.io/badge/spec-CC%20BY%204.0-blue)](LICENSE-SPEC)
 [![status](https://img.shields.io/badge/status-alpha-orange)](#status)
 
+**English** · [한국어](README.ko.md)
+
 [Start here](#start-here) · [What you get](#what-you-get) · [Where this sits](#where-this-sits) · [CLI](#the-cli) · [Evidence](#does-it-actually-work) · [Spec](SPEC.md)
 
 </div>
