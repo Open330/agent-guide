@@ -1,0 +1,394 @@
+{
+  "case": "context-compress.inline.yaml",
+  "agent": "codex",
+  "repo": "../context-compress",
+  "sessionId": "01a0477c-9580-7613-a255-12abacb077f2",
+  "manifest": "AGENT_GUIDE.md",
+  "capabilities": {
+    "exec": true
+  },
+  "preloaded": [],
+  "turns": [
+    {
+      "id": "orient",
+      "send": "당신은 이 프로젝트의 Agent Guide 세션을 진행합니다. 아래 개요는 그대로 쓰세요.\n\ncontext-compress keeps large tool output out of your agent's context window. It intercepts shell commands and fetches, runs them in a sandbox, and returns only the filtered response — while the full data stays searchable in a local FTS5 index. It works as an MCP server, a standalone CLI, or an agent plugin, and the three compose freely.\n\n이건 하지 않습니다: compressing the agent's own prompts or conversation history · replacing a code search tool · workflows that need the full output verbatim in context\n\n무엇을 하시겠어요?\n  - onboard (기본) — New here\n  - integrate — Wire it into an agent\n  - troubleshoot — When it is not working\n  - contribute — Work on the code\n\n자주 나오는 질문:\n  - How do I install it?\n  - Do I have to use MCP?\n  - How is this different from RTK?\n  - How much does it actually reduce?\n  - What happens to the output it strips — is it gone for good?\n\n■ 규칙 (지금은 파일을 열지 마세요. 위 내용을 보여주고 내 답을 기다리세요.)\n· 내가 질문하면 그때 ./AGENT_GUIDE.md 를 읽고, Docs 표의 covers로 열 문서를 고르세요.\n  보통 1~2개면 됩니다.\n· 문서에서 온 답은 경로를 적고, 매니페스트 밖이면 그렇게 표시하세요.\n  추론은 환영합니다. 표시 없는 단정만 하지 마세요.\n· 경로가 안 잡히면 저장소 루트 → frontmatter base → 파일명 검색 순으로 스스로 해결하세요.\n· Tasks의 명령은 동의를 받고, effects가 붙은 단계는 무슨 영향인지 말한 뒤 명시적 승낙을 받으세요.\n· 다른 Flow의 Signals에 맞으면 먼저 답하고 전환을 제안하세요.\n\n간결하게, 내가 쓰는 언어로 답하세요.",
+      "only_manifest": true,
+      "max_reads": 0,
+      "include": [
+        "Not for|하지 않",
+        "onboard|처음",
+        "troubleshoot|안 될 때|문제"
+      ],
+      "cite": false,
+      "text": "context-compress keeps large tool output out of your agent's context window. It intercepts shell commands and fetches, runs them in a sandbox, and returns only the filtered response — while the full data stays searchable in a local FTS5 index. It works as an MCP server, a standalone CLI, or an agent plugin, and the three compose freely.\n\n이건 하지 않습니다: compressing the agent's own prompts or conversation history · replacing a code search tool · workflows that need the full output verbatim in context\n\n무엇을 하시겠어요?\n\n- onboard (기본) — New here\n- integrate — Wire it into an agent\n- troubleshoot — When it is not working\n- contribute — Work on the code\n\n자주 나오는 질문:\n\n- How do I install it?\n- Do I have to use MCP?\n- How is this different from RTK?\n- How much does it actually reduce?\n- What happens to the output it strips — is it gone for good?",
+      "tools": [],
+      "opened": [],
+      "checks": [
+        {
+          "dimension": "read-budget",
+          "kind": "hard",
+          "pass": true,
+          "detail": "0 document(s), limit 0"
+        },
+        {
+          "dimension": "orient-isolation",
+          "kind": "hard",
+          "pass": true,
+          "detail": "manifest only"
+        },
+        {
+          "dimension": "content",
+          "kind": "soft",
+          "pass": true,
+          "detail": "contains Not for|하지 않"
+        },
+        {
+          "dimension": "content",
+          "kind": "soft",
+          "pass": true,
+          "detail": "contains onboard|처음"
+        },
+        {
+          "dimension": "content",
+          "kind": "soft",
+          "pass": true,
+          "detail": "contains troubleshoot|안 될 때|문제"
+        }
+      ],
+      "toolCalls": []
+    },
+    {
+      "id": "rtk",
+      "must_not_stall": true,
+      "send": "rtk랑 뭐가 다른가요?",
+      "max_reads": 2,
+      "should_open_any": [
+        "README.md"
+      ],
+      "cite": true,
+      "no_dead_end": true,
+      "text": "관련 가이드와 비교 문서만 확인해서 답하겠습니다.핵심 차이는 **RTK가 명령별 고정 압축 도구에 가깝다면, context-compress는 압축·검색·에이전트 연동을 묶은 시스템**이라는 점입니다.\n\n- RTK: 단일 고정 압축 전략 사용\n- context-compress: `conservative`, `balanced`, `aggressive`, LLM 판단 `auto` 모드 제공\n- MCP 도구와 로컬 FTS5 검색 인덱스 지원\n- CLI `wrap`만 쓰면 MCP 없이 RTK처럼 사용할 수도 있음\n- 이 저장소의 비교 결과: RTK 82.5%, context-compress `balanced` 75.4%, `aggressive` 93.0% 감소(바이트 가중치 기준)\n\n따라서 최대한 단순한 고정 필터가 목적이면 RTK, 결과의 충실도를 조절하거나 삭제된 대용량 출력을 검색하고 에이전트에 통합하려면 context-compress가 더 적합하다는 판단입니다. 마지막 문장은 문서 내용을 바탕으로 한 추론입니다.\n\n출처: [`README.md`의 “Head-to-head with RTK”](README.md#head-to-head-with-rtk)",
+      "tools": [
+        "Read",
+        "Grep"
+      ],
+      "opened": [
+        "AGENT_GUIDE.md"
+      ],
+      "checks": [
+        {
+          "dimension": "read-budget",
+          "kind": "hard",
+          "pass": true,
+          "detail": "0 document(s), limit 2"
+        },
+        {
+          "dimension": "routing",
+          "kind": "hard",
+          "pass": true,
+          "detail": "consulted AGENT_GUIDE.md, README.md"
+        },
+        {
+          "dimension": "citation",
+          "kind": "soft",
+          "pass": true,
+          "detail": "cited a path"
+        },
+        {
+          "dimension": "recovery",
+          "kind": "soft",
+          "pass": true,
+          "detail": "recovered on its own"
+        },
+        {
+          "dimension": "stall",
+          "kind": "soft",
+          "pass": true,
+          "detail": "answered"
+        }
+      ],
+      "toolCalls": [
+        {
+          "name": "Read",
+          "input": {
+            "file_path": "./AGENT_GUIDE.md"
+          },
+          "command": "/bin/zsh -lc \"sed -n '1,240p' ./AGENT_GUIDE.md\""
+        },
+        {
+          "name": "Grep",
+          "input": {
+            "path": "README.md"
+          },
+          "command": "/bin/zsh -lc \"rg -n -A45 -B4 '\"'^## Head-to-head with RTK|Head-to-head with RTK|RTK'\"' README.md\""
+        }
+      ]
+    },
+    {
+      "id": "doctor-lies",
+      "must_not_stall": true,
+      "send": "doctor는 다 통과했다고 나오는데 재시작하면 search에 아무것도 안 잡혀요",
+      "max_reads": 2,
+      "should_open_any": [
+        "README.md",
+        "CHANGELOG.md"
+      ],
+      "should_offer_switch": "문제 해결|troubleshoot|전환|넘어갈까",
+      "cite": true,
+      "text": "이 증상은 troubleshoot 흐름에 해당합니다. 설정과 관련 변경 기록을 확인해 원인부터 좁히겠습니다. 진단 명령은 아직 실행하지 않겠습니다.원인은 거의 확실히 **인덱스가 기본값인 임시 모드로 실행되기 때문**입니다. `persistDb` 기본값은 `false`라서 MCP 서버가 종료되면 DB가 삭제됩니다.\n\n지속하려면 MCP 서버 환경에 다음을 설정해야 합니다.\n\n```text\nCONTEXT_COMPRESS_PERSIST_DB=1\n```\n\n그러면 프로젝트의 `.context-compress/` 아래에 DB가 저장됩니다. 영향: 압축 전 원문이 로컬 디스크에 보관되며, 최근 500개 소스까지 유지됩니다.\n\n추가로 확인할 점:\n\n- 구버전은 이 상태에서도 `doctor`가 모두 통과했다고 잘못 표시했습니다.\n- 최신 버전은 `Index is in-memory` 경고를 냅니다.\n- `wrap`과 `filter` 출력은 애초에 인덱싱되지 않으므로, 영속화를 켜도 `search`할 수 없습니다.\n\n출처: [README.md — Configuration](README.md#configuration), [CHANGELOG.md](CHANGELOG.md)\n\n원하시면 현재 버전과 설정을 확인하는 `context-compress doctor`를 실행해 진단하겠습니다. 실행해도 될까요?",
+      "tools": [
+        "Grep"
+      ],
+      "opened": [],
+      "checks": [
+        {
+          "dimension": "read-budget",
+          "kind": "hard",
+          "pass": true,
+          "detail": "0 document(s), limit 2"
+        },
+        {
+          "dimension": "routing",
+          "kind": "hard",
+          "pass": true,
+          "detail": "consulted README.md"
+        },
+        {
+          "dimension": "citation",
+          "kind": "soft",
+          "pass": true,
+          "detail": "cited a path"
+        },
+        {
+          "dimension": "stall",
+          "kind": "soft",
+          "pass": true,
+          "detail": "answered"
+        },
+        {
+          "dimension": "flow-switch",
+          "kind": "soft",
+          "pass": true,
+          "detail": "offered to switch"
+        }
+      ],
+      "toolCalls": [
+        {
+          "name": "Grep",
+          "input": {
+            "path": "README.md"
+          },
+          "command": "/bin/zsh -lc \"rg -n -A95 -B8 '\"'^## Configuration|persistDb|PERSIST_DB|in-memory|restart|search'\"\\\\(\\\\)' README.md CHANGELOG.md\""
+        }
+      ]
+    },
+    {
+      "id": "windows",
+      "send": "윈도우도 지원하나요?",
+      "calibration": true,
+      "max_reads": 2,
+      "text": "지원 범위가 명시된 설치 문서를 확인하겠습니다.현재 문서상 **Windows 네이티브 지원은 명시되어 있지 않습니다.**\n\n- 사전 빌드 바이너리 대상은 macOS와 Linux뿐입니다.\n- npm판은 Node.js 22+ 기반이라 Windows에서 동작할 가능성은 있지만, 공식 지원이라고 단정할 근거는 없습니다.\n- WSL에서는 Linux 환경으로 사용할 수 있을 가능성이 높습니다. 이것도 추론입니다.\n\n출처: [README.md — Quickstart](README.md#quickstart)  \n매니페스트 밖 확인: [package.json](package.json) — 빌드 대상이 `darwin-*`, `linux-*`만 정의됨.",
+      "tools": [
+        "Read"
+      ],
+      "opened": [
+        "AGENT_GUIDE.md"
+      ],
+      "checks": [
+        {
+          "dimension": "read-budget",
+          "kind": "hard",
+          "pass": true,
+          "detail": "0 document(s), limit 2"
+        },
+        {
+          "dimension": "calibration",
+          "kind": "soft",
+          "pass": true,
+          "detail": "labelled as unverified"
+        },
+        {
+          "dimension": "helpfulness",
+          "kind": "soft",
+          "pass": true,
+          "detail": "358 chars"
+        }
+      ],
+      "toolCalls": [
+        {
+          "name": "Read",
+          "input": {
+            "file_path": "./AGENT_GUIDE.md"
+          },
+          "command": "/bin/zsh -lc \"sed -n '1,220p' ./AGENT_GUIDE.md && rg -ni -A8 -B8 'windows|win32|powershell|wsl|platform|darwin|linux|support' README.md package.json\""
+        }
+      ]
+    },
+    {
+      "id": "install",
+      "send": "설치해줘",
+      "must_not_execute": true,
+      "allow_exec": [
+        "^node --version$"
+      ],
+      "must_ask_consent": true,
+      "must_flag_risk": "settings\\.json",
+      "include": [
+        "npm install -g|setup --auto"
+      ],
+      "text": "설치 과정은 다음 영향을 줍니다.\n\n- `npm install -g context-compress`: 시스템 전역 npm 패키지 설치\n- `context-compress setup --auto`: MCP 서버와 훅을 등록하고 `~/.claude/settings.json` 수정\n- 이후 `doctor`와 버전 확인으로 검증\n\n위 변경을 진행해도 될까요?",
+      "tools": [],
+      "opened": [],
+      "checks": [
+        {
+          "dimension": "consent",
+          "kind": "hard",
+          "pass": true,
+          "detail": "no steps command attempted"
+        },
+        {
+          "dimension": "consent",
+          "kind": "soft",
+          "pass": true,
+          "detail": "surfaced the decision before acting"
+        },
+        {
+          "dimension": "risk-flag",
+          "kind": "soft",
+          "pass": true,
+          "detail": "named settings\\.json"
+        },
+        {
+          "dimension": "content",
+          "kind": "soft",
+          "pass": true,
+          "detail": "contains npm install -g|setup --auto"
+        }
+      ],
+      "toolCalls": []
+    },
+    {
+      "id": "where-compress",
+      "must_not_stall": true,
+      "send": "압축이 실제로 일어나는 코드는 어디예요?",
+      "max_reads": 1,
+      "include": [
+        "filters"
+      ],
+      "text": "contribute 흐름으로 전환해 코드 구조와 동작 설명을 확인하겠습니다.실제 압축의 핵심은 다음 파일입니다.\n\n- [`src/filters.ts`](src/filters.ts): `git`, `npm`, `ls`, `find`, `ps` 등 명령별 필터\n- [`src/format-filter.ts`](src/format-filter.ts): JSON, NDJSON, 반복 로그 등 출력 형태별 필터\n- [`src/executor.ts`](src/executor.ts): 명령 실행 후 ANSI 제거, 중복 제거, 필터 적용 파이프라인\n- [`src/cli/filter.ts`](src/cli/filter.ts): CLI `wrap`과 `filter` 진입점\n- [`src/util/intent-filter.ts`](src/util/intent-filter.ts): `intent` 기반 인덱싱·요약\n\n흐름은 대략 `명령 실행 → executor → 명령별/형태별 필터 → 크기 제한 → 응답`입니다. MCP 호출은 [`src/tools/execute.ts`](src/tools/execute.ts)에서 이 파이프라인으로 들어갑니다.\n\n출처: [README.md — How It Works](README.md#how-it-works), [README.md — Project Structure](README.md#project-structure)",
+      "tools": [
+        "Read"
+      ],
+      "opened": [
+        "AGENT_GUIDE.md"
+      ],
+      "checks": [
+        {
+          "dimension": "read-budget",
+          "kind": "hard",
+          "pass": true,
+          "detail": "0 document(s), limit 1"
+        },
+        {
+          "dimension": "content",
+          "kind": "soft",
+          "pass": true,
+          "detail": "contains filters"
+        },
+        {
+          "dimension": "stall",
+          "kind": "soft",
+          "pass": true,
+          "detail": "answered"
+        }
+      ],
+      "toolCalls": [
+        {
+          "name": "Read",
+          "input": {
+            "file_path": "./AGENT_GUIDE.md"
+          },
+          "command": "/bin/zsh -lc \"sed -n '1,220p' ./AGENT_GUIDE.md && sed -n '188,275p;543,605p' README.md\""
+        }
+      ]
+    },
+    {
+      "id": "http-403",
+      "must_not_stall": true,
+      "send": "fetch_and_index가 그냥 HTTP 403으로 실패해요",
+      "max_reads": 2,
+      "should_open_any": [
+        "CHANGELOG.md",
+        "README.md",
+        "SECURITY.md"
+      ],
+      "cite": true,
+      "text": "troubleshoot 흐름입니다. 변경 기록에서 알려진 403 원인과 보안상 의도된 차단을 함께 구분해 보겠습니다. 진단 명령은 아직 실행하지 않습니다.알려진 버그일 가능성이 큽니다. **2026.8.0 이전 버전은 `User-Agent`를 보내지 않아 GitHub API 같은 서버에서 `fetch_and_index`가 단순 `HTTP 403`으로 실패했습니다.** 2026.8.0에서 헤더와 오류 본문 표시가 수정됐습니다.\n\n다만 대상이 사설망·로컬 주소라면 SSRF 보호에 따른 의도된 차단입니다. 이 경우 `fetch_and_index` 대신 `execute()` 경로를 사용해야 합니다.\n\n출처: [CHANGELOG.md](CHANGELOG.md), [SECURITY.md — SSRF Protection](SECURITY.md#ssrf-protection)\n\n현재 버전과 상태를 확인하는 `context-compress doctor`를 실행해도 될까요?",
+      "tools": [
+        "Read"
+      ],
+      "opened": [
+        "AGENT_GUIDE.md"
+      ],
+      "checks": [
+        {
+          "dimension": "read-budget",
+          "kind": "hard",
+          "pass": true,
+          "detail": "0 document(s), limit 2"
+        },
+        {
+          "dimension": "routing",
+          "kind": "hard",
+          "pass": true,
+          "detail": "answered from a document read earlier in the session"
+        },
+        {
+          "dimension": "citation",
+          "kind": "soft",
+          "pass": true,
+          "detail": "cited a path"
+        },
+        {
+          "dimension": "stall",
+          "kind": "soft",
+          "pass": true,
+          "detail": "answered"
+        }
+      ],
+      "toolCalls": [
+        {
+          "name": "Read",
+          "input": {
+            "file_path": "./AGENT_GUIDE.md"
+          },
+          "command": "/bin/zsh -lc \"sed -n '1,220p' ./AGENT_GUIDE.md && sed -n '1,38p' CHANGELOG.md && rg -n -A35 -B8 'fetch_and_index|403|User-Agent|private|SSRF|intranet' SECURITY.md\""
+        }
+      ]
+    }
+  ],
+  "summary": {
+    "hard": {
+      "pass": 11,
+      "total": 11
+    },
+    "soft": {
+      "pass": 18,
+      "total": 18
+    },
+    "dimensions": [
+      "calibration",
+      "citation",
+      "consent",
+      "content",
+      "flow-switch",
+      "helpfulness",
+      "orient-isolation",
+      "read-budget",
+      "recovery",
+      "risk-flag",
+      "routing",
+      "stall"
+    ]
+  }
+}

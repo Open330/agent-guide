@@ -452,7 +452,14 @@ Measured on one repository, `claude -p` with partial-message streaming:
 | computed | 4.5s, 4.0s | 1 | 19.9s, 12.1s |
 | **inline** | **2.2s, 2.1s, 1.9s** | **0** | **6.6s, 6.4s, 6.4s** |
 
-Compliance held. Three runs of a seven-turn scenario scored 11/11 hard and 17/17 soft, routing unchanged at 9/9. The manifest read does not disappear — it moves to the turn that needs it — so `max_reads_per_answer` MUST NOT count the manifest itself against an answer's budget. It is the routing table, not one of the documents the budget is bounding.
+Compliance held on both agents measured. Three runs each of a seven-turn scenario:
+
+| | computed block | inline block |
+| :--- | :---: | :---: |
+| Claude Code | 11/11 hard · 17/17 soft | 11/11 hard · 17/17 soft |
+| Codex | 87/87 checks over 3 runs | **87/87, nothing moved** |
+
+Routing was unchanged at 9/9 in every configuration, and no check regressed. The manifest read does not disappear — it moves to the turn that needs it — so `max_reads_per_answer` MUST NOT count the manifest itself against an answer's budget. It is the routing table, not one of the documents the budget is bounding.
 
 The inline variant also retires the rule this specification has had the most trouble with. "Open nothing else before your first reply" exists to stop an agent crawling the repository during ORIENT; when there is nothing to open, the rule has nothing left to enforce.
 

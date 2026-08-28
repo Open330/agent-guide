@@ -64,7 +64,7 @@ Last Updated: 2026-08-27
 - [x] `agent-guide prompt --inline` — 블록이 첫 응답을 들고 감. TTFT 4.2s → 2.0s
 - [x] 인라인 준수율 3회 검증 — hard 11/11 · soft 17/17, 회귀 0
 - [x] 해시 마커 + `validate` 낡음 경고. 우리 README를 인라인으로 도그푸딩
-- [ ] Codex로 인라인 준수율 확인 (현재 Claude만)
+- [x] Codex 인라인 준수율 3회 — **87/87, 회귀 0**. 계산형 대비 변동 없음
 
 ### M4 — 확산
 - `awesome-*` 목록 등재, 준수 수준별 배지
