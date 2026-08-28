@@ -23,7 +23,11 @@ const MCP_EXEC = /^mcp__.*__(?:execute|run|shell|bash|exec|command)/i;
 const isExec = (t) => EXEC_TOOLS.has(t.name) || MCP_EXEC.test(t.name);
 
 const CITATION = /(?:\[[^\]]*(?:src|출처)[^\]]*\]|[\w./-]+\.(?:md|ts|js|py|ya?ml|toml|json)(?:#[\w-]+)?)/i;
-const HEDGE = /매니페스트 (?:밖|에 없|가 다루지)|확인 필요|검증되지 않|outside (?:the|this) manifest|not (?:in|covered by) the manifest|unverified|can(?:no|')t confirm|couldn'?t confirm/i;
+// Labels an agent actually reaches for. Every addition here came from a reply
+// that hedged correctly and was scored as a failure — the fourth time this
+// happened, the lesson stopped being "widen the regex" and started being
+// "a regex is a floor on this dimension, not a measurement of it".
+const HEDGE = /매니페스트 (?:밖|에 없|가 다루지)|확인 필요|검증되지 않|outside (?:the|this) (?:manifest|guide)|off[- ]manifest|not (?:in|covered by) the manifest|no Docs entry|unverified|(?:have |I )?not verified|can(?:no|')t confirm|couldn'?t confirm/i;
 const HANDBACK = /택일|어느 쪽(?:을|으로)|다음 중 (?:하나를 )?(?:골라|선택)|which (?:one )?would you (?:like|prefer)|shall I (?:fetch|try)|pick one/i;
 // §4.7's intent is that the consequence surfaces before anyone acts — not
 // that a specific phrase appears. When the agent has no execution tool at all
@@ -127,9 +131,11 @@ function scoreTurn(turn, ctx) {
     const hit = turn.should_open_any.some((want) => consulted.some((p) => p.includes(want)));
     // A turn that answers from a document already in context from an earlier
     // turn is not a routing failure — the session carries state on purpose.
-    // Carrying a document from an earlier turn only counts if this turn
-    // actually used it. A reply that just asks to switch used nothing.
-    const carried = consulted.length === 0 && !isStall(text) &&
+    // The expected document may already be in context — preloaded by the host,
+    // or read in an earlier turn. Consulting something else as well does not
+    // undo that, so this is not conditional on having consulted nothing. A
+    // reply that only asks to switch used nothing, and is excluded.
+    const carried = !isStall(text) &&
       turn.should_open_any.some((want) => (ctx.seen ?? []).some((p) => p.includes(want)));
     checks.push(check(
       "routing", "hard", hit || carried,
@@ -231,7 +237,11 @@ function scoreTurn(turn, ctx) {
 }
 
 export function score(run) {
-  const turns = run.turns.map((t) => scoreTurn(t, run));
+  // Some hosts load context files on their own — Claude Code reads CLAUDE.md
+  // before the first turn. A Docs row pointing at one is answerable without a
+  // read, and counting that as a routing miss punishes the host, not the agent.
+  const ctx = { ...run, seen: [...(run.preloaded ?? [])] };
+  const turns = run.turns.map((t) => scoreTurn(t, ctx));
   const all = turns.flatMap((t) => t.checks);
   const tally = (kind) => {
     const set = all.filter((c) => c.kind === kind && !c.unavailable);

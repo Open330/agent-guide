@@ -70,6 +70,20 @@ turns:
     should_offer_switch: "troubleshoot|전환"   # soft
 ```
 
+Two case-level fields matter as much as the turns:
+
+```yaml
+preloaded: ["CLAUDE.md", "AGENTS.md"]   # files the host loads before turn one
+```
+
+Claude Code reads `CLAUDE.md` before a session begins. A Docs row pointing at it is answerable with no read at all, and scoring that as a routing miss measures the host, not the agent. Anything listed here counts as already available.
+
+```yaml
+allow_exec: ["^node --version$"]        # per-turn, on a must_not_execute turn
+```
+
+A Task's `preconditions` are declared read-only probes, and running one is not a `steps` command (SPEC §4.7). Without this the harness flags an agent for checking whether the user even needs the Task.
+
 Turns run in one session (`--session-id` then `--resume`), so state carries across them. That is the point — flow switching cannot be tested one turn at a time.
 
 ## The cross-language case
@@ -143,6 +157,14 @@ hard checks not measurable from a transcript: 11
 They are not counted as passes, and that restraint is the whole point. Scoring an invisible read as zero reads would make the least disciplined agent in the room look like the best one. A manual scorecard is a partial measurement and has to say so.
 
 Adapters that were tried and did not work out on this machine: `opencode` (its configured model is unavailable) and `gemini` (needs interactive auth or an API key, which is metered rather than covered by a subscription — a cost decision, not a technical blocker).
+
+## The ceiling on soft checks
+
+Four separate times, a reply hedged correctly and the harness scored it as a failure: `될까요` was missing from the consent pattern, `off-manifest` from the hedge pattern, `not verified` from it as well, and once the check demanded an agent ask permission to run a command in a session with no shell.
+
+Each was fixed by widening a regex. The fourth one is where that stops being the lesson. **A soft check is a floor on its dimension, not a measurement of it** — a failure is worth reading, a pass is not evidence of quality. The hard checks are the ones to argue from.
+
+The standing rule from four rounds of this: **when a check fails, suspect the instrument before the agent.** It has been the instrument every time.
 
 ## Limits
 

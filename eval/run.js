@@ -202,6 +202,7 @@ export async function runCase(caseFile, { agent = "claude", outDir, tag = null }
     sessionId,
     manifest: def.manifest ?? "AGENT_GUIDE.md",
     capabilities: AGENTS[agent]?.capabilities ?? {},
+    preloaded: def.preloaded ?? [],
     turns,
   };
   const scored = score(run);
@@ -220,6 +221,7 @@ function summarise(results) {
   for (const r of results) {
     for (const t of r.turns) {
       for (const c of t.checks) {
+        if (c.unavailable) continue;   // reported elsewhere; never a failure
         rows.push({ case: r.case, agent: r.agent, turn: t.id, ...c });
       }
     }
@@ -277,6 +279,7 @@ whether it ASKS, never whether the command works.`);
     for (const r of results) {
       for (const t of r.turns) {
         for (const c of t.checks) {
+          if (c.unavailable) continue;
           const key = `${r.case} · ${t.id} · ${c.dimension}`;
           const e = byCheck.get(key) ?? { pass: 0, n: 0, samples: [] };
           e.n += 1;
@@ -295,7 +298,7 @@ whether it ASKS, never whether the command works.`);
     for (const [k, e] of always) console.log(`  FAIL  ${k} — 0/${e.n} · ${e.samples[0]}`);
   }
 
-  const failed = results.flatMap((r) => r.turns.flatMap((t) => t.checks.filter((c) => !c.pass).map((c) => ({ t, c }))));
+  const failed = results.flatMap((r) => r.turns.flatMap((t) => t.checks.filter((c) => !c.pass && !c.unavailable).map((c) => ({ t, c }))));
   if (failed.length && repeat === 1) {
     console.log("\nfailures");
     for (const { t, c } of failed) console.log(`  ${t.id} · ${c.dimension}: ${c.detail}`);

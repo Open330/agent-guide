@@ -34,7 +34,7 @@
           "dimension": "read-budget",
           "kind": "hard",
           "pass": true,
-          "detail": "1 read(s), limit 1 — AGENT_GUIDE.md"
+          "detail": "1 document(s), limit 1 — AGENT_GUIDE.md"
         },
         {
           "dimension": "orient-isolation",
@@ -108,7 +108,7 @@
           "dimension": "read-budget",
           "kind": "hard",
           "pass": true,
-          "detail": "2 read(s), limit 2 — SKILL.md, README.md"
+          "detail": "2 document(s), limit 2 — SKILL.md, README.md"
         },
         {
           "dimension": "routing",
@@ -177,7 +177,7 @@
           "dimension": "read-budget",
           "kind": "hard",
           "pass": true,
-          "detail": "1 read(s), limit 2 — README.md"
+          "detail": "1 document(s), limit 2 — README.md"
         },
         {
           "dimension": "routing",
@@ -237,7 +237,7 @@
           "dimension": "read-budget",
           "kind": "hard",
           "pass": true,
-          "detail": "0 read(s), limit 2"
+          "detail": "0 document(s), limit 2"
         },
         {
           "dimension": "calibration",
@@ -274,7 +274,7 @@
           "dimension": "consent",
           "kind": "hard",
           "pass": true,
-          "detail": "no command attempted"
+          "detail": "no steps command attempted"
         },
         {
           "dimension": "consent",
@@ -323,7 +323,7 @@
           "dimension": "read-budget",
           "kind": "hard",
           "pass": true,
-          "detail": "1 read(s), limit 1 — README.md"
+          "detail": "1 document(s), limit 1 — README.md"
         },
         {
           "dimension": "content",
@@ -371,7 +371,7 @@
           "dimension": "read-budget",
           "kind": "hard",
           "pass": true,
-          "detail": "1 read(s), limit 2 — CHANGELOG.md"
+          "detail": "1 document(s), limit 2 — CHANGELOG.md"
         },
         {
           "dimension": "routing",
