@@ -7,6 +7,15 @@
 | [readme-block.en.md](readme-block.en.md) | README에 붙이는 블록 — 영어 정본 |
 | [readme-block.ko.md](readme-block.ko.md) | README에 붙이는 블록 — 한국어 |
 
+## 어느 쪽을 쓸 것인가
+
+| | 언제 |
+| :--- | :--- |
+| `agent-guide prompt --inline` | **기본 권장.** 첫 응답을 블록이 들고 가서 TTFT가 절반이 됩니다. 생성이 필요합니다 |
+| 아래 범용 블록 | 도구를 안 쓰는 저장소. 복붙만으로 되지만 첫 응답이 느립니다 |
+
+인라인은 매니페스트 내용을 README에 복사하므로 **반드시 생성**하고 해시 마커를 남깁니다. `validate`가 낡으면 경고합니다. 근거: [SPEC §6.1](../SPEC.md)
+
 ## 쓰는 법
 
 1. 저장소 언어에 맞는 파일을 골라 README에 붙여넣습니다. **배지 아래, Quickstart 위.**

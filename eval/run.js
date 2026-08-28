@@ -6,7 +6,7 @@ import { fileURLToPath } from "node:url";
 import { randomUUID } from "node:crypto";
 import { parse as parseYaml } from "yaml";
 
-import { renderPrompt } from "../src/prompt.js";
+import { renderPrompt, renderInlinePrompt } from "../src/prompt.js";
 import { score } from "./score.js";
 
 const HERE = dirname(fileURLToPath(import.meta.url));
@@ -158,8 +158,12 @@ function runTurn(agent, text, { sessionId, first, cwd, timeoutMs = 240000 }) {
 function resolvePaste(caseDef, cwd) {
   if (caseDef.paste && caseDef.paste !== "default") return caseDef.paste;
   const lang = caseDef.lang ?? "en";
-  const { text } = renderPrompt({ root: cwd, lang });
-  return text;
+  if (caseDef.paste_mode === "inline") {
+    // The inline block carries the first reply, so ORIENT costs no tool call.
+    // Whether that trades away compliance is the point of running it.
+    return renderInlinePrompt(join(cwd, caseDef.manifest ?? "AGENT_GUIDE.md"), { lang }).text;
+  }
+  return renderPrompt({ root: cwd, lang }).text;
 }
 
 export async function runCase(caseFile, { agent = "claude", outDir, tag = null } = {}) {

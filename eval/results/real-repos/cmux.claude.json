@@ -39,7 +39,7 @@
           "dimension": "read-budget",
           "kind": "hard",
           "pass": true,
-          "detail": "1 document(s), limit 1 — AGENT_GUIDE.md"
+          "detail": "0 document(s), limit 1"
         },
         {
           "dimension": "orient-isolation",

@@ -1,6 +1,7 @@
 import { readFileSync, existsSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { parseManifest, slugify } from "./parse.js";
+import { digestOf } from "./prompt.js";
 
 /**
  * Rules are split three ways:
@@ -259,10 +260,22 @@ export function validateText(text, { file = "AGENT_GUIDE.md", root = null, check
 }
 
 /** The README paste block must not ship with its placeholders intact. */
-export function validateReadme(root, report) {
+export function validateReadme(root, report, manifestText) {
   const readme = join(root, "README.md");
   if (!existsSync(readme)) return;
   const text = readFileSync(readme, "utf8");
+
+  // An inline paste block duplicates manifest content on purpose, to spare the
+  // agent a tool call before its first token. The digest is how that copy stays
+  // honest — this project has had a hand-maintained copy go stale twice.
+  const stamped = text.match(/<!--\s*agent-guide:inline\s+([0-9a-f]{8})\s*-->/);
+  if (stamped && manifestText) {
+    const { hash } = digestOf(manifestText);
+    if (stamped[1] !== hash) {
+      const line = text.split("\n").findIndex((l) => l.includes(stamped[0])) + 1;
+      report.warn("inline", `The README's inline paste block is stale (${stamped[1]} vs ${hash}). Regenerate it with \`agent-guide prompt --inline\`.`, line, "README.md");
+    }
+  }
   // Prose that tells a maintainer to replace `<org>/<repo>` is fine. An
   // unsubstituted placeholder inside the URL the agent will fetch is not.
   const PLACEHOLDER_URL = /raw\.githubusercontent\.com\/<org>|githubusercontent\.com\/[^/\s]*\/<repo>/;
@@ -279,6 +292,6 @@ export function validateFile(path, { checkPaths = true, checkReadme = true } = {
   const text = readFileSync(path, "utf8");
   const root = dirname(resolve(path));
   const result = validateText(text, { file: path, root, checkPaths });
-  if (checkReadme && checkPaths) validateReadme(root, result.report);
+  if (checkReadme && checkPaths) validateReadme(root, result.report, text);
   return result;
 }

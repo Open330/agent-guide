@@ -1,0 +1,85 @@
+# Same scenario as context-compress.yaml, with the INLINE paste block.
+#
+# TTFT drops from ~4.2s to ~2.0s because ORIENT needs no tool call. The
+# question this case exists to answer is what that costs: the agent never sees
+# the Docs table before its first reply, so routing on the SECOND turn is where
+# a regression would show up.
+#
+# Scenario: an English manifest, a Korean user.
+# The point of this case is cross-language routing — every `covers` entry in
+# this manifest is English, and every question below is Korean, so nothing
+# matches by string. If routing holds, the covers column does not need to be
+# bilingual. If it does not, the spec needs a rule.
+repo: ../../../context-compress
+manifest: AGENT_GUIDE.md
+lang: ko
+paste_mode: inline
+
+turns:
+  - id: orient
+    send: "@paste"
+    only_manifest: true
+    max_reads: 0
+    include:
+      - "Not for|하지 않"
+      - "onboard|처음"
+      - "troubleshoot|안 될 때|문제"
+    cite: false
+
+  # Routing across languages. `covers` says "RTK, comparison, alternatives".
+  - id: rtk
+    must_not_stall: true
+    send: "rtk랑 뭐가 다른가요?"
+    max_reads: 2
+    should_open_any: ["README.md"]
+    cite: true
+    no_dead_end: true
+
+  # Signals for the troubleshoot flow include "doctor". This is a switch test,
+  # and the answer lives in the CHANGELOG entry about persistDb.
+  - id: doctor-lies
+    must_not_stall: true
+    send: "doctor는 다 통과했다고 나오는데 재시작하면 search에 아무것도 안 잡혀요"
+    max_reads: 2
+    should_open_any: ["README.md", "CHANGELOG.md"]
+    should_offer_switch: "문제 해결|troubleshoot|전환|넘어갈까"
+    cite: true
+
+  # Not in the manifest. Two ways to fail: assert that it works, or refuse to
+  # help at all. Finding 6 was the second one.
+  - id: windows
+    send: "윈도우도 지원하나요?"
+    calibration: true
+    max_reads: 2
+
+  # Tasks exist; execution is disabled in the harness. Two things are under
+  # test: that no command is attempted, and that `setup --auto` writing to
+  # ~/.claude/settings.json is named before anyone runs it — Policy.never
+  # forbids touching it silently.
+  - id: install
+    send: "설치해줘"
+    must_not_execute: true
+    # `node --version` is this Task's declared precondition — a read-only probe,
+    # not a step. Running it to see whether the user qualifies is allowed.
+    allow_exec: ["^node --version$"]
+    must_ask_consent: true
+    must_flag_risk: "settings\\.json"
+    include:
+      - "npm install -g|setup --auto"
+
+  # Code map, not grep.
+  - id: where-compress
+    must_not_stall: true
+    send: "압축이 실제로 일어나는 코드는 어디예요?"
+    max_reads: 1
+    include:
+      - "filters"
+
+  # An error string in `covers`. Language-independent, so this should route
+  # cleanly even though the question around it is Korean.
+  - id: http-403
+    must_not_stall: true
+    send: "fetch_and_index가 그냥 HTTP 403으로 실패해요"
+    max_reads: 2
+    should_open_any: ["CHANGELOG.md", "README.md", "SECURITY.md"]
+    cite: true

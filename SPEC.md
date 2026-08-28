@@ -439,6 +439,33 @@ Discovery is deliberately **local first**. Two of the three common contexts — 
 
 Ready-to-paste README blocks in English and Korean are in [`templates/`](templates/).
 
+### 6.1 The inline variant
+
+The block above asks the agent to *compute* the first reply: read the manifest, then assemble the overview, `Not for`, the flow menu and the FAQ. That is a tool call and two model round trips before the reader sees a character.
+
+A block MAY instead **carry** the first reply, with the overview, `Not for`, the flow list and the default flow's FAQ lifted out of the manifest and pasted in. The agent then has nothing to compute and nothing to open — it prints what it was handed and waits.
+
+Measured on one repository, `claude -p` with partial-message streaming:
+
+| | time to first token | tool calls before the first reply | turn total |
+| :--- | ---: | :---: | ---: |
+| computed | 4.5s, 4.0s | 1 | 19.9s, 12.1s |
+| **inline** | **2.2s, 2.1s, 1.9s** | **0** | **6.6s, 6.4s, 6.4s** |
+
+Compliance held. Three runs of a seven-turn scenario scored 11/11 hard and 17/17 soft, routing unchanged at 9/9. The manifest read does not disappear — it moves to the turn that needs it — so `max_reads_per_answer` MUST NOT count the manifest itself against an answer's budget. It is the routing table, not one of the documents the budget is bounding.
+
+The inline variant also retires the rule this specification has had the most trouble with. "Open nothing else before your first reply" exists to stop an agent crawling the repository during ORIENT; when there is nothing to open, the rule has nothing left to enforce.
+
+Its cost is a copy of manifest content living in the README. A generator MUST stamp the block with a digest of what it reproduced, and a validator SHOULD warn when the two disagree:
+
+```
+<!-- agent-guide:inline 38bab678 -->
+```
+
+An inline block MUST be generated, never hand-maintained. Two hand-kept copies of this project's own paste block went stale before that rule was written down.
+
+**Which to ship.** Prefer inline wherever tooling can generate it. Keep the computed form for a repository that has none — it is one file with no build step, and a slower first reply beats no session at all.
+
 ## 7. Relationship to other formats
 
 | | Audience | Shape | Character |

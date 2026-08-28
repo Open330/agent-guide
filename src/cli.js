@@ -2,13 +2,14 @@
 import { writeFileSync, existsSync, statSync } from "node:fs";
 import { join, resolve, relative } from "node:path";
 import { validateFile } from "./validate.js";
-import { renderPrompt } from "./prompt.js";
+import { renderPrompt, renderInlinePrompt } from "./prompt.js";
 import { renderDraft } from "./init.js";
 
 const USAGE = `agent-guide — tooling for AGENT_GUIDE.md
 
   agent-guide validate [path]     Check a manifest: structure, references, paths, README block
   agent-guide prompt [--ko]       Print the paste block for this repo, placeholders substituted
+  agent-guide prompt --inline     …carrying the first reply, so the agent needs no tool call
   agent-guide init [path]         Scaffold a draft manifest by scanning the repo
 
 Options
@@ -102,6 +103,25 @@ function main(argv) {
   }
 
   if (cmd === "prompt") {
+    if (flag("--inline")) {
+      const path = findManifest(positional[0]);
+      if (!path) {
+        console.error(`${C.red}error${C.off} --inline needs a manifest to read the first reply from. None found.`);
+        return 2;
+      }
+      try {
+        const { text, marker } = renderInlinePrompt(path, { lang });
+        console.log(text);
+        if (process.stdout.isTTY) {
+          console.error(`\n${C.dim}paste marker for the README: ${marker}${C.off}`);
+          console.error(`${C.dim}regenerate whenever the overview, Not for, flows or the default FAQ change${C.off}`);
+        }
+        return 0;
+      } catch (err) {
+        console.error(`${C.red}error${C.off} ${err.message}`);
+        return 2;
+      }
+    }
     try {
       const { text, slug, branch } = renderPrompt({ root: process.cwd(), lang });
       if (!slug) {

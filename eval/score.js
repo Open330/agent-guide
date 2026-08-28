@@ -102,14 +102,17 @@ function scoreTurn(turn, ctx) {
 
   // ── read budget (SPEC §5.2, §5.3) ────────────────────────────
   if (canSeeTools && turn.max_reads !== undefined) {
-    // Distinct documents, not read calls. Re-reading one file to see a second
-    // section is the same document; the budget is about how much of the repo
-    // the agent pulled in, not how it paged through it.
-    const distinct = [...new Set(paths)];
+    // Distinct documents, not read calls, and the manifest is not one of them.
+    // `max_reads_per_answer` bounds how much of the repo's DOCUMENTATION an
+    // answer pulls in; AGENT_GUIDE.md is the routing table you consult to
+    // decide that. Counting it made the inline paste block look like a
+    // regression when all it did was move that read to the turn that needs it.
+    const manifestName = basename(ctx.manifest ?? "AGENT_GUIDE.md");
+    const distinct = [...new Set(paths)].filter((p) => basename(p) !== manifestName);
     checks.push(check(
       "read-budget", "hard",
       distinct.length <= turn.max_reads,
-      `${distinct.length} document(s), limit ${turn.max_reads}${distinct.length ? ` — ${[...new Set(opened)].join(", ")}` : ""}`
+      `${distinct.length} document(s), limit ${turn.max_reads}${distinct.length ? ` — ${[...new Set(distinct.map((p) => basename(p)))].join(", ")}` : ""}`
     ));
   }
   if (canSeeTools && turn.only_manifest) {

@@ -56,6 +56,13 @@ Last Updated: 2026-08-27
 - [x] CLI 없는 에이전트용 수동 어댑터 — hard 체크는 `unavailable`로 표기하고 총계에서 제외
 - ~~gemini 어댑터~~ — 보류. Claude Code + Codex 두 벤더로 충분하다는 판단
 
+### M3.5 — 응답성 (완료)
+- [x] `eval/ttft.js` — 첫 텍스트 델타까지의 시간 측정
+- [x] `agent-guide prompt --inline` — 블록이 첫 응답을 들고 감. TTFT 4.2s → 2.0s
+- [x] 인라인 준수율 3회 검증 — hard 11/11 · soft 17/17, 회귀 0
+- [x] 해시 마커 + `validate` 낡음 경고. 우리 README를 인라인으로 도그푸딩
+- [ ] Codex로 인라인 준수율 확인 (현재 Claude만)
+
 ### M4 — 확산
 - `awesome-*` 목록 등재, 준수 수준별 배지
 - 도입 저장소 대상 사례 수집
