@@ -138,7 +138,13 @@ See [`examples/`](examples/) for a full manifest with five flows, or the [format
 
 ## Adding it to your repo
 
-1. **Write `AGENT_GUIDE.md`.** Give your agent the [authoring prompt](.context/architecture/authoring-protocol.md#4-저작-프롬프트-정본) — it is designed to make the agent mine your issues and CHANGELOG for real questions instead of summarising your README.
+1. **Write `AGENT_GUIDE.md`.** In the repository you want a manifest for, paste the authoring prompt into an agent:
+
+   ```bash
+   npx agent-guide author        # or --ko
+   ```
+
+   It carries the format inline rather than pointing at this spec, so it works in a private repo or with no network — which is exactly when an agent that cannot read the format falls back to summarising your README. It is built to make the agent mine your issues and CHANGELOG for questions people actually asked.
 2. **Confirm three things yourself.** The authoring protocol will stop and ask you for the overview, `Not for`, and `status`. These cannot be derived from a repo — a README never says what a project refuses to do.
 3. **Paste a README block** from [`templates/`](templates/), replace `<org>/<repo>`, done.
 

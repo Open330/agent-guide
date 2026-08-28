@@ -2,7 +2,7 @@
 import { writeFileSync, existsSync, statSync } from "node:fs";
 import { join, resolve, relative } from "node:path";
 import { validateFile } from "./validate.js";
-import { renderPrompt, renderInlinePrompt } from "./prompt.js";
+import { renderPrompt, renderInlinePrompt, renderAuthoringPrompt } from "./prompt.js";
 import { renderDraft } from "./init.js";
 
 const USAGE = `agent-guide — tooling for AGENT_GUIDE.md
@@ -11,6 +11,7 @@ const USAGE = `agent-guide — tooling for AGENT_GUIDE.md
   agent-guide prompt [--ko]       Print the paste block for this repo, placeholders substituted
   agent-guide prompt --inline     …carrying the first reply, so the agent needs no tool call
   agent-guide init [path]         Scaffold a draft manifest by scanning the repo
+  agent-guide author [--ko]       Print the prompt that makes an agent WRITE the manifest
 
 Options
   --json                          Machine-readable output (validate)
@@ -130,6 +131,21 @@ function main(argv) {
       console.log(text);
       if (slug && process.stdout.isTTY) {
         console.error(`\n${C.dim}substituted ${slug} @ ${branch}${C.off}`);
+      }
+      return 0;
+    } catch (err) {
+      console.error(`${C.red}error${C.off} ${err.message}`);
+      return 2;
+    }
+  }
+
+  if (cmd === "author") {
+    try {
+      const { text } = renderAuthoringPrompt({ lang });
+      console.log(text);
+      if (process.stdout.isTTY) {
+        console.error(`\n${C.dim}Paste this into an agent running in the repository you want a manifest for.${C.off}`);
+        console.error(`${C.dim}It will ask you three questions at the end — the important one is "Not for".${C.off}`);
       }
       return 0;
     } catch (err) {

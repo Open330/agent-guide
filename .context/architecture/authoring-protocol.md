@@ -153,47 +153,30 @@ Docs 표는 **진입점 8~12개**다. 문서가 30개, 40개인 저장소에서�
 | 이미 `AGENTS.md`가 있음 | 내용이 중복됨 | 중복해서 쓰지 않는다. Docs 표에 넣고 `contribute` flow의 `Next:`로 넘긴다 |
 | 문서가 영어, 사용자가 한국어 | 언어가 섞임 | frontmatter `language`로 응답 언어를 정하고, 표의 covers에는 양쪽 언어를 넣는다 |
 
-## 4. 저작 프롬프트 (정본)
+## 4. 저작 프롬프트
 
-메인테이너가 자기 에이전트에 붙여넣는 블록. `agent-guide init`이 없어도 이것만으로 성립해야 한다.
+정본은 [`templates/authoring-prompt.en.md`](../../templates/authoring-prompt.en.md) ·
+[`templates/authoring-prompt.ko.md`](../../templates/authoring-prompt.ko.md) 두 곳입니다.
+CLI로도 출력됩니다.
 
-````markdown
+```bash
+agent-guide author          # 영어
+agent-guide author --ko     # 한국어
 ```
-이 저장소의 AGENT_GUIDE.md를 작성하세요. Agent Guide v0.1 저작 프로토콜을 따릅니다.
-규격: https://raw.githubusercontent.com/Open330/agent-guide/main/SPEC.md
 
-【중요】이것은 README 요약본이 아닙니다. 사용자가 실제로 던지는 질문과
-그 답이 있는 위치를 잇는 라우팅 테이블입니다.
+**여기에 사본을 두지 않습니다.** 이 문서에 한동안 뒀다가 낡았습니다 — `effects`도,
+`verify: none|unverified`도, `more` 행도 반영되지 않은 채 남아 있었습니다. 정본을
+두 곳에 두면 반드시 갈라집니다. 이 프로젝트에서 세 번째입니다.
 
-1. 수집 — 파일 열람 15회 이내. 소스 파일 본문은 읽지 마세요.
-   README 제목 목록 / 패키지 매니페스트 / docs 트리의 파일명과 첫 제목 /
-   AGENTS.md·CONTRIBUTING.md 존재 여부 / CHANGELOG 최신 breaking change /
-   최상위 소스 디렉터리 이름
-2. FAQ — 지어내지 말고 캐내세요. 우선순위:
-   이슈의 question 라벨 → README의 Troubleshooting과 접힌 절 →
-   CHANGELOG의 버그 설명 → 비교표
-   질문은 사용자의 말로 씁니다. 문서 제목을 물음표로 바꾸지 마세요.
-3. covers — 질문자가 칠 검색어. 에러 메시지 원문이 가장 좋습니다.
-   문서 제목의 단어를 그대로 쓰지 마세요.
-4. Flow — onboard는 항상 (default). 아래는 열거형이 아니라 흔한 사례이니,
-   구분되는 사용자층이 따로 있으면 그 층을 위한 flow를 새로 만드세요. 나머지는 증거가 있을 때만:
-   CHANGELOG에 breaking change → upgrade / 트러블슈팅 문서 → troubleshoot /
-   CI·SDK·Action 성격 → integrate / CONTRIBUTING.md → contribute
-   FAQ가 한 줄뿐인 flow는 만들지 마세요.
-5. Tasks — 명령은 README 코드 블록에서 그대로 가져오세요.
-   verify는 실제 존재하는 명령만. 확인 못 하면 그 Task를 만들지 마세요.
-6. 자가 검증 — 모든 경로가 실존하는지 하나씩 확인, 모든 id 참조가 해석되는지,
-   (default) flow가 정확히 하나인지.
-7. 마지막에 나에게 물으세요. 저장소만 읽어서는 알 수 없는 세 가지입니다:
-   - Not for (이 프로젝트가 하지 않는 일) — 가장 중요합니다
-   - 개요 3문장이 맞는지
-   - status (alpha/beta/stable/maintenance)
-   초안은 채워 넣되, 확인이 필요한 곳을 명시해서 보여주세요.
+### 프롬프트가 형식을 품어야 하는 이유
 
-형식은 규격 §4를 따르세요. 섹션 키(Docs, Code map, Flow:, Tasks, Glossary,
-Policy)는 영문 고정, 그 뒤 제목과 표 헤더는 이 저장소의 언어로 씁니다.
-```
-````
+초안은 "형식은 규격 §4를 따르세요"라고만 하고 SPEC URL을 가리켰습니다. 그게 실패하는
+경우가 **정확히 이 프롬프트가 가장 필요한 경우**입니다 — 비공개 저장소, 네트워크가
+막힌 세션. 형식을 못 읽은 에이전트는 README 요약본을 씁니다. 저작 프로토콜이 막으려는
+바로 그 결과입니다.
+
+그래서 정본 블록은 매니페스트 골격을 **인라인으로 품습니다**. 세션 블록이 첫 응답을
+품는 것과 같은 이유입니다.
 
 ## 5. 갱신 프로토콜
 

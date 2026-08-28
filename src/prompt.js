@@ -149,3 +149,22 @@ export function renderInlinePrompt(manifestPath, { lang = "en" } = {}) {
 
   return { text: body, hash, marker: `<!-- agent-guide:inline ${hash} -->` };
 }
+
+
+/**
+ * The authoring prompt: what a maintainer pastes into an agent in a repository
+ * that has no manifest yet.
+ *
+ * It carries the format inline rather than pointing at the spec. Asking an
+ * agent to fetch SPEC.md fails in exactly the case this is most needed — a
+ * private repository, or a session with no network — and an agent that cannot
+ * read the format writes a README summary instead, which is the one outcome
+ * the authoring protocol exists to prevent.
+ */
+export function renderAuthoringPrompt({ lang = "en" } = {}) {
+  const file = join(TEMPLATES, `authoring-prompt.${lang}.md`);
+  if (!existsSync(file)) throw new Error(`No authoring prompt for language "${lang}". Available: en, ko`);
+  const text = readFileSync(file, "utf8");
+  const fence = text.match(/```\n([\s\S]*?)\n```\s*$/);
+  return { text: (fence ? fence[1] : text).trimEnd(), full: text };
+}
