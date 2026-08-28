@@ -3,7 +3,7 @@
 Last Updated: 2026-08-27
 Status: Draft
 
-규격의 나머지 절반. [guide-spec-draft.md](guide-spec-draft.md)가 **읽는 쪽**을 정의한다면, 이 문서는 **쓰는 쪽**을 정의한다.
+규격의 나머지 절반. [`SPEC.md`](../../SPEC.md)가 **읽는 쪽**을 정의한다면, 이 문서는 **쓰는 쪽**을 정의한다.
 
 ---
 

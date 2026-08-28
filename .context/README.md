@@ -10,13 +10,15 @@
 
 > 이 저장소 자체가 [`AGENT_GUIDE.md`](../AGENT_GUIDE.md)를 갖고 있습니다. 규격을 우리가 먼저 지킵니다.
 
+> 규격 정본은 저장소 루트의 [`SPEC.md`](../SPEC.md)입니다. 한국어 초안이 한동안 여기 있었으나
+> `effects`도 인라인 블록도 반영되지 않은 채 갈라져서 지웠습니다 — 정본이 두 곳이면 반드시 갈라집니다.
+
 ## 문서
 
 | 문서 | 내용 |
 | :--- | :--- |
 | [planning/product-plan.md](planning/product-plan.md) | 문제 정의, flow 개념, 시나리오, 포지셔닝, 지표, 리스크 |
 | [planning/roadmap.md](planning/roadmap.md) | 확정된 결정, 마일스톤 M0~M4, 남은 미결정 |
-| [architecture/guide-spec-draft.md](architecture/guide-spec-draft.md) | v0.1 규격 초안 — 발견, 매니페스트 형식, 세션 프로토콜, 초기 프롬프트 |
 | [architecture/authoring-protocol.md](architecture/authoring-protocol.md) | 저작 프로토콜 — 에이전트가 매니페스트를 **쓰는** 방법. 저작 프롬프트 정본 |
 | [reference/manifest-format.md](reference/manifest-format.md) | `AGENT_GUIDE.md` 형식 치트시트 |
 | [reference/readme-block.md](reference/readme-block.md) | README에 붙이는 초기 프롬프트 — 영/한 정본, 짧은 형태, 삽입 위치 |

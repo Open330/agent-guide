@@ -24,7 +24,7 @@ Last Updated: 2026-08-27
 - [x] 도그푸딩 — 본 저장소의 `AGENT_GUIDE.md`와 `README.md` (준수 수준 Guided, 참조 19건 검증 통과)
 - [x] 실제 저장소 적용 1/3 — context-compress. 실패 2건에서 규격 개정 ([experiments](../../experiments/README.md))
 - [x] 실제 저장소 적용 2·3 — open-agent-contribution(65/65), cmux(36/36). 독립 에이전트가 저작 프로토콜만으로 작성
-- [ ] npm `agent-guide`, GitHub 조직명 가용 여부 확인
+- [x] 이름 확정 — `@open330/agent-guide` (스코프 패키지). GitHub `Open330/agent-guide` 공개
 
 ### M1 — 스펙 공개 (v0.1) — 완료
 - [x] 본 저장소 자체의 `AGENT_GUIDE.md` (도그푸딩)
