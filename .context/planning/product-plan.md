@@ -130,7 +130,7 @@ Code map은 "어느 디렉터리가 무엇을 담당하는지"의 거친 지도�
 | :--- | :--- | :--- |
 | **스펙** | 매니페스트 형식 + 세션 프로토콜 | `SPEC.md` |
 | **초기 프롬프트** | README에 붙는 복사용 블록. 자기완결적이어야 한다 | 스펙에 정본 수록, CLI가 생성 |
-| **CLI** | `npx agent-guide init / validate / prompt` | npm 패키지 |
+| **CLI** | `npx @open330/agent-guide init / validate / prompt` | npm 패키지 |
 | **예제** | 최소 예제, 실전 예제, 본 저장소 자체의 매니페스트 | `examples/` |
 
 ### 왜 Markdown인가
@@ -152,7 +152,7 @@ Code map은 "어느 디렉터리가 무엇을 담당하는지"의 거친 지도�
 
 ### CLI가 하는 일
 
-`npx agent-guide init`은 빈 템플릿을 만들어 주는 게 아니라 **저장소를 훑어 초안을 채운다**. `docs/` 트리, `package.json`, 기존 `README.md`·`AGENTS.md`·`llms.txt`를 읽고 매니페스트 초안과 README 블록을 함께 생성한다. 작성 부담이 도입의 유일한 병목이므로 여기에 힘을 준다.
+`npx @open330/agent-guide init`은 빈 템플릿을 만들어 주는 게 아니라 **저장소를 훑어 초안을 채운다**. `docs/` 트리, `package.json`, 기존 `README.md`·`AGENTS.md`·`llms.txt`를 읽고 매니페스트 초안과 README 블록을 함께 생성한다. 작성 부담이 도입의 유일한 병목이므로 여기에 힘을 준다.
 
 ## 8. 성공 지표
 

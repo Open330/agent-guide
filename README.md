@@ -141,7 +141,7 @@ See [`examples/`](examples/) for a full manifest with five flows, or the [format
 1. **Write `AGENT_GUIDE.md`.** In the repository you want a manifest for, paste the authoring prompt into an agent:
 
    ```bash
-   npx agent-guide author        # or --ko
+   npx @open330/agent-guide author        # or --ko
    ```
 
    It carries the format inline rather than pointing at this spec, so it works in a private repo or with no network — which is exactly when an agent that cannot read the format falls back to summarising your README. It is built to make the agent mine your issues and CHANGELOG for questions people actually asked.
@@ -153,15 +153,15 @@ Step by step, with the checks worth running at each stage: [`experiments/RUNBOOK
 ## The CLI
 
 ```bash
-npx agent-guide validate      # check a manifest: structure, references, paths, README block
-npx agent-guide init          # scaffold a draft by scanning the repo
-npx agent-guide prompt        # print the paste block with <org>/<repo> substituted
+npx @open330/agent-guide validate      # check a manifest: structure, references, paths, README block
+npx @open330/agent-guide init          # scaffold a draft by scanning the repo
+npx @open330/agent-guide prompt        # print the paste block with <org>/<repo> substituted
 ```
 
 `validate` is the one that matters. It automates the self-check the authoring protocol asks for by hand — every Docs path resolved, every heading anchor confirmed, every `id` in an FAQ or `on_fail` traced to a row — and reports the compliance level it computed. Add it to CI and a manifest cannot silently drift away from the documents it points at:
 
 ```yaml
-- run: npx agent-guide validate
+- run: npx @open330/agent-guide validate
 ```
 
 It found a broken README anchor in a manifest whose author had already verified all ten anchors by hand, and, in the same run, a bug in its own slug function. Reference checking is not something to do by eye.

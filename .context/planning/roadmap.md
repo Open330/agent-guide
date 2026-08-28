@@ -40,7 +40,9 @@ Last Updated: 2026-08-27
 - [x] `agent-guide prompt` — git 원격에서 `<org>/<repo>`·브랜치 치환
 - [x] 테스트 16종. 자기 매니페스트 검증을 CI에 포함
 - [x] GitHub Action 워크플로
-- [ ] npm 배포 (조직명 확보 후)
+- [x] 패키지명 확정 — `@open330/agent-guide` (스코프 패키지라 이름 충돌 없음)
+- [x] 타르볼 실사용 검증 — 41.6 kB / 16 파일, 설치 후 4개 명령 전부 동작
+- [ ] npm 배포 — vault 잠금 해제 + 저장소 공개 전환이 선행 (아래 참조)
 
 ### M3 — 평가 하니스 (v0.3)
 - [x] `eval/run.js` — 실제 에이전트를 시나리오에 태우고 `stream-json`으로 툴 호출까지 기록
