@@ -4,6 +4,7 @@ import { join, resolve, relative } from "node:path";
 import { validateFile } from "./validate.js";
 import { renderPrompt, renderInlinePrompt, renderAuthoringPrompt } from "./prompt.js";
 import { renderDraft } from "./init.js";
+import { renderBadge } from "./badge.js";
 
 const USAGE = `agent-guide — tooling for AGENT_GUIDE.md
 
@@ -12,6 +13,7 @@ const USAGE = `agent-guide — tooling for AGENT_GUIDE.md
   agent-guide prompt --inline     …carrying the first reply, so the agent needs no tool call
   agent-guide init [path]         Scaffold a draft manifest by scanning the repo
   agent-guide author [--ko]       Print the prompt that makes an agent WRITE the manifest
+  agent-guide badge [path]        Print the compliance-level badge for this manifest
 
 Options
   --json                          Machine-readable output (validate)
@@ -19,6 +21,8 @@ Options
   --strict                        Treat warnings as failures
   --ko, --lang <en|ko>            Language for prompt output
   --write                         init: write AGENT_GUIDE.md instead of printing
+  --html, --url                   badge: emit HTML or the bare image URL
+  --style <s>                     badge: shields style (flat, flat-square, for-the-badge)
   -h, --help                      This
 
 Exit codes: 0 ok · 1 errors found · 2 could not run
@@ -146,6 +150,35 @@ function main(argv) {
       if (process.stdout.isTTY) {
         console.error(`\n${C.dim}Paste this into an agent running in the repository you want a manifest for.${C.off}`);
         console.error(`${C.dim}It will ask you three questions at the end — the important one is "Not for".${C.off}`);
+      }
+      return 0;
+    } catch (err) {
+      console.error(`${C.red}error${C.off} ${err.message}`);
+      return 2;
+    }
+  }
+
+  if (cmd === "badge") {
+    const path = findManifest(positional[0]);
+    if (!path) {
+      console.error(`${C.red}error${C.off} No AGENT_GUIDE.md found. Looked in ., .guide/ and docs/.`);
+      return 2;
+    }
+    const { level, report } = validateFile(path, { checkPaths: false });
+    if (!level) {
+      console.error(`${C.red}error${C.off} ${relative(process.cwd(), path)} does not reach Core — no level to claim.`);
+      console.error(`${C.dim}      Run \`agent-guide validate\` and fix the ${report.errors.length} error(s) first.${C.off}`);
+      return 1;
+    }
+    const styleFlag = args.includes("--style") ? args[args.indexOf("--style") + 1] : "flat";
+    const format = flag("--html") ? "html" : flag("--url") ? "url" : "markdown";
+    try {
+      const b = renderBadge({ level, root: process.cwd(), manifestPath: path, format, style: styleFlag });
+      console.log(b.text);
+      if (process.stdout.isTTY) {
+        console.error(`\n${C.dim}level ${b.level}${C.off}`);
+        if (!b.slug) console.error(`${C.yellow}warn${C.off}  No GitHub remote — the badge links to the relative path ${b.rel}.`);
+        if (report.errors.length) console.error(`${C.yellow}warn${C.off}  ${report.errors.length} validation error(s) remain; the level is computed from structure only.`);
       }
       return 0;
     } catch (err) {

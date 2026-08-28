@@ -10,6 +10,7 @@
 [![code](https://img.shields.io/badge/code-MIT-blue)](LICENSE)
 [![spec licence](https://img.shields.io/badge/spec-CC%20BY%204.0-blue)](LICENSE-SPEC)
 [![status](https://img.shields.io/badge/status-alpha-orange)](#상태)
+[![Agent Guide: Interactive](https://img.shields.io/badge/Agent_Guide-Interactive-brightgreen)](AGENT_GUIDE.md)
 
 [English](README.md) · **한국어**
 
@@ -179,6 +180,7 @@ npx @open330/agent-guide author            # 매니페스트를 쓰게 하는 �
 npx @open330/agent-guide validate          # 구조·참조·경로·앵커
 npx @open330/agent-guide prompt --inline   # 내 README에 넣을 붙여넣기 블록
 npx @open330/agent-guide init              # 저장소를 훑어 초안 생성
+npx @open330/agent-guide badge             # README에 붙일 준수 수준 배지
 ```
 
 CI에 넣을 것은 `validate`입니다. 저작 프로토콜이 사람에게 손으로 시키는 검사를 자동화합니다 — 모든 Docs 경로 해석, 모든 제목 앵커 확인, 모든 `id` 추적 — 그리고 계산된 준수 수준을 보고합니다.

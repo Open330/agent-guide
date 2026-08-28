@@ -29,8 +29,23 @@ Agent Guide is a manifest format and a session protocol that lets any AI agent r
 | roadmap | .context/planning/roadmap.md | status, milestones, what is decided, what is not, CLI, 로드맵, 계획 | M |
 | experiments | experiments/README.md | real repos we tried this on, what broke, evidence, findings, 실험, 검증 | M |
 | eval | eval/README.md | how this is measured, hard vs soft checks, writing a scenario, 평가, 측정, 하니스 | M |
-| example-min | examples/AGENT_GUIDE.minimal.md | the smallest valid manifest, 최소 예제 | S |
+| cli | README.md#the-cli | validate, init, prompt, badge, author, command list, npm install, CLI, 명령어, 설치 | S |
+| example-min | examples/AGENT_GUIDE.minimal.md | the smallest valid manifest, minimum required fields, starting point, 최소 예제 | S |
 | example-full | examples/README.md | which example to copy, CLI vs library shape, 전체 예제, 예제 | M |
+
+## Code map — where things live
+
+| path | what |
+| --- | --- |
+| src/parse.js | Markdown → manifest model. Section keys, table columns, FAQ line grammar |
+| src/validate.js | Every rule in SPEC §4, plus the compliance-level computation |
+| src/prompt.js | The paste block, the `--inline` variant, and git-remote substitution |
+| src/init.js | Repo scan → draft manifest. Deliberately leaves covers and FAQ empty |
+| src/badge.js | Compliance-level badge |
+| src/cli.js | Command dispatch and the report formatting |
+| eval/ | The behavioural harness — runs real agents against scenarios and scores them |
+| eval/cases/ | Scenario definitions. One YAML file per repo under test |
+| tests/ | Validator tests. `node --test` |
 
 ## Flow: onboard — New here (default)
 
@@ -62,6 +77,8 @@ Agent Guide is a manifest format and a session protocol that lets any AI agent r
 
 - How do I write one? → `authoring` ↪ Can my agent write it for me?
 - Can my agent write it for me? → `authoring`
+- How do I install the CLI? → `cli` → task `install`
+- How do I know my manifest is valid? → `cli`, `format` → task `check`
 - What fields are required? → `format`, `example-min`
 - What goes in the README? → `templates`, `readme-block`
 - All my docs live inside README.md — does that work? → `authoring`, `format`
@@ -91,8 +108,53 @@ Agent Guide is a manifest format and a session protocol that lets any AI agent r
 - What is still undecided? → `roadmap`
 - What have you actually tested this on? → `experiments`, `eval`
 - How do you measure whether an agent obeys the protocol? → `eval`
-- Why is there no CLI yet? → `roadmap`
+- What is the CLI able to check? → `cli`, `spec`
+- How do I run the tests? → `roadmap` → task `dev-setup`
 - Where do I file a spec change? → `roadmap`, `plan`
+
+## Tasks
+
+### Task: install — Install the CLI
+
+```yaml
+steps:
+  - run: "npm install -g @open330/agent-guide"
+    explain: "One dependency (yaml); Node 20 or newer"
+    effects: "Writes an `agent-guide` binary into your global npm prefix"
+verify:
+  run: "agent-guide --help"
+  expect: "tooling for AGENT_GUIDE.md"
+on_fail: [cli, roadmap]
+```
+
+### Task: check — Validate a manifest
+
+```yaml
+steps:
+  - run: "agent-guide validate"
+    explain: "Structure, id references, paths, anchors, README block, compliance level"
+verify: none
+why: "The step is the check. Its exit code is the result — there is nothing further to assert."
+on_fail: [format, spec]
+```
+
+### Task: dev-setup — Work on the tooling
+
+```yaml
+preconditions:
+  - check: "node --version"
+    expect: "v(2[0-9]|[3-9][0-9])\\."
+    hint: "Node 20 or newer is required (package.json engines)"
+steps:
+  - run: "npm install"
+    explain: "Installs the single runtime dependency plus nothing else"
+  - run: "npm test"
+    explain: "Validator tests"
+verify:
+  run: "npm test"
+  expect: "fail 0"
+on_fail: [roadmap]
+```
 
 ## Glossary
 
@@ -111,7 +173,7 @@ answer_style: "Concise. Lists over paragraphs. Three paragraphs max."
 citations: required
 max_reads_per_answer: 2
 never:
-  - "Claiming the CLI exists — it is not built yet (see roadmap)"
+  - "Claiming a milestone is done when the roadmap says otherwise"
 handoff:
   session_notes: .guide/session-notes.md
   next: .context/planning/roadmap.md

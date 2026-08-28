@@ -10,6 +10,7 @@ Ship a manifest instead, and let their agent walk them through the project.
 [![code](https://img.shields.io/badge/code-MIT-blue)](LICENSE)
 [![spec licence](https://img.shields.io/badge/spec-CC%20BY%204.0-blue)](LICENSE-SPEC)
 [![status](https://img.shields.io/badge/status-alpha-orange)](#status)
+[![Agent Guide: Interactive](https://img.shields.io/badge/Agent_Guide-Interactive-brightgreen)](AGENT_GUIDE.md)
 
 **English** · [한국어](README.ko.md)
 
@@ -183,6 +184,7 @@ npx @open330/agent-guide author            # the prompt that writes your manifes
 npx @open330/agent-guide validate          # structure, references, paths, anchors
 npx @open330/agent-guide prompt --inline   # the paste block for your README
 npx @open330/agent-guide init              # scaffold a draft by scanning the repo
+npx @open330/agent-guide badge             # the compliance badge for your README
 ```
 
 `validate` is the one to put in CI. It automates the check the authoring protocol asks a human to do by hand — every Docs path resolved, every heading anchor confirmed, every `id` traced to a row — and reports the compliance level it computed.
@@ -214,7 +216,16 @@ Start at the bottom rung. Most of the value is there.
 | **Guided** | Core + `## Policy` · `## Code map` · two or more flows |
 | **Interactive** | Guided + flow switching via `Signals:` · `## Tasks` with a runnable `verify` |
 
-This repository's own manifest is **Guided**, not Interactive. It has no `## Tasks`, because there is no `verify` command you can run against a specification — and the [authoring protocol](.context/architecture/authoring-protocol.md) forbids inventing one. We are not exempt from our own rules.
+This repository's manifest sat at **Guided** for as long as the repo was only a specification — there was no `verify` command to run against prose, and the [authoring protocol](.context/architecture/authoring-protocol.md) forbids inventing one. Shipping the CLI gave it real commands to check, so it is **Interactive** now. The level is computed, never claimed: it moved when the repository did.
+
+### The badge
+
+```bash
+npx @open330/agent-guide badge          # markdown, linked to your manifest
+npx @open330/agent-guide badge --html   # or --url for the bare image
+```
+
+It reads your manifest, computes the level the same way `validate` does, and refuses to emit anything for a manifest that does not reach Core. A badge you cannot fail is decoration; this one you can lose by deleting a section.
 
 ---
 
