@@ -42,7 +42,8 @@ Last Updated: 2026-08-27
 - [x] GitHub Action 워크플로
 - [x] 패키지명 확정 — `@open330/agent-guide` (스코프 패키지라 이름 충돌 없음)
 - [x] 타르볼 실사용 검증 — 41.6 kB / 16 파일, 설치 후 4개 명령 전부 동작
-- [ ] npm 배포 — vault 잠금 해제 + 저장소 공개 전환이 선행 (아래 참조)
+- [x] npm 배포 — `@open330/agent-guide@0.1.0` 게시 완료
+- [x] 저장소 공개 전환 — 보안 감사(시크릿 clean, 절대경로 365곳 정리) 후 PUBLIC
 
 ### M3 — 평가 하니스 (v0.3)
 - [x] `eval/run.js` — 실제 에이전트를 시나리오에 태우고 `stream-json`으로 툴 호출까지 기록

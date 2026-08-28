@@ -9,7 +9,9 @@ Readers stop skimming your docs and start asking questions — and get answers w
 
 `AGENT_GUIDE.md` · [Spec](SPEC.md) · [Authoring](.context/architecture/authoring-protocol.md) · [Templates](templates/) · [Experiments](experiments/) · [Roadmap](.context/planning/roadmap.md)
 
-**Status: alpha** — spec draft, no CLI yet
+[![npm](https://img.shields.io/npm/v/@open330/agent-guide?color=cb3837&logo=npm)](https://www.npmjs.com/package/@open330/agent-guide)
+
+**Status: alpha** — the spec is drafted and dogfooded; treat the format as subject to change before 1.0
 
 </div>
 
