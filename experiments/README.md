@@ -277,7 +277,7 @@ cmux는 디렉터리·CHANGELOG·바이너리·소스 심볼이 전부 `cmux`인
 | open-agent-contribution | 0 | 3 | Interactive |
 | cmux | 0 | 4 | Interactive |
 
-경고는 대부분 `TODO(maintainer)`가 남아 있다는 것 — A7이 설계대로 작동하고 있다는 신호입니다. 우리 저장소가 **Core에 머무는 것도 정확합니다**. Code map이 없기 때문이고, 코드가 없으니 없는 게 맞습니다.
+경고는 대부분 `TODO(maintainer)`가 남아 있다는 것 — A7이 설계대로 작동하고 있다는 신호입니다. 우리 저장소가 당시 **Core에 머문 것도 정확합니다.** Code map이 없었고, 코드가 없으니 없는 게 맞았습니다. CLI를 배포한 뒤 `Code map`과 `Tasks`가 생기면서 자동으로 Interactive가 됐습니다 — **수준은 선언이 아니라 계산이라는 것의 증거입니다.**
 
 ### 발견 11 — 평가 하니스가 프로토콜은 통과시키고 자기 버그를 다섯 개 잡았다
 
