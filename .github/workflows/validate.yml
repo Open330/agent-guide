@@ -6,7 +6,29 @@ on:
   pull_request:
 
 jobs:
-  validate:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        # The floor from package.json engines, plus current. A test runner flag
+        # that only exists on newer Node is exactly the kind of thing a single
+        # version hides — it did, until CI was read rather than assumed to work.
+        node: [20, 24]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+      - run: npm ci
+      - run: npm test
+
+      # Dogfooding: this repo's own manifest is checked by the tool it ships.
+      # A manifest that has drifted from the documents it points at fails the
+      # build, which is the only thing that keeps one current.
+      - run: node src/cli.js validate
+
+  package:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -14,9 +36,13 @@ jobs:
         with:
           node-version: 20
       - run: npm ci
-      - run: npm test
 
-      # Dogfooding: this repo's own manifest is checked by the tool it ships.
-      # A manifest that has drifted from the docs it points at fails the build,
-      # which is the only thing that keeps one current.
-      - run: node src/cli.js validate
+      # `files` is easy to get wrong and the mistake only surfaces after
+      # publishing. Install the tarball the way a user would and run the binary.
+      - run: npm pack
+      - run: |
+          mkdir -p /tmp/consumer && cd /tmp/consumer
+          npm init -y >/dev/null
+          npm install "$GITHUB_WORKSPACE"/open330-agent-guide-*.tgz
+          ./node_modules/.bin/agent-guide --help
+          ./node_modules/.bin/agent-guide author | head -3

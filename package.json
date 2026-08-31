@@ -17,8 +17,9 @@
     "LICENSE-SPEC"
   ],
   "scripts": {
-    "test": "node --test \"tests/**/*.test.js\"",
-    "selfcheck": "node src/cli.js validate"
+    "test": "node --test tests/*.test.js",
+    "selfcheck": "node src/cli.js validate",
+    "prepublishOnly": "npm test && node src/cli.js validate"
   },
   "engines": {
     "node": ">=20"
