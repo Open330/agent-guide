@@ -277,3 +277,6 @@ The design record, including why each decision went the way it did: [`.context/`
 The specification and prose — `SPEC.md`, `.context/`, `templates/`, `examples/` — are [CC BY 4.0](LICENSE-SPEC). Everything else is [MIT](LICENSE).
 
 A protocol that cannot be quoted, forked, or reimplemented elsewhere does not spread.
+
+---
+<p align="center"><sub>Part of <a href="https://github.com/Open330">Open330</a> · open source tools for AI-agent workflows · <a href="https://open330.github.io">open330.github.io</a></sub></p>
