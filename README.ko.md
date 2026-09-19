@@ -264,3 +264,6 @@ Alpha. 규격은 작성됐고, 스스로에게 적용했으며, 실제 저장소
 규격과 산문 — `SPEC.md`, `.context/`, `templates/`, `examples/` — 는 [CC BY 4.0](LICENSE-SPEC), 나머지는 [MIT](LICENSE)입니다.
 
 **인용·포크·재구현이 안 되는 프로토콜은 퍼지지 않습니다.**
+
+---
+<p align="center"><sub><a href="https://github.com/Open330">Open330</a>의 일부 · AI 에이전트 워크플로를 위한 오픈소스 도구 · <a href="https://open330.github.io">open330.github.io</a></sub></p>
